@@ -1,22 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-
 class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final Set<WordPair> _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // header
       appBar: AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
-        ],
+        backgroundColor: Color(0xFF00dcFF),
+        centerTitle: true,
+        title: Text('Confenssion Wall',
+            style: TextStyle(color: Colors.white.withOpacity(1.0))),
       ),
       body: _buildSuggestions(),
+      // 底部导航栏
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
+          BottomNavigationBarItem(icon: Icon(Icons.control_point), title: Text('发表')),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), title: Text('我的')),
+        ],
+        currentIndex: _selectedIndex,
+        fixedColor: Color(0xFF00dcFF),
+        onTap: _onItemTapped,
+      ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   void _pushSaved() {
