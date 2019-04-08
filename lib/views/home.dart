@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import '../api/chatroom.dart';
+import '../model/chatroom.dart';
 
 class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
@@ -31,40 +33,46 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
     setState(() {
       _selectedIndex = index;
     });
+    final params = {
+      'limit': 9,
+      'page': 0
+    };
+    final res = await api.getArtic(params);
+    print(ChatRoomModel.fromJson(res.data));
   }
 
-  void _pushSaved() {
-    Navigator.of(context).push(
-      new MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final Iterable<ListTile> tiles = _saved.map(
-            (WordPair pair) {
-              return new ListTile(
-                title: new Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final List<Widget> divided = ListTile.divideTiles(
-            context: context,
-            tiles: tiles,
-          ).toList();
-          return new Scaffold(
-            appBar: new AppBar(
-              title: const Text('Saved Suggestions'),
-            ),
-            body: new ListView(children: divided),
-          );
-        },
-      ),
-    );
-  }
+  // void _pushSaved() {
+  //   Navigator.of(context).push(
+  //     new MaterialPageRoute<void>(
+  //       builder: (BuildContext context) {
+  //         final Iterable<ListTile> tiles = _saved.map(
+  //           (WordPair pair) {
+  //             return new ListTile(
+  //               title: new Text(
+  //                 pair.asPascalCase,
+  //                 style: _biggerFont,
+  //               ),
+  //             );
+  //           },
+  //         );
+  //         final List<Widget> divided = ListTile.divideTiles(
+  //           context: context,
+  //           tiles: tiles,
+  //         ).toList();
+  //         return new Scaffold(
+  //           appBar: new AppBar(
+  //             title: const Text('Saved Suggestions'),
+  //           ),
+  //           body: new ListView(children: divided),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -78,6 +86,10 @@ class RandomWordsState extends State<RandomWords> {
           }
           return _buildRow(_suggestions[index]);
         });
+    // return ListView(
+    //   padding: const EdgeInsets.all(16.0),
+    //   children: <Widget>[_buildRow(res)],
+    // );
   }
 
   Widget _buildRow(WordPair pair) {
@@ -88,12 +100,10 @@ class RandomWordsState extends State<RandomWords> {
         style: _biggerFont,
       ),
       trailing: new Icon(
-        // Add the lines from here...
         alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null,
       ),
       onTap: () {
-        // Add 9 lines from here...
         setState(() {
           if (alreadySaved) {
             _saved.remove(pair);
