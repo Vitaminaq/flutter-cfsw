@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final response = responseFromJson(jsonString);
-
 import 'dart:convert';
 
 Response responseFromJson(String str) {
@@ -15,21 +11,101 @@ String responseToJson(Response data) {
 }
 
 class Response {
-    String greeting;
-    List<String> instructions;
+    int code;
+    Data data;
 
     Response({
-        this.greeting,
-        this.instructions,
+        this.code,
+        this.data,
     });
 
-    factory Response.fromJson(Map<String, dynamic> json) => new Response(
-        greeting: json["greeting"] == null ? null : json["greeting"],
-        instructions: json["instructions"] == null ? null : new List<String>.from(json["instructions"].map((x) => x)),
+    factory Response.fromJson(Map<String, dynamic> json) => Response(
+        code: json["code"] == null ? null : json["code"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "greeting": greeting == null ? null : greeting,
-        "instructions": instructions == null ? null : new List<dynamic>.from(instructions.map((x) => x)),
+        "code": code == null ? null : code,
+        "data": data == null ? null : data.toJson(),
+    };
+}
+
+class Data {
+    List<ListElement> list;
+    int pageIndex;
+    int pageSize;
+    int total;
+
+    Data({
+        this.list,
+        this.pageIndex,
+        this.pageSize,
+        this.total,
+    });
+
+    factory Data.fromJson(Map<String, dynamic> json) => new Data(
+        list: json["list"] == null ? null : new List<ListElement>.from(json["list"].map((x) => ListElement.fromJson(x))),
+        pageIndex: json["pageIndex"] == null ? null : json["pageIndex"],
+        pageSize: json["pageSize"] == null ? null : json["pageSize"],
+        total: json["total"] == null ? null : json["total"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "list": list == null ? null : new List<dynamic>.from(list.map((x) => x.toJson())),
+        "pageIndex": pageIndex == null ? null : pageIndex,
+        "pageSize": pageSize == null ? null : pageSize,
+        "total": total == null ? null : total,
+    };
+}
+
+class ListElement {
+    int articId;
+    int uid;
+    String title;
+    String msg;
+    int viewnum;
+    int clicknum;
+    int commentnum;
+    String creatAt;
+    dynamic updateAt;
+    String headimg;
+
+    ListElement({
+        this.articId,
+        this.uid,
+        this.title,
+        this.msg,
+        this.viewnum,
+        this.clicknum,
+        this.commentnum,
+        this.creatAt,
+        this.updateAt,
+        this.headimg,
+    });
+
+    factory ListElement.fromJson(Map<String, dynamic> json) => new ListElement(
+        articId: json["articId"] == null ? null : json["articId"],
+        uid: json["uid"] == null ? null : json["uid"],
+        title: json["title"] == null ? null : json["title"],
+        msg: json["msg"] == null ? null : json["msg"],
+        viewnum: json["viewnum"] == null ? null : json["viewnum"],
+        clicknum: json["clicknum"] == null ? null : json["clicknum"],
+        commentnum: json["commentnum"] == null ? null : json["commentnum"],
+        creatAt: json["creatAt"] == null ? null : json["creatAt"],
+        updateAt: json["updateAt"],
+        headimg: json["headimg"] == null ? null : json["headimg"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "articId": articId == null ? null : articId,
+        "uid": uid == null ? null : uid,
+        "title": title == null ? null : title,
+        "msg": msg == null ? null : msg,
+        "viewnum": viewnum == null ? null : viewnum,
+        "clicknum": clicknum == null ? null : clicknum,
+        "commentnum": commentnum == null ? null : commentnum,
+        "creatAt": creatAt == null ? null : creatAt,
+        "updateAt": updateAt,
+        "headimg": headimg == null ? null : headimg,
     };
 }

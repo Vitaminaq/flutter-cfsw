@@ -11,7 +11,12 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.white,
       ),
-      home: RandomWords(),
+      home: Home(),
+      initialRoute: '/',
+      // routes: {
+      //   '/': (BuildContext context) => (),
+      //   '/signup': (BuildContext context) => SignUpPage(),
+      // },
     );
   }
 }

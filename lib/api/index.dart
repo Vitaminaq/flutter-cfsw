@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
 
 class Axios {
   Dio dio;
@@ -37,14 +36,15 @@ class Axios {
   // 错误处理函数
   _error(e) {
     print("请求失败，错误为:" + e.toString());
-      final res = {'code': -10000, 'error': e.toString()};
-      return JsonToObj.fromJson(res);
+    final res = {'code': -10000, 'error': e.toString()};
+    return JsonToObj.fromJson(res);
   }
+
   // url: 请求地址 queryParameters： 请求参数
   get(String url, Map<String, dynamic> params) async {
     try {
       final response = await dio.get(url, queryParameters: params);
-      return JsonToObj.fromJson(json.decode(response.toString()));
+      return json.decode(response.toString());
     } catch (e) {
       _error(e);
     }
@@ -68,30 +68,34 @@ class Axios {
 class BaseAxios {
   Axios axios;
   BaseAxios() {
-    axios = new Axios();
+    axios = Axios();
   }
+
+  Map<String, dynamic> resToJson(res) => {
+        res["code"]: res.code == null ? null : res.code,
+        res["data"]: res.data == null ? null : res.data,
+      };
 }
 
 // json映射
 class JsonToObj {
-  JsonToObj({
-    this.code,
-    this.data,
-    this.error
-  });
+  JsonToObj({this.code, this.data, this.error});
   int code;
   dynamic data;
   String error;
-  toJson () {
-  }
-  factory JsonToObj.fromJson(Map<String, dynamic> res) {
-    if (res == null) {
-      throw FormatException("解析的值不存在");
-    }
-    return JsonToObj(
-      code: res['code'],
-      data: res['data'],
-      error: res['error']
-    );
-  }
+
+  factory JsonToObj.fromJson(Map<String, dynamic> res) => JsonToObj(
+      code: res["code"] == null ? null : res["code"],
+      data: res["data"] == null ? null : res["data"],
+      error: res['error'] == null ? null : res['error']);
+  // factory JsonToObj.fromJson(Map<String, dynamic> res) {
+  //   if (res == null) {
+  //     throw FormatException("解析的值不存在");
+  //   }
+  //   return JsonToObj(
+  //     code: res['code'],
+  //     data: res['data'],
+  //     error: res['error']
+  //   );
+  // }
 }

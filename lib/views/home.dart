@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
-import '../api/chatroom.dart';
-import '../model/chatroom.dart';
+import './chatroom.dart';
+import './publish.dart';
+import '../model/chatroom.dart' as ChatRoomModel;
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final Set<WordPair> _saved = new Set<WordPair>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+class _NavItem {
+  String title;
+  String key;
+  IconData icon;
+  Widget view;
+  _NavItem(
+      {@required this.title,
+      @required this.key,
+      @required this.icon,
+      @required this.view});
+}
+
+class HomeState extends State<Home> {
   int _selectedIndex = 1;
+  final navList = [
+    _NavItem(key: 'chatroom', title: '首页', icon: Icons.home, view: ChatRoom()),
+    _NavItem(
+        key: 'publush',
+        title: '发表',
+        icon: Icons.control_point,
+        view: Publish()),
+    _NavItem(
+        key: 'my', title: '我的', icon: Icons.person_outline, view: Publish()),
+  ];
+  ChatRoomModel.Response res;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +38,21 @@ class RandomWordsState extends State<RandomWords> {
         title: Text('Confenssion Wall',
             style: TextStyle(color: Colors.white.withOpacity(1.0))),
       ),
-      body: _buildSuggestions(),
+      body: SafeArea(
+        child: Stack(
+            children: navList.map((_NavItem item) {
+          return Offstage(
+            offstage: navList[_selectedIndex].key != item.key,
+            child: item.view,
+          );
+        }).toList()),
+      ),
       // 底部导航栏
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
-          BottomNavigationBarItem(icon: Icon(Icons.control_point), title: Text('发表')),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), title: Text('我的')),
-        ],
+        items: navList.map((_NavItem item) {
+          return BottomNavigationBarItem(
+              icon: Icon(item.icon), title: Text(item.title));
+        }).toList(),
         currentIndex: _selectedIndex,
         fixedColor: Color(0xFF00dcFF),
         onTap: _onItemTapped,
@@ -37,86 +64,10 @@ class RandomWordsState extends State<RandomWords> {
     setState(() {
       _selectedIndex = index;
     });
-    final params = {
-      'limit': 9,
-      'page': 0
-    };
-    final res = await api.getArtic(params);
-    print(ChatRoomModel.fromJson(res.data));
-  }
-
-  // void _pushSaved() {
-  //   Navigator.of(context).push(
-  //     new MaterialPageRoute<void>(
-  //       builder: (BuildContext context) {
-  //         final Iterable<ListTile> tiles = _saved.map(
-  //           (WordPair pair) {
-  //             return new ListTile(
-  //               title: new Text(
-  //                 pair.asPascalCase,
-  //                 style: _biggerFont,
-  //               ),
-  //             );
-  //           },
-  //         );
-  //         final List<Widget> divided = ListTile.divideTiles(
-  //           context: context,
-  //           tiles: tiles,
-  //         ).toList();
-  //         return new Scaffold(
-  //           appBar: new AppBar(
-  //             title: const Text('Saved Suggestions'),
-  //           ),
-  //           body: new ListView(children: divided),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
-
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
-    // return ListView(
-    //   padding: const EdgeInsets.all(16.0),
-    //   children: <Widget>[_buildRow(res)],
-    // );
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair);
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: new Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-      ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
-    );
   }
 }
 
-class RandomWords extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  RandomWordsState createState() => new RandomWordsState();
+  HomeState createState() => HomeState();
 }
