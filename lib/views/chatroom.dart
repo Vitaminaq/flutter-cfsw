@@ -1,67 +1,58 @@
 import 'package:flutter/material.dart';
-import '../api/chatroom.dart';
+import '../store/index.dart';
 import '../model/chatroom.dart' as ChatRoomModel;
 
 class ChatRoomState extends State<ChatRoom> {
   ChatRoomModel.Response res;
-  final _biggerFont = const TextStyle(fontSize: 18.0);
   ScrollController _scrollController = new ScrollController();
-  final params = {'limit': 12, 'page': 0};
+  ChatRoomModel.State state;
 
-  Future getData() async {
-    ChatRoomModel.Response r = await api.getArtic(params);
+  mapState(s) {
     setState(() {
-      if (params['page'] == 0) {
-        res = r;
-      } else {
-        res.data.list.addAll(r.data.list);
-      }
-      params['page']++;
+      state = s;
     });
-    return;
   }
 
   @override
   initState() {
     super.initState();
-    getData();
-    _scrollController.addListener(() async {
+    chatRoomStore.subscribe('chatroom', mapState);
+    chatRoomStore.pullDown();
+    _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        await getData();
+        _scrollController.position.maxScrollExtent) {
+          if (state.requestStatus == 'done') return '';
+        return chatRoomStore.pullUp();
       }
     });
   }
 
   @override
   Widget build(BuildContext content) {
+    if (state == null || state.list == null) return Text('正在加载');
+    print(state.list.length.toString() + '+++++++++++++++++++++++++++++++++');
     Widget box;
-    if (res == null || res.code == null || res.code != 0) {
-      box = Center(
-          child: Container(
-        child: Text('加载失败，请重试'),
-      ));
-    } else {
-      box = ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: res.data.list.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          if (res.data.list.length - 1 < index)
-            return Row(
-              children: <Widget>[Text('加载中...')],
-            );
-          return _buildRow(res.data.list[index]);
-        },
-        controller: _scrollController,
-      );
-    }
+    box = ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: state.list.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (state.list.length - 1 < index && state.requestStatus != 'done')
+          return Row(
+            children: <Widget>[Text('加载中...')],
+          );
+        if (state.list.length - 1 < index && state.requestStatus == 'done') {
+          return Row(
+            children: <Widget>[Text('无更多数据')],
+          );
+        }
+        return _buildRow(state.list[index]);
+      },
+      controller: _scrollController,
+    );
     return RefreshIndicator(
       child: box,
       onRefresh: () {
-        setState(() {
-          params['page'] = 0;
-        });
-        getData();
+        chatRoomStore.pullDown();
         return;
       },
     );
@@ -86,7 +77,7 @@ class ChatRoomState extends State<ChatRoom> {
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50))),
                   child:
-                      Image.network('http://192.168.0.120:3005${item.headimg}'),
+                      Image.network('http://192.168.0.102:3005${item.headimg}'),
                 ),
                 Container(
                   child: Column(

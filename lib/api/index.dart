@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import '../config.dart' as config;
 
 class Axios {
   Dio dio;
   Axios() {
     dio = new Dio(new BaseOptions(
-      baseUrl: "http://192.168.0.120:3005",
+      baseUrl: config.baseUrl,
       connectTimeout: 5000,
       receiveTimeout: 100000,
       // 5s
@@ -18,19 +19,31 @@ class Axios {
   }
 
   init() {
-    // 添加请求日志
-    dio.interceptors.add(LogInterceptor(responseBody: false));
+    // // 添加请求日志
+    // dio.interceptors.add(LogInterceptor(responseBody: false));
     // 添加请求拦截器
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
       print('请求拦截器生效');
     }, onResponse: (Response response) {
       print('响应拦截器生效');
-      return response.data;
+      return response;
     }, onError: (DioError e) {
       return {'code': 10000, 'error': e};
     }));
     print('dio初始化成功');
+  }
+
+  // 统一返回格式
+  allResponse(String res) {
+    final r = JsonToObj.fromJson(json.decode(res.toString()));
+    if (r == null || r.data == null) 
+      return {
+        'code': -10001,
+        'data': '返回数据格式错误',
+        'error': '返回数据格式错误'
+      };
+    return json.decode(res.toString());
   }
 
   // 错误处理函数
@@ -40,21 +53,23 @@ class Axios {
     return JsonToObj.fromJson(res);
   }
 
-  // url: 请求地址 queryParameters： 请求参数
-  get(String url, Map<String, dynamic> params) async {
+  // get  url: 请求地址 queryParameters： 请求参数
+  dynamic get(String url, Map<String, dynamic> params) async {
     try {
-      final response = await dio.get(url, queryParameters: params);
-      return json.decode(response.toString());
+      Response response = await dio.get(url, queryParameters: params);
+      return allResponse(response.data);
     } catch (e) {
-      _error(e);
+      return _error(e);
     }
   }
 
-  post(String url, Map<String, dynamic> params) async {
+  // post
+  dynamic post(String url, Map<String, dynamic> params) async {
     try {
-      return await dio.post(url, data: params);
+      Response response = await dio.post(url, data: params);
+      return allResponse(response.data);
     } catch (e) {
-      _error(e);
+      return _error(e);
     }
   }
 
@@ -70,11 +85,6 @@ class BaseAxios {
   BaseAxios() {
     axios = Axios();
   }
-
-  Map<String, dynamic> resToJson(res) => {
-        res["code"]: res.code == null ? null : res.code,
-        res["data"]: res.data == null ? null : res.data,
-      };
 }
 
 // json映射
@@ -87,15 +97,6 @@ class JsonToObj {
   factory JsonToObj.fromJson(Map<String, dynamic> res) => JsonToObj(
       code: res["code"] == null ? null : res["code"],
       data: res["data"] == null ? null : res["data"],
-      error: res['error'] == null ? null : res['error']);
-  // factory JsonToObj.fromJson(Map<String, dynamic> res) {
-  //   if (res == null) {
-  //     throw FormatException("解析的值不存在");
-  //   }
-  //   return JsonToObj(
-  //     code: res['code'],
-  //     data: res['data'],
-  //     error: res['error']
-  //   );
-  // }
+      error: res['error'] == null ? null : res['error']
+  );
 }

@@ -31,7 +31,7 @@ class Response {
 }
 
 class Data {
-    List<ListElement> list;
+    List list;
     int pageIndex;
     int pageSize;
     int total;
@@ -43,19 +43,49 @@ class Data {
         this.total,
     });
 
-    factory Data.fromJson(Map<String, dynamic> json) => new Data(
-        list: json["list"] == null ? null : new List<ListElement>.from(json["list"].map((x) => ListElement.fromJson(x))),
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        list: json["list"],
         pageIndex: json["pageIndex"] == null ? null : json["pageIndex"],
         pageSize: json["pageSize"] == null ? null : json["pageSize"],
         total: json["total"] == null ? null : json["total"],
     );
 
     Map<String, dynamic> toJson() => {
-        "list": list == null ? null : new List<dynamic>.from(list.map((x) => x.toJson())),
+        "list": list == null ? null : List<dynamic>.from(list.map((x) => x.toJson())),
         "pageIndex": pageIndex == null ? null : pageIndex,
         "pageSize": pageSize == null ? null : pageSize,
         "total": total == null ? null : total,
     };
+}
+
+class RequestParams {
+  int limit;
+  int page;
+
+  RequestParams({this.limit, this.page });
+
+  factory RequestParams.fromJson(Map<String, dynamic> json) => RequestParams(
+      limit: json["limit"] == null ? null : json["limit"],
+      page: json["page"] == null ? null : json["page"],
+  );
+}
+class State {
+  RequestParams params;
+  List<ListElement> list;
+  String requestStatus;
+
+  State({this.params, this.list, this.requestStatus});
+
+  factory State.fromJson(Map<String, dynamic> json) => State(
+      params: json["params"] == null ? null : RequestParams.fromJson(json['params']),
+      list: json["list"] == null ? null :
+        List<ListElement>.from(
+          json["list"].map(
+            (x) => ListElement.fromJson(x)
+          )
+      ),
+      requestStatus: json["requestStatus"] == null ? null : json["requestStatus"],
+  );
 }
 
 class ListElement {
@@ -83,7 +113,7 @@ class ListElement {
         this.headimg,
     });
 
-    factory ListElement.fromJson(Map<String, dynamic> json) => new ListElement(
+    factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         articId: json["articId"] == null ? null : json["articId"],
         uid: json["uid"] == null ? null : json["uid"],
         title: json["title"] == null ? null : json["title"],
