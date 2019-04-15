@@ -1,16 +1,15 @@
-# flutterdemo
+# flutter-cfsw
+基于flutter的老项目重构，重构项目一时爽，一直重构一直爽。  
+使用了一些常用的技术，由于vue,react等写惯了，所以粗略的写了下状态管理的逻辑，但是我请教过原生开发，好像并不是太需要做状态管理。
+文件命名全部有vue项目移植，所以写前端的同学应该感觉很亲切。
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+### 安装依赖/install
+```bash
+flutter packages get
+```
+### 运行/run
+```bash
+flutter fun
+```
+#### tips
+持续开发中。。。
