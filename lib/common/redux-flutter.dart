@@ -15,7 +15,8 @@ class ReduxFlutter {
       'callback': callback
     };
     subscribes.add(params);
-    print('========== ${key.toString()}订阅成功 ==============');
+    callback(toObject());
+    print('========== ${key.toString()}订阅并通知成功 ==============');
     return;
   }
   // 取消订阅

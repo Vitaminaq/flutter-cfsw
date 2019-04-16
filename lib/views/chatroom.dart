@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../store/index.dart';
 import '../model/chatroom.dart' as ChatRoomModel;
+import '../config.dart';
 
 class ChatRoomState extends State<ChatRoom> {
   ChatRoomModel.Response res;
@@ -20,8 +21,8 @@ class ChatRoomState extends State<ChatRoom> {
     chatRoomStore.pullDown();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-          if (state.requestStatus == 'done') return '';
+          _scrollController.position.maxScrollExtent) {
+        if (state.requestStatus == 'done') return '';
         return chatRoomStore.pullUp();
       }
     });
@@ -38,12 +39,19 @@ class ChatRoomState extends State<ChatRoom> {
       itemBuilder: (BuildContext context, int index) {
         if (state.list.length - 1 < index && state.requestStatus != 'done')
           return Row(
-            children: <Widget>[Text('加载中...')],
+            children: <Widget>[
+              Image.asset(
+                '../images/loading',
+                height: 50,
+                width: 100,
+              )
+            ],
           );
         if (state.list.length - 1 < index && state.requestStatus == 'done') {
-          return Row(
-            children: <Widget>[Text('无更多数据')],
-          );
+          return Container(
+              padding: const EdgeInsets.only(top: 20.0),
+              height: 60,
+              child: Text('无更多数据', textAlign: TextAlign.center));
         }
         return _buildRow(state.list[index]);
       },
@@ -76,8 +84,7 @@ class ChatRoomState extends State<ChatRoom> {
                   margin: const EdgeInsets.all(10.0),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child:
-                      Image.network('http://192.168.0.102:3005${item.headimg}'),
+                  child: Image.network('${baseUrl.toString()}${item.headimg}'),
                 ),
                 Container(
                   child: Column(

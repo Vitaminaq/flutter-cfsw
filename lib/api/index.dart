@@ -20,7 +20,7 @@ class Axios {
 
   init() {
     // // 添加请求日志
-    // dio.interceptors.add(LogInterceptor(responseBody: false));
+    dio.interceptors.add(LogInterceptor(responseBody: false));
     // 添加请求拦截器
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
@@ -40,7 +40,7 @@ class Axios {
     if (r == null || r.data == null) 
       return {
         'code': -10001,
-        'data': '返回数据格式错误',
+        'data': null,
         'error': '返回数据格式错误'
       };
     return json.decode(res.toString());
@@ -49,7 +49,7 @@ class Axios {
   // 错误处理函数
   _error(e) {
     print("请求失败，错误为:" + e.toString());
-    final res = {'code': -10000, 'error': e.toString()};
+    final res = {'code': -10000, 'data': null, 'error': e.toString()};
     return JsonToObj.fromJson(res);
   }
 

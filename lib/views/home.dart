@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './chatroom.dart';
 import './publish.dart';
+import './my.dart';
 import '../model/chatroom.dart' as ChatRoomModel;
 
 class _NavItem {
@@ -24,8 +25,7 @@ class HomeState extends State<Home> {
         title: '发表',
         icon: Icons.control_point,
         view: Publish()),
-    _NavItem(
-        key: 'my', title: '我的', icon: Icons.person_outline, view: Publish()),
+    _NavItem(key: 'my', title: '我的', icon: Icons.person_outline, view: My()),
   ];
   ChatRoomModel.Response res;
   @override

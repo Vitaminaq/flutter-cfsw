@@ -16,7 +16,7 @@ class PublishState extends State<Publish> {
   }
   @override
   Widget build(BuildContext context) {
-    print(state);
+    print(state.toString() + 'publish>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
     return Text('发表');
   }
 }
