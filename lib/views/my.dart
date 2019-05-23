@@ -99,7 +99,31 @@ class MyState extends State<My> {
           Container(
             height: 0.2,
             color: Color(0xFFA9A9A9),
-          )
+          ),
+          DefaultTabController(
+            length: 3,
+            child: Container(
+              padding: EdgeInsets.only(left: 125.0, right: 125.0),
+            child: TabBar(
+              tabs: <Widget>[
+                Tab(child: Text('文章'),),
+                Padding(padding: EdgeInsets.only(left: 20.0),),
+                Tab(child: Text('收藏'),),
+              ],
+              labelColor: Color(0xFF333333), // 选中的颜色
+              labelPadding: EdgeInsets.only(top: 4.0),
+              labelStyle: TextStyle(fontSize: 16),
+              unselectedLabelColor: Color(0xFF999999), // 未选中的颜色
+              indicatorColor: Color(0xFF00dcFF), // 底部切换线颜色
+              indicatorSize: TabBarIndicatorSize.label
+             ),
+             ),
+           ),
+           Padding(padding: EdgeInsets.only(top: 4.0),),
+           Container(
+            height: 0.2,
+            color: Color(0xFFA9A9A9),
+          ),
         ],
       ),
       // padding: const EdgeInsets.only(top: 40.0),
