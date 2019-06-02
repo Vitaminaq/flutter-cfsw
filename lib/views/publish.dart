@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../store/index.dart';
 import '../model/chatroom.dart' as ChatRoomModel;
+
+import '../component/scroller.dart';
+
+
 class PublishState extends State<Publish> {
   ChatRoomModel.State state;
   mapState(s) {
@@ -17,7 +21,13 @@ class PublishState extends State<Publish> {
   @override
   Widget build(BuildContext context) {
     print(state.toString() + 'publish>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    return Text('发表');
+    return 
+    Scroller<String>(
+            pullUp: () {print('123'); return 1;},
+            pullUpStatus: 'success',
+            createlistItem: (String item) => Text(item),
+            list: ['1', '2', '3']
+          );
   }
 }
 class Publish extends StatefulWidget {
