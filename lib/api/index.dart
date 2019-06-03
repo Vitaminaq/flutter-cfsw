@@ -35,7 +35,7 @@ class Axios {
   }
 
   // 统一返回格式
-  allResponse(String res) {
+  dynamic allResponse(Map<String, dynamic> res) {
     final r = JsonToObj.fromJson(json.decode(res.toString()));
     if (r == null || r.data == null) 
       return {
@@ -47,10 +47,10 @@ class Axios {
   }
 
   // 错误处理函数
-  _error(e) {
+  dynamic _error(e) {
     print("请求失败，错误为:" + e.toString());
     final res = {'code': -10000, 'data': null, 'error': e.toString()};
-    return JsonToObj.fromJson(res);
+    return res;
   }
 
   // get  url: 请求地址 queryParameters： 请求参数
@@ -87,7 +87,10 @@ class BaseAxios {
   }
 }
 
-// json映射
+/**
+ * json映射 把响应数据第一层转化为对象,做错误
+ * 的统一处理，后再还原
+ */
 class JsonToObj {
   JsonToObj({this.code, this.data, this.error});
   int code;
@@ -99,4 +102,10 @@ class JsonToObj {
       data: res["data"] == null ? null : res["data"],
       error: res['error'] == null ? null : res['error']
   );
+
+  Map<String, dynamic> toJson() => {
+        "code": code == null ? null : code,
+        "data": data == null ? null : data,
+        "error": error == null ? null : error,
+    };
 }

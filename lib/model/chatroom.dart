@@ -13,20 +13,24 @@ String responseToJson(Response data) {
 class Response {
     int code;
     Data data;
+    String error;
 
     Response({
         this.code,
         this.data,
+        this.error
     });
 
-    factory Response.fromJson(Map<String, dynamic> json) => Response(
+    factory Response.fromJson(Map json) => Response(
         code: json["code"] == null ? null : json["code"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        error: json["error"] == null ? null : json["error"]
     );
 
     Map<String, dynamic> toJson() => {
         "code": code == null ? null : code,
         "data": data == null ? null : data.toJson(),
+        "error": code == null ? null : error,
     };
 }
 

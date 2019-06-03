@@ -19,20 +19,19 @@ class ScrollerState<I> extends State<Scroller> {
   @override
   Widget build(BuildContext content) {
     Widget header = widget.scrollerHeader;
-
-    if (widget.pullUpStatus == 'pending') return Text('正在加载');
-    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
-    print(widget.list.length);
-    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+    int len = 1;
+    if (widget.list != null && widget.list.length != 0) {
+      len = widget.list.length;
+    }
     Widget box;
     box = ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: widget.list.length,
+      itemCount: len,
       itemBuilder: (BuildContext context, int index) {
-        if (index < widget.list.length - 1) {
+        if (index < len - 1) {
           return widget.createlistItem(widget.list[index]);
         }
-        if (widget.pullUpStatus == 'pending')
+        if (widget.pullUpStatus == 'requesting')
           return Row(
             children: <Widget>[
               Image.asset(
@@ -47,6 +46,12 @@ class ScrollerState<I> extends State<Scroller> {
               padding: const EdgeInsets.only(top: 20.0),
               height: 60,
               child: Text('无更多数据', textAlign: TextAlign.center));
+        }
+        if (widget.pullUpStatus == 'error') {
+          return Container(
+              padding: const EdgeInsets.only(top: 20.0),
+              height: 60,
+              child: Text('加载失败，请点击重试', textAlign: TextAlign.center));
         }
       },
       controller: _scrollController,

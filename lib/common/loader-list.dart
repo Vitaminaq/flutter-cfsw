@@ -1,6 +1,11 @@
 import './redux-flutter.dart';
 import '../model/loader-list.dart' as LoarderListModel;
 
+/**
+ * requestStatus = 'unrequest' | 'requesting' | 'success' | 'done' | 'error
+ */
+
+
 abstract class LoaderList extends ReduxFlutter {
   Map<String, dynamic> state = {
     'params': {

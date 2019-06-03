@@ -21,18 +21,17 @@ class PublishState extends State<Publish> {
 
   @override
   Widget build(BuildContext context) {
-    print(state.toString() +
-        'publish>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    return Scroller<String>(
-      pullUp: () {
-        print('123');
-        return 1;
-      },
-      pullUpStatus: 'success',
-      createlistItem: (String item) => Text(item),
-      list: ['1', '2', '3'],
-      pullDown: () {},
-    );
+    // return Scroller<String>(
+    //   pullUp: () {
+    //     print('123');
+    //     return 1;
+    //   },
+    //   pullUpStatus: 'success',
+    //   createlistItem: (String item) => Text(item),
+    //   list: ['1', '2', '3'],
+    //   pullDown: () {},
+    // );
+    return Text('1233');
   }
 }
 
