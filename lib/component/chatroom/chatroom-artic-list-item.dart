@@ -12,23 +12,34 @@ class ChatroomArticListItem extends StatelessWidget {
   @override
   Widget build(BuildContext content) {
     return Container(
-        padding: const EdgeInsets.only(bottom: 10.0),
+        padding: EdgeInsets.only(
+          bottom: 10.0,
+          top: 20.0,
+        ),
         decoration: const BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 0.5, color: Color(0xFFbcbcbc)),
+            top: BorderSide(width: 14, color: Color(0xFFF3F3F3)),
           ),
         ),
         child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
+                // 头像
                 Container(
-                  width: 50.0,
-                  height: 50.0,
-                  margin: const EdgeInsets.all(10.0),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: Image.network('${baseUrl.toString()}${item.headimg}'),
+                  width: 45.0,
+                  height: 45.0,
+                  margin: EdgeInsets.only(left: 20.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        '${baseUrl.toString()}${item.headimg}',
+                      ),
+                    ),
+                    color: Color(0xFFF3F3F3),
+                  ),
                 ),
                 Container(
                   child: Column(

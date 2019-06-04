@@ -30,7 +30,6 @@ abstract class LoaderList extends ReduxFlutter {
   pullDown() async {
     state['params']['page'] = 0;
     state['requestStatus'] = 'requesting';
-    commit();
     var r = await getListData();
     if (r.code == 0 && r.data.list != null) {
       if (r.data.list.length < state['params']['limit']) {

@@ -18,9 +18,6 @@ class ScrollerState<I> extends State<Scroller> {
 
   @override
   Widget build(BuildContext content) {
-    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
-    print(widget.list.length);
-    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     final int len = widget.list.length + 1;
     Widget box;
     box = ListView.builder(

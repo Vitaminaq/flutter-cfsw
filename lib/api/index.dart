@@ -36,7 +36,7 @@ class Axios {
   }
 
   // 统一返回格式
-  dynamic allResponse(Map<String, dynamic> res) {
+  dynamic allResponse(String res) {
     final r = JsonToObj.fromJson(json.decode(res.toString()));
     if (r == null || r.data == null)
       return {'code': -10001, 'data': null, 'error': '返回数据格式错误'};
