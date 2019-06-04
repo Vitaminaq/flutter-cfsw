@@ -29,7 +29,8 @@ class Axios {
       print('响应拦截器生效');
       return response;
     }, onError: (DioError e) {
-      return {'code': 10000, 'error': e};
+      print('错误拦截器生效');
+      return e;
     }));
     print('dio初始化成功');
   }
@@ -42,10 +43,14 @@ class Axios {
     return json.decode(res.toString());
   }
 
-  // 错误处理函数
-  dynamic _error(e) {
+  // 错误处理函数, 捕获在dio的错误拦截器之后,所以其实都不用捕获了
+  dynamic _error(dynamic e) {
     print("请求失败，错误为:" + e.toString());
-    final res = {'code': -10000, 'data': null, 'error': e.toString()};
+    final Map<String, dynamic> res = {
+      'code': -10000,
+      'data': null,
+      'error': e.toString()
+    };
     return res;
   }
 

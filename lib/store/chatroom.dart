@@ -3,6 +3,8 @@ import '../model/chatroom.dart' as ChatRoomModel;
 import '../common/loader-list.dart';
 
 class ChatRoomStore extends LoaderList {
+  final String name = 'ChatRoomStore';
+
   @override
   toObject() {
     return ChatRoomModel.State.fromJson(state);

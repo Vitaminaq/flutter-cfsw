@@ -17,7 +17,7 @@ class _NavItem {
 }
 
 class HomeState extends State<Home> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   final navList = [
     _NavItem(key: 'chatroom', title: '首页', icon: Icons.home, view: ChatRoom()),
     _NavItem(
