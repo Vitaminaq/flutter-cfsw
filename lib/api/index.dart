@@ -37,12 +37,8 @@ class Axios {
   // 统一返回格式
   dynamic allResponse(Map<String, dynamic> res) {
     final r = JsonToObj.fromJson(json.decode(res.toString()));
-    if (r == null || r.data == null) 
-      return {
-        'code': -10001,
-        'data': null,
-        'error': '返回数据格式错误'
-      };
+    if (r == null || r.data == null)
+      return {'code': -10001, 'data': null, 'error': '返回数据格式错误'};
     return json.decode(res.toString());
   }
 
@@ -100,12 +96,11 @@ class JsonToObj {
   factory JsonToObj.fromJson(Map<String, dynamic> res) => JsonToObj(
       code: res["code"] == null ? null : res["code"],
       data: res["data"] == null ? null : res["data"],
-      error: res['error'] == null ? null : res['error']
-  );
+      error: res['error'] == null ? null : res['error']);
 
   Map<String, dynamic> toJson() => {
         "code": code == null ? null : code,
         "data": data == null ? null : data,
         "error": error == null ? null : error,
-    };
+      };
 }

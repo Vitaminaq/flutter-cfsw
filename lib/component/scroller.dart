@@ -19,19 +19,20 @@ class ScrollerState<I> extends State<Scroller> {
   @override
   Widget build(BuildContext content) {
     Widget header = widget.scrollerHeader;
-    int len = 1;
-    if (widget.list != null && widget.list.length != 0) {
-      len = widget.list.length;
-    }
+
+    if (widget.pullUpStatus == 'pending') return Text('正在加载');
+    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+    print(widget.list.length);
+    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     Widget box;
     box = ListView.builder(
-      physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: len,
+      physics: AlwaysScrollableScrollPhysics(),
+      itemCount: widget.list.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index < len - 1) {
+        if (index < widget.list.length - 1) {
           return widget.createlistItem(widget.list[index]);
         }
-        if (widget.pullUpStatus == 'requesting')
+        if (widget.pullUpStatus == 'pending')
           return Row(
             children: <Widget>[
               Image.asset(
@@ -43,21 +44,73 @@ class ScrollerState<I> extends State<Scroller> {
           );
         if (widget.pullUpStatus == 'done') {
           return Container(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.only(top: 20.0),
               height: 60,
               child: Text('无更多数据', textAlign: TextAlign.center));
-        }
-        if (widget.pullUpStatus == 'error') {
-          return Container(
-              padding: const EdgeInsets.only(top: 20.0),
-              height: 60,
-              child: Text('加载失败，请点击重试', textAlign: TextAlign.center));
         }
       },
       controller: _scrollController,
     );
     return RefreshIndicator(
-      child: box,
+      child: CustomScrollView(
+        controller: _scrollController,
+        primary: false,
+        slivers: <Widget>[
+          SliverPadding(
+            padding: EdgeInsets.all(20.0),
+            sliver: SliverGrid.count(
+              crossAxisSpacing: 10.0,
+              crossAxisCount: 1,
+              children: <Widget>[
+                Text('He\'d have you all unravel at the'),
+                box,
+                Text('Revolution, they...'),
+              ],
+            ),
+          ),
+        ],
+      ),
+      // CustomScrollView(
+      //   slivers: <Widget>[
+      //     const SliverAppBar(
+      //       pinned: true,
+      //       expandedHeight: 250.0,
+      //       flexibleSpace: FlexibleSpaceBar(
+      //         title: Text('Demo'),
+      //       ),
+      //     ),
+      //     SliverGrid(
+      //       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      //         maxCrossAxisExtent: 200.0,
+      //         mainAxisSpacing: 10.0,
+      //         crossAxisSpacing: 10.0,
+      //         childAspectRatio: 4.0,
+      //       ),
+      //       delegate: SliverChildBuilderDelegate(
+      //         (BuildContext context, int index) {
+      //           return Container(
+      //             alignment: Alignment.center,
+      //             color: Colors.teal[100 * (index % 9)],
+      //             child: Text('grid item $index'),
+      //           );
+      //         },
+      //         childCount: 20,
+      //       ),
+      //     ),
+      //     SliverFixedExtentList(
+      //       itemExtent: 50.0,
+      //       delegate: SliverChildBuilderDelegate(
+      //         (BuildContext context, int index) {
+      //           return Container(
+      //             alignment: Alignment.center,
+      //             color: Colors.lightBlue[100 * (index % 9)],
+      //             child: Text('list item $index'),
+      //           );
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
       onRefresh: () {
         return widget.pullDown();
       },
