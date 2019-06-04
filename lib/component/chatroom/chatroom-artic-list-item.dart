@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../model/chatroom.dart' as ChatRoomModel;
-import '../../config.dart';
+import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
+import 'package:flutterdemo/config.dart';
+import 'package:flutterdemo/utils/filter.dart';
 
 class ChatroomArticListItem extends StatelessWidget {
   ChatroomArticListItem({Key key, this.item})
@@ -16,7 +17,7 @@ class ChatroomArticListItem extends StatelessWidget {
           bottom: 10.0,
           top: 20.0,
         ),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           border: Border(
             top: BorderSide(width: 14, color: Color(0xFFF3F3F3)),
           ),
@@ -44,9 +45,42 @@ class ChatroomArticListItem extends StatelessWidget {
                 Container(
                   child: Column(
                     children: <Widget>[
-                      Text(item.title),
+                      Container(
+                        padding: EdgeInsets.only(left: 20.0),
+                        width: 300,
+                        child: Text(
+                          item.title,
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF333333)),
+                        ),
+                      ),
                       Row(
-                        children: <Widget>[Text('大飞哥'), Text(item.creatAt)],
+                        // direction: Axis.horizontal,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            // padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              '大飞哥',
+                              style: TextStyle(
+                                color: Color(0xFF999999),
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            // padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              time(item.creatAt),
+                              style: TextStyle(
+                                color: Color(0xFF999999),
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),

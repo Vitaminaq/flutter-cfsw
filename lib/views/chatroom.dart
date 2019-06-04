@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../store/index.dart';
-import '../model/chatroom.dart' as ChatRoomModel;
-import '../component/scroller.dart';
-import '../component/chatroom/chatroom-artic-list-item.dart';
+import 'package:flutterdemo/store/index.dart';
+import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
+import 'package:flutterdemo/component/scroller.dart';
+import 'package:flutterdemo/component/chatroom/chatroom-artic-list-item.dart';
 
 class ChatRoomState extends State<ChatRoom> {
   ChatRoomModel.Response res;
