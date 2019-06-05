@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../store/index.dart';
 import '../model/chatroom.dart' as ChatRoomModel;
+import 'package:flutterdemo/utils/filter.dart';
 
 import '../component/scroller.dart';
 
@@ -17,8 +18,8 @@ class MyState extends State<My> {
   @override
   initState() {
     super.initState();
-    print('my初始化');
     chatRoomStore.subscribe('my', mapState);
+    time('1559716423745');
   }
 
   @override

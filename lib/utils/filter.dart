@@ -1,11 +1,14 @@
 import 'package:intl/intl.dart';
 
+/**
+ * 转化为离现在多久 
+ */
 final Function time = (String str) {
   if (str == null) return '--';
   int timestamp = int.parse(str);
   var now = DateTime.now();
-  var format = new DateFormat('HH:mm a');
-  var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  var format = new DateFormat('yyyy-MM-dd H:m');
+  var date = new DateTime.fromMillisecondsSinceEpoch(timestamp);
   var diff = now.difference(date);
   var time = '';
 
@@ -13,20 +16,21 @@ final Function time = (String str) {
       diff.inSeconds > 0 && diff.inMinutes == 0 ||
       diff.inMinutes > 0 && diff.inHours == 0 ||
       diff.inHours > 0 && diff.inDays == 0) {
-    time = format.format(date);
+    // 当天
+    if (diff.inSeconds < 1) {
+      time = '刚刚';
+    }
+    if (diff.inSeconds < 60) {
+      time = diff.inSeconds.toString() + "秒前";
+    }
+    if (diff.inHours > 1 && diff.inHours < 24) {
+      time = diff.inHours.toString() + '时前';
+    }
   } else if (diff.inDays > 0 && diff.inDays < 7) {
-    if (diff.inDays == 1) {
-      time = diff.inDays.toString() + '今天';
-    } else {
-      time = diff.inDays.toString() + '天前';
-    }
+    // 本周内
+    time = diff.inDays.toString() + '天前';
   } else {
-    if (diff.inDays == 7) {
-      time = (diff.inDays / 7).floor().toString() + '本周';
-    } else {
-      time = (diff.inDays / 7).floor().toString() + ' 周前';
-    }
+    time = format.format(date);
   }
-
   return time;
 };
