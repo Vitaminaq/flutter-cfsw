@@ -30,14 +30,18 @@ class HomeState extends State<Home> {
   ChatRoomModel.Response res;
   @override
   Widget build(BuildContext context) {
+    Widget bar;
+    _selectedIndex == 0
+        ? bar = AppBar(
+            backgroundColor: Color(0xFF00dcFF),
+            centerTitle: true,
+            title: Text('Confenssion Wall',
+                style: TextStyle(color: Colors.white.withOpacity(1.0))),
+          )
+        : null;
     return Scaffold(
       // header
-      appBar: AppBar(
-        backgroundColor: Color(0xFF00dcFF),
-        centerTitle: true,
-        title: Text('Confenssion Wall',
-            style: TextStyle(color: Colors.white.withOpacity(1.0))),
-      ),
+      appBar: bar,
       body: SafeArea(
         child: Stack(
             children: navList.map((_NavItem item) {
