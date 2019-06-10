@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-/**
- * 文章详情
- */
+// 文章详情
 class ArticDetailState extends State<ArticDetail> {
   initState() {
     super.initState();

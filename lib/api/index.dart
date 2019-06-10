@@ -88,10 +88,8 @@ class BaseAxios {
   }
 }
 
-/**
- * json映射 把响应数据第一层转化为对象,做错误
- * 的统一处理，后再还原
- */
+// json映射 把响应数据第一层转化为对象,做错误
+// 的统一处理，后再还原
 class JsonToObj {
   JsonToObj({this.code, this.data, this.error});
   int code;

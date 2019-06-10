@@ -4,7 +4,7 @@ import '../views/artic-detail.dart';
 
 class Router {
   // 去发表
-  void toPublish(context) {
+  void toPublish(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
@@ -14,13 +14,14 @@ class Router {
     );
   }
 
-  void toArticDetail(context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          return ArticDetail();
-        },
-      ),
-    );
+  void toArticDetail(BuildContext context, params) {
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<void>(
+    //     builder: (BuildContext context) {
+    //       return ArticDetail();
+    //     },
+    //   ),
+    // );
+    Navigator.of(context).pushNamed('/artic/detail', arguments: params);
   }
 }
