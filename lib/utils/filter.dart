@@ -1,8 +1,6 @@
 import 'package:intl/intl.dart';
 
-/**
- * 转化为离现在多久 
- */
+// 转化为离现在多久
 final Function time = (String str) {
   if (str == null) return '--';
   int timestamp = int.parse(str);

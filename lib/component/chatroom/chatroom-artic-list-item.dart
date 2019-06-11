@@ -147,6 +147,6 @@ class ChatroomArticListItem extends StatelessWidget {
                 )
               ],
             )),
-        onPressed: () => router.toArticDetail(content, {}));
+        onPressed: router.push(content, '/artic'));
   }
 }

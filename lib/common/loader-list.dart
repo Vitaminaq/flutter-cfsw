@@ -1,9 +1,7 @@
 import './redux-flutter.dart';
 import '../model/loader-list.dart' as LoarderListModel;
 
-/**
- * requestStatus = 'unrequest' | 'requesting' | 'success' | 'done' | 'error
- */
+// requestStatus = 'unrequest' | 'requesting' | 'success' | 'done' | 'error
 
 // enum RequestStatus {
 //   dark,

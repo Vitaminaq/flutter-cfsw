@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './views/home.dart';
 import 'package:flutterdemo/router/index.dart';
+import 'package:flutterdemo/views/home.dart';
+import 'package:flutterdemo/views/artic-detail.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +15,10 @@ class MyApp extends StatelessWidget {
       ),
       home: Home(),
       // initialRoute: '/',
-      routes: routes,
+      routes: <String, WidgetBuilder>{
+        // '/': (BuildContext context) => Home(),
+        '/artic': (BuildContext context) => ArticDetail()
+      },
     );
   }
 }
