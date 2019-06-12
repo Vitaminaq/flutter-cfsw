@@ -3,6 +3,7 @@ import './views/home.dart';
 import 'package:flutterdemo/router/index.dart';
 import 'package:flutterdemo/views/home.dart';
 import 'package:flutterdemo/views/artic-detail.dart';
+import 'package:flutterdemo/views/chatroom.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,12 +14,13 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.white,
       ),
-      home: Home(),
       // initialRoute: '/',
-      routes: <String, WidgetBuilder>{
-        // '/': (BuildContext context) => Home(),
-        '/artic': (BuildContext context) => ArticDetail()
-      },
+      // onGenerateRoute: (settings) {
+      //   final builder = (BuildContext context) => ArticDetail();
+      //   return MaterialPageRoute(builder: builder, settings: settings);
+      // },
+      // home: Home(),
+      routes: routers,
     );
   }
 }

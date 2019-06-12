@@ -6,5 +6,5 @@ import 'package:flutterdemo/views/artic-detail.dart';
 
 final Map<String, WidgetBuilder> routes = {
   '/': (BuildContext context) => Home(),
-  'artic': (BuildContext context) => ArticDetail()
+  '/artic/detail': (BuildContext context) => ArticDetail()
 };
