@@ -10,12 +10,12 @@ class BaseWebviewState extends State<BaseWebview> {
     int pageStartTime;
     WebViewController _controller;
 
-    JavascriptChannel _JsBridge(BuildContext context) => JavascriptChannel(
+    JavascriptChannel _jsBridge(BuildContext context) => JavascriptChannel(
         name: 'cfsw', // 与h5 端的一致 不然收不到消息
         onMessageReceived: (JavascriptMessage msg) async {
           String jsonStr = msg.message;
           print('从h5接受到的信息 $jsonStr');
-          responseAction(jsonStr, context);
+          responseAction(jsonStr, context, _controller);
         });
 
     return WebView(
@@ -52,7 +52,7 @@ class BaseWebviewState extends State<BaseWebview> {
       gestureNavigationEnabled: true,
       debuggingEnabled: true,
       javascriptChannels: <JavascriptChannel>[
-        _JsBridge(context) // 与h5 通信
+        _jsBridge(context) // 与h5 通信
       ].toSet(),
     );
   }

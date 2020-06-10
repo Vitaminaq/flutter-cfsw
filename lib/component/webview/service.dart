@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutterdemo/router/index.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +18,19 @@ class JsonStr {
       fnName: json["fnName"] == null ? null : json["fnName"]);
 }
 
-final Function responseAction = (String jsonStr, BuildContext context) {
+final Function responseAction =
+    (String jsonStr, BuildContext context, WebViewController _controller) {
   final JsonStr reslut = JsonStr.fromJson(json.decode(jsonStr.toString()));
   switch (reslut.code) {
     case 10000:
-      print('路由后退');
       router.back(context);
       break;
+    case 10001:
+      router.push(context, '/login');
+      break;
+    default:
+      break;
   }
+  // 释放promise
+  // _controller.evaluateJavascript("")
 };

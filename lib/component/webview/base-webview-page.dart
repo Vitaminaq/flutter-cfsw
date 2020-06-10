@@ -8,22 +8,25 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
   @override
   Widget build(BuildContext content) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFFffffff),
-        centerTitle: true,
-        title: Text(
-          pageTitle,
-          style: TextStyle(color: Color(0xFF333333)),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Color(0xFFffffff),
+      //   centerTitle: true,
+      //   title: Text(
+      //     pageTitle,
+      //     style: TextStyle(color: Color(0xFF333333)),
+      //   ),
+      // ),
+      resizeToAvoidBottomPadding: false,
       body: Builder(builder: (BuildContext context) {
-        return BaseWebview(
-            initialUrl: widget.initialUrl,
-            finishedCallback: (String title) {
-              setState(() {
-                pageTitle = title;
-              });
-            });
+        return SafeArea(
+            top: true,
+            child: BaseWebview(
+                initialUrl: widget.initialUrl,
+                finishedCallback: (String title) {
+                  setState(() {
+                    pageTitle = title;
+                  });
+                }));
       }),
     );
   }
