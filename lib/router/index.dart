@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import './routes.dart' as Routes;
 
 class Router {
-  push(BuildContext context, String name, {Map<String, dynamic> params}) {
+  push(BuildContext context, String name, {dynamic params}) {
     Navigator.of(context).pushNamed(name, arguments: params);
   }
 

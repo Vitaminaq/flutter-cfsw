@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
-import '../store/index.dart';
-import '../model/chatroom.dart' as ChatRoomModel;
+import 'package:provider/provider.dart';
+
+import '../store/test.dart';
 
 class PublishState extends State<Publish> {
-  ChatRoomModel.State state;
-  mapState(s) {
-    setState(() {
-      state = s;
-    });
-  }
-
   @override
   initState() {
     super.initState();
-    chatRoomStore.subscribe('publish', mapState);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text('1233');
+    return Consumer<Counter1>(
+      builder: (context, counter1, child) => Column(
+        children: <Widget>[
+          Text('${counter1.value}'),
+          FlatButton(
+            child: Text('增加'),
+            onPressed: () {
+              Provider.of<Counter1>(context, listen: false).increment();
+            },
+          )
+        ],
+      ),
+    );
   }
 }
 

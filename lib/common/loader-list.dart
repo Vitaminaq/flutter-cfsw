@@ -1,66 +1,65 @@
-import './redux-flutter.dart';
-import '../model/loader-list.dart' as LoarderListModel;
+import 'package:flutter/foundation.dart';
+import '../model/chatroom.dart';
 
-// requestStatus = 'unrequest' | 'requesting' | 'success' | 'done' | 'error
+class BaseParams {
+  int limit = 9;
+  int page = 0;
 
-// enum RequestStatus {
-//   dark,
-//   light,
-// }
+  Map<String, dynamic> toJson() => {
+        "limit": limit == null ? null : limit,
+        "page": page == null ? null : page,
+      };
+}
 
-abstract class LoaderList extends ReduxFlutter {
-  final String name = 'LoaderList';
+class BaseState<I> {
+  BaseParams params = BaseParams();
+  List<ListElement> list = [];
+  String requestStatus = 'unrequest';
+}
 
-  Map<String, dynamic> state = {
-    'params': {'limit': 9, 'page': 0},
-    'list': [],
-    'requestStatus': 'unrequest'
-  };
+abstract class LoaderList<I> with ChangeNotifier {
+  BaseState state = BaseState<I>();
 
   dynamic getListData();
 
-  @override
-  toObject() {
-    return LoarderListModel.State.fromJson(state);
-  }
-
   // 下拉刷新
   pullDown() async {
-    state['params']['page'] = 0;
-    state['requestStatus'] = 'requesting';
-    var r = await getListData();
+    state.params.page = 0;
+    state.requestStatus = 'requesting';
+    notifyListeners();
+    Response r = await getListData();
     if (r.code == 0 && r.data.list != null) {
-      if (r.data.list.length < state['params']['limit']) {
-        state['requestStatus'] = 'done';
+      if (r.data.list.length < state.params.limit) {
+        state.requestStatus = 'done';
       } else {
-        state['requestStatus'] = 'success';
-        state['params']['page']++;
+        state.requestStatus = 'success';
+        state.params.page++;
       }
-      state['list'] = r.data.list;
-      commit();
+      state.list = r.data.list;
+      notifyListeners();
     } else {
-      state['requestStatus'] = 'error';
-      commit();
+      state.requestStatus = 'error';
+      notifyListeners();
     }
   }
 
   // 上拉加载
   pullUp() async {
-    state['requestStatus'] = 'requesting';
-    commit();
+    state.requestStatus = 'requesting';
+    notifyListeners();
     final r = await getListData();
     if (r.code == 0 && r.data.list != null) {
-      if (r.data.list.length < state['params']['limit']) {
-        state['requestStatus'] = 'done';
+      if (r.data.list.length < state.params.limit) {
+        state.requestStatus = 'done';
       } else {
-        state['requestStatus'] = 'success';
-        state['params']['page']++;
+        state.requestStatus = 'success';
+        state.params.page++;
       }
-      state['list'].addAll(r.data.list);
-      commit();
+      state.list.addAll(r.data.list);
+      notifyListeners();
     } else {
-      state['requestStatus'] = 'error';
-      commit();
+      state.requestStatus = 'error';
+      notifyListeners();
     }
   }
 }

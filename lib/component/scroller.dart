@@ -85,7 +85,7 @@ class Scroller<I> extends StatefulWidget {
   final Function pullUp;
   final Function createlistItem;
   final String pullUpStatus;
-  final List<I> list;
+  final dynamic list;
   final Function pullDown;
   final Widget scrollerHeader;
   final Widget scrollerFooter;

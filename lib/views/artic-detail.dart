@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../component/webview/base-webview-page.dart';
 
 // 文章详情
 class ArticDetailState extends State<ArticDetail> {
@@ -8,16 +9,11 @@ class ArticDetailState extends State<ArticDetail> {
 
   @override
   Widget build(BuildContext content) {
-    return Scaffold(
-        // header
-        appBar: AppBar(
-            backgroundColor: Color(0xFFffffff),
-            centerTitle: true,
-            title: Text(
-              '文章详情页',
-              style: TextStyle(color: Color(0xFF333333)),
-            )),
-        body: SafeArea(child: Text('1233')));
+    final dynamic params = ModalRoute.of(context).settings.arguments;
+    final int id = params['id'];
+    return BaseWebviewPage(
+      initialUrl: 'http://192.168.1.102:8000/blog/detail?id=$id',
+    );
   }
 }
 

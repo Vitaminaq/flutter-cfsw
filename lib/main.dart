@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import './views/home.dart';
+import 'package:provider/provider.dart';
 import 'package:flutterdemo/router/index.dart';
-import 'package:flutterdemo/views/home.dart';
-import 'package:flutterdemo/views/artic-detail.dart';
-import 'package:flutterdemo/views/chatroom.dart';
+import './store/index.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MultiProvider(providers: providerList, child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,12 +12,6 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.white,
       ),
-      // initialRoute: '/',
-      // onGenerateRoute: (settings) {
-      //   final builder = (BuildContext context) => ArticDetail();
-      //   return MaterialPageRoute(builder: builder, settings: settings);
-      // },
-      // home: Home(),
       routes: routers,
     );
   }
