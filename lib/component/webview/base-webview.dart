@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 import '../../utils/publics.dart';
+import './service.dart';
 
 class BaseWebviewState extends State<BaseWebview> {
   @override
   Widget build(BuildContext content) {
     int pageStartTime;
     WebViewController _controller;
+
+    JavascriptChannel _JsBridge(BuildContext context) => JavascriptChannel(
+        name: 'cfsw', // 与h5 端的一致 不然收不到消息
+        onMessageReceived: (JavascriptMessage msg) async {
+          String jsonStr = msg.message;
+          print('从h5接受到的信息 $jsonStr');
+          responseAction(jsonStr, context);
+        });
 
     return WebView(
       initialUrl: widget.initialUrl,
@@ -29,17 +39,21 @@ class BaseWebviewState extends State<BaseWebview> {
           print('页面标题： $result');
           widget.finishedCallback(result);
         });
-        final token = await getToken();
+        final String token = await getToken();
         print('向h5同步的信息 $token');
         // 向h5同步登陆态信息
+        final params = "{'token': '$token'}";
         _controller
-            .evaluateJavascript("app.getSyncAppState($token)")
+            .evaluateJavascript("app.getSyncAppState($params)")
             .then((result) {
           print('h5接受的token信息 $result');
         });
       },
       gestureNavigationEnabled: true,
       debuggingEnabled: true,
+      javascriptChannels: <JavascriptChannel>[
+        _JsBridge(context) // 与h5 通信
+      ].toSet(),
     );
   }
 }
