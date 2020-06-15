@@ -27,7 +27,14 @@ class HomeState extends State<Home> {
         view: Publish()),
     _NavItem(key: 'my', title: '我的', icon: Icons.person_outline, view: My()),
   ];
+
   ChatRoomModel.Response res;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget bar;
@@ -39,6 +46,7 @@ class HomeState extends State<Home> {
                 style: TextStyle(color: Colors.white.withOpacity(1.0))),
           )
         : null;
+
     return Scaffold(
       // header
       appBar: bar,

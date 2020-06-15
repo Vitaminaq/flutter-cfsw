@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/material.dart';
+
 import '../utils/storage.dart';
 
 class PublicsStore with ChangeNotifier {
@@ -16,5 +19,27 @@ class PublicsStore with ChangeNotifier {
     Storage.setStringItem(tokenKey, key);
     token = key;
     notifyListeners();
+  }
+}
+
+// webview缓存
+class WebviewStore {
+  static WebViewController controller;
+
+  static Widget currentWebview;
+
+  static String initialUrl;
+
+  static setWebViewController(WebViewController ctl) {
+    controller = ctl;
+  }
+
+  static setWebView(Widget wv) {
+    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+    currentWebview = wv;
+  }
+
+  static setInitialUrl(String url) {
+    initialUrl = url;
   }
 }

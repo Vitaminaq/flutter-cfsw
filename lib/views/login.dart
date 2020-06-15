@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../store/publics.dart';
 import '../component/button/button-max.dart';
 import '../api/login.dart';
-import '../utils/storage.dart';
 import 'package:flutterdemo/router/index.dart';
 
 class Login extends StatefulWidget {
@@ -34,6 +33,7 @@ class LoginState extends State<Login> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                keyboardType: TextInputType.phone,
                 autofocus: true,
                 controller: _unameController,
                 decoration: InputDecoration(
@@ -49,6 +49,7 @@ class LoginState extends State<Login> {
                 },
               ),
               TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: _pwdController,
                   decoration: InputDecoration(
                       hintText: "请输入验证码", prefixIcon: Icon(Icons.lock)),
@@ -74,9 +75,9 @@ class LoginState extends State<Login> {
                                     return ButtonMax(
                                       btnText: '登录',
                                       callback: () async {
-                                        dynamic _form = _formKey.currentState;
+                                        FormState _form = _formKey.currentState;
 
-                                        if ((_form as FormState).validate()) {
+                                        if ((_form).validate()) {
                                           //验证通过提交数据
                                           print('校验通过');
                                           _form.save();
