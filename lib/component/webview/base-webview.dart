@@ -20,7 +20,8 @@ class BaseWebviewState extends State<BaseWebview> {
                 jsonStr: jsonStr,
                 context: context,
                 controller: _controller,
-                url: widget.initialUrl));
+                url: widget.initialUrl,
+                prefetchData: widget.prefetchData));
           });
     }
 
@@ -66,10 +67,12 @@ class BaseWebviewState extends State<BaseWebview> {
 }
 
 class BaseWebview extends StatefulWidget {
-  BaseWebview({Key key, this.initialUrl, this.finishedCallback})
+  BaseWebview(
+      {Key key, this.initialUrl, this.prefetchData, this.finishedCallback})
       : super(key: key);
 
   final String initialUrl;
+  final dynamic prefetchData;
   final int startTime = DateTime.now().millisecondsSinceEpoch;
   final finishedCallback;
 

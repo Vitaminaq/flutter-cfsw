@@ -144,4 +144,16 @@ class ListElement {
         "updateAt": updateAt,
         "headimg": headimg == null ? null : headimg,
       };
+  dynamic objToJson(dynamic obj) => {
+        "articId": obj.articId == null ? null : obj.articId,
+        "uid": obj.uid == null ? null : obj.uid,
+        "title": obj.title == null ? null : obj.title,
+        "msg": obj.msg == null ? null : obj.msg,
+        "viewnum": obj.viewnum == null ? null : obj.viewnum,
+        "clicknum": obj.clicknum == null ? null : obj.clicknum,
+        "commentnum": obj.commentnum == null ? null : obj.commentnum,
+        "creatAt": obj.creatAt == null ? null : obj.creatAt,
+        "updateAt": obj.updateAt,
+        "headimg": obj.headimg == null ? null : obj.headimg,
+      };
 }

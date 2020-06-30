@@ -3,11 +3,11 @@ import './routes.dart' as Routes;
 
 class Router {
   push(BuildContext context, String name, {dynamic params}) {
-    Navigator.of(context).pushNamed(name, arguments: params);
+    return Navigator.of(context).pushNamed(name, arguments: params);
   }
 
-  back(BuildContext context) {
-    Navigator.pop(context);
+  back<T>(BuildContext context, [T result]) {
+    return Navigator.pop(context, result);
   }
   // replace<T>(BuildContext context) {
   //   Navigator.of(context).replace<T>(oldRoute: oldRoute, newRoute: newRoute);

@@ -10,10 +10,11 @@ class ArticDetailState extends State<ArticDetail> {
   @override
   Widget build(BuildContext content) {
     final dynamic params = ModalRoute.of(context).settings.arguments;
-    final int id = params['id'];
+    final int id = params['item'].articId;
     return BaseWebviewPage(
-      initialUrl: 'http://192.168.1.102:8000/blog/detail?id=$id',
-    );
+        initialUrl: 'http://192.168.1.102:8000/blog/detail?id=$id',
+        // 'https://test.blueup.cn/hybird/report/single-book'
+        prefetchData: params['item']);
   }
 }
 

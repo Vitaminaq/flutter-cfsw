@@ -90,7 +90,7 @@ class LoginState extends State<Login> {
                                           Provider.of<PublicsStore>(context,
                                                   listen: false)
                                               .setToken(r.data);
-                                          router.back(context);
+                                          router.back(context, 1);
                                         }
                                       },
                                     );

@@ -7,18 +7,21 @@ import 'package:photo_view/photo_view.dart';
 
 import './keyboard-popup.dart';
 import '../../router/index.dart';
+import '../../utils/publics.dart';
 
 class ResponseActionOptions {
   String jsonStr;
   BuildContext context;
   WebViewController controller;
   String url;
+  dynamic prefetchData;
 
   ResponseActionOptions(
       {@required this.jsonStr,
       @required this.context,
       @required this.controller,
-      this.url})
+      this.url,
+      this.prefetchData})
       : assert(jsonStr != null),
         assert(context != null),
         assert(controller != null);
@@ -56,24 +59,37 @@ class H5Response {
   }
 }
 
-final Function responseAction = (ResponseActionOptions options) {
+final Function responseAction = (ResponseActionOptions options) async {
   final JsonStr reslut =
       JsonStr.fromJson(json.decode(options.jsonStr.toString()));
   switch (reslut.code) {
+    // 路由后退
     case 10000:
       router.back(options.context);
       break;
+    // 跳转登录，同步状态
     case 10001:
-      router.push(options.context, '/login');
+      final r = await router.push(options.context, '/login');
+      if (r != null) {
+        final String token = await getToken();
+        // 向h5同步状态
+        final params = "{'token': '$token'}";
+        options.controller
+            .evaluateJavascript("app.getSyncAppState($params)")
+            .then((result) {
+          print('h5接受的token信息 $result');
+        });
+      }
+      print('我是返回值，哈哈哈哈 $r');
       break;
+    // 分享详情页
     case 10002:
       Share.share('【不仅仅是测试分享】\n ${options.url}');
       break;
+    // 评论
     case 10003:
       showDialog<Null>(
           context: options.context, //BuildContext对象
-          //点击外部可以消失
-          barrierDismissible: true,
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {
@@ -86,11 +102,10 @@ final Function responseAction = (ResponseActionOptions options) {
             );
           });
       break;
+    // 预览图片
     case 10004:
       showDialog<Null>(
           context: options.context, //BuildContext对象
-          //点击外部可以消失
-          barrierDismissible: true,
           builder: (BuildContext context) {
             return GestureDetector(
                 onTap: () {
@@ -100,6 +115,12 @@ final Function responseAction = (ResponseActionOptions options) {
                   imageProvider: NetworkImage(reslut.params[0]),
                 ));
           });
+      break;
+    // 预请求数据
+    case 10005:
+      final dynamic r = {'code': 0, 'data': options.prefetchData};
+      options.controller.evaluateJavascript(
+          "__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
       break;
     default:
       break;
