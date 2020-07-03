@@ -4,7 +4,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../utils/publics.dart';
 import './service.dart';
 
-class BaseWebviewState extends State<BaseWebview> {
+class BaseWebviewState<S> extends State<BaseWebview> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('我就不更新视图，哈哈哈');
+    return;
+  }
+
   @override
   Widget build(BuildContext content) {
     int pageStartTime;
@@ -16,12 +23,14 @@ class BaseWebviewState extends State<BaseWebview> {
           onMessageReceived: (JavascriptMessage msg) {
             String jsonStr = msg.message;
             print('从h5接受到的信息 $jsonStr');
-            responseAction(ResponseActionOptions(
+            responseAction(ResponseActionOptions<S>(
                 jsonStr: jsonStr,
                 context: context,
                 controller: _controller,
                 url: widget.initialUrl,
-                prefetchData: widget.prefetchData));
+                prefetchData: widget.prefetchData,
+                storeModule: widget.storeModule,
+                fatherContext: widget.fatherContext));
           });
     }
 
@@ -66,16 +75,23 @@ class BaseWebviewState extends State<BaseWebview> {
   }
 }
 
-class BaseWebview extends StatefulWidget {
+class BaseWebview<S> extends StatefulWidget {
   BaseWebview(
-      {Key key, this.initialUrl, this.prefetchData, this.finishedCallback})
+      {Key key,
+      this.initialUrl,
+      this.prefetchData,
+      this.finishedCallback,
+      this.fatherContext,
+      this.storeModule})
       : super(key: key);
 
   final String initialUrl;
   final dynamic prefetchData;
   final int startTime = DateTime.now().millisecondsSinceEpoch;
   final finishedCallback;
+  final S storeModule;
+  final dynamic fatherContext;
 
   @override
-  BaseWebviewState createState() => BaseWebviewState();
+  BaseWebviewState createState() => BaseWebviewState<S>();
 }

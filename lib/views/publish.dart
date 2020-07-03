@@ -18,7 +18,8 @@ class PublishState extends State<Publish> {
           FlatButton(
             child: Text('增加'),
             onPressed: () {
-              Provider.of<Counter1>(context, listen: false).increment();
+              counter1.increment();
+              // Provider.of<Counter1>(context, listen: false).increment();
             },
           )
         ],

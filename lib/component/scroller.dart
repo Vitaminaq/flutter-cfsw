@@ -6,7 +6,10 @@ class ScrollerState<I> extends State<Scroller> {
   @override
   initState() {
     super.initState();
-    widget.pullDown();
+    Future.delayed(Duration(milliseconds: 10), () {
+      widget.pullDown();
+    });
+    // widget.pullDown();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {

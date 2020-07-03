@@ -19,6 +19,20 @@ class LoginState extends State<Login> {
   String _phone;
   String _code;
 
+  // 聚焦
+  FocusNode focusNode = new FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// WidgetsBinding 它能监听到第一帧绘制完成，第一帧绘制完成标志着已经Build完成
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ///获取输入框焦点
+      FocusScope.of(context).requestFocus(focusNode);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +48,9 @@ class LoginState extends State<Login> {
             children: <Widget>[
               TextFormField(
                 keyboardType: TextInputType.phone,
-                autofocus: true,
+                // 会存在页面还未渲染完，就聚焦的警告
+                // autofocus: true,
+                focusNode: focusNode,
                 controller: _unameController,
                 decoration: InputDecoration(
                     hintText: "请输入您的手机号", prefixIcon: Icon(Icons.person)),

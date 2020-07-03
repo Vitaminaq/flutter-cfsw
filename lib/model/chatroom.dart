@@ -105,19 +105,20 @@ class ListElement {
   String creatAt;
   dynamic updateAt;
   String headimg;
+  bool isClick;
 
-  ListElement({
-    this.articId,
-    this.uid,
-    this.title,
-    this.msg,
-    this.viewnum,
-    this.clicknum,
-    this.commentnum,
-    this.creatAt,
-    this.updateAt,
-    this.headimg,
-  });
+  ListElement(
+      {this.articId,
+      this.uid,
+      this.title,
+      this.msg,
+      this.viewnum,
+      this.clicknum,
+      this.commentnum,
+      this.creatAt,
+      this.updateAt,
+      this.headimg,
+      this.isClick});
 
   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         articId: json["articId"] == null ? null : json["articId"],
@@ -130,6 +131,7 @@ class ListElement {
         creatAt: json["creatAt"] == null ? null : json["creatAt"],
         updateAt: json["updateAt"],
         headimg: json["headimg"] == null ? null : json["headimg"],
+        isClick: json["isClick"] == null ? null : json["isClick"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -143,6 +145,7 @@ class ListElement {
         "creatAt": creatAt == null ? null : creatAt,
         "updateAt": updateAt,
         "headimg": headimg == null ? null : headimg,
+        "isClick": isClick == null ? null : isClick,
       };
   dynamic objToJson(dynamic obj) => {
         "articId": obj.articId == null ? null : obj.articId,
@@ -155,5 +158,6 @@ class ListElement {
         "creatAt": obj.creatAt == null ? null : obj.creatAt,
         "updateAt": obj.updateAt,
         "headimg": obj.headimg == null ? null : obj.headimg,
+        "isClick": obj.isClick == null ? null : obj.isClick,
       };
 }

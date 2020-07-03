@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../config.dart' as config;
+import '../utils/publics.dart';
 
 class Axios {
   Dio dio;
@@ -12,7 +13,7 @@ class Axios {
       // 5s
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
       },
     ));
     init();
@@ -23,7 +24,9 @@ class Axios {
     dio.interceptors.add(LogInterceptor(responseBody: false));
     // 添加请求拦截器
     dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
+        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+      final String token = await getToken();
+      options.headers['authorization'] = token;
       print('请求拦截器生效');
     }, onResponse: (Response response) {
       print('响应拦截器生效');

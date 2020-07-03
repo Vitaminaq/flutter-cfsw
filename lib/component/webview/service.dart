@@ -4,24 +4,30 @@ import 'package:flutterdemo/router/index.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:provider/provider.dart';
 
 import './keyboard-popup.dart';
 import '../../router/index.dart';
 import '../../utils/publics.dart';
+import '../../store/chatroom.dart';
 
-class ResponseActionOptions {
+class ResponseActionOptions<S> {
   String jsonStr;
   BuildContext context;
   WebViewController controller;
   String url;
   dynamic prefetchData;
+  S storeModule;
+  dynamic fatherContext;
 
   ResponseActionOptions(
       {@required this.jsonStr,
       @required this.context,
       @required this.controller,
       this.url,
-      this.prefetchData})
+      this.prefetchData,
+      this.storeModule,
+      this.fatherContext})
       : assert(jsonStr != null),
         assert(context != null),
         assert(controller != null);
@@ -122,12 +128,18 @@ final Function responseAction = (ResponseActionOptions options) async {
       options.controller.evaluateJavascript(
           "__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
       break;
+    // 更新点赞状态
+    case 10006:
+      Provider.of<ChatRoomStore>(options.context, listen: false)
+          .updateClickStatus(reslut.params['id']);
+      break;
     default:
       break;
   }
-  // // 释放promise
-  // options.controller
-  //     .evaluateJavascript("__app_native_callback__['${reslut.resolveName}']()");
+  // 释放promise
+  final dynamic r = {'code': 0};
+  options.controller.evaluateJavascript(
+      "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
 };
 
 class PreviewImageParams {}

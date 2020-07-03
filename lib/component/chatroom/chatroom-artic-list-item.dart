@@ -103,7 +103,9 @@ class ChatroomArticListItem extends StatelessWidget {
                       children: <Widget>[
                         Icon(
                           Icons.thumb_up,
-                          color: Color(0xFFbcbcbc),
+                          color: item.isClick
+                              ? Color(0xFF00dcFF)
+                              : Color(0xFFbcbcbc),
                           size: 20.0,
                         ),
                         Text(item.clicknum.toString(),
