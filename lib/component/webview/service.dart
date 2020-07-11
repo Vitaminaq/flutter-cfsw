@@ -79,14 +79,13 @@ final Function responseAction = (ResponseActionOptions options) async {
       if (r != null) {
         final String token = await getToken();
         // 向h5同步状态
-        final params = "{'token': '$token'}";
+        final params = {'code': 10001, 'token': token};
         options.controller
-            .evaluateJavascript("app.getSyncAppState($params)")
+            .evaluateJavascript("app.getSyncAppState(${json.encode(params)}")
             .then((result) {
           print('h5接受的token信息 $result');
         });
       }
-      print('我是返回值，哈哈哈哈 $r');
       break;
     // 分享详情页
     case 10002:
@@ -130,6 +129,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     // 更新点赞状态
     case 10006:
+      // 不更新当前视图
       Provider.of<ChatRoomStore>(options.context, listen: false)
           .updateClickStatus(reslut.params['id']);
       break;
@@ -137,9 +137,13 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
   }
   // 释放promise
-  final dynamic r = {'code': 0};
-  options.controller.evaluateJavascript(
-      "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
+  // final dynamic r = {'code': 0};
+  // options.controller.evaluateJavascript(
+  //     "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
 };
 
-class PreviewImageParams {}
+// 向h5同步token等信息标准数据结构
+final Function setStateToH5 = (int code) async {
+  final String token = await getToken();
+  return json.encode({'code': code, 'token': token});
+};

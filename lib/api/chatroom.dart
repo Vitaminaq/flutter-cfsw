@@ -7,6 +7,12 @@ class ChatRoom extends BaseAxios {
         await axios.get('/api/user/chatroom', params);
     return Response.fromJson(res);
   }
+
+  dynamic clickIt(params) async {
+    final Map<dynamic, dynamic> res =
+        await axios.post('/api/user/agree/artic', params);
+    return Response.fromJson(res);
+  }
 }
 
 ChatRoom api = ChatRoom();

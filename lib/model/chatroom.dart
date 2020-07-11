@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+// 列表model
 Response responseFromJson(String str) {
   final jsonData = json.decode(str);
   return Response.fromJson(jsonData);
@@ -161,3 +162,6 @@ class ListElement {
         "isClick": obj.isClick == null ? null : obj.isClick,
       };
 }
+
+// 点赞model
+

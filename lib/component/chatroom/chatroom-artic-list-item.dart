@@ -96,22 +96,27 @@ class ChatroomArticListItem extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Expanded(
-                        child: Flex(
-                      direction: Axis.horizontal,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.thumb_up,
-                          color: item.isClick
-                              ? Color(0xFF00dcFF)
-                              : Color(0xFFbcbcbc),
-                          size: 20.0,
-                        ),
-                        Text(item.clicknum.toString(),
-                            style: TextStyle(
-                                fontSize: 12, color: Color(0xFFbcbcbc))),
-                      ],
+                        child: FlatButton(
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.thumb_up,
+                            color: item.isClick
+                                ? Color(0xFF00dcFF)
+                                : Color(0xFFbcbcbc),
+                            size: 20.0,
+                          ),
+                          Text(item.clicknum.toString(),
+                              style: TextStyle(
+                                  fontSize: 12, color: Color(0xFFbcbcbc))),
+                        ],
+                      ),
+                      onPressed: () {
+                        print('点赞');
+                      },
                     )),
                     Expanded(
                         child: Flex(

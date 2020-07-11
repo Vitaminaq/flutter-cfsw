@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -51,20 +52,15 @@ class BaseWebviewState<S> extends State<BaseWebview> {
       onPageFinished: (String url) async {
         final duration = DateTime.now().millisecondsSinceEpoch - pageStartTime;
         print('页面加载耗时: $duration');
-        // // 设置页面标题
-        // _controller.evaluateJavascript("document.title").then((result) {
-        //   print('页面标题： $result');
-        //   widget.finishedCallback(result);
-        // });
-        final String token = await getToken();
-        print('向h5同步的信息 $token');
-        // 向h5同步登陆态信息
-        final params = "{'token': '$token'}";
-        _controller
-            .evaluateJavascript("app.getSyncAppState($params)")
-            .then((result) {
-          print('h5接受的token信息 $result');
+        // 设置页面标题
+        _controller.evaluateJavascript("document.title").then((result) {
+          widget.finishedCallback(result);
         });
+        final String token = await getToken();
+        // print('向h5同步的信息 $token');
+        // 向h5同步登陆态信息
+        // final dynamic params = "{'token': '$token'}";
+        // _controller.evaluateJavascript("app.getSyncAppState($params)");
       },
       gestureNavigationEnabled: true,
       debuggingEnabled: true,
