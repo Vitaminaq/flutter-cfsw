@@ -79,9 +79,9 @@ final Function responseAction = (ResponseActionOptions options) async {
       if (r != null) {
         final String token = await getToken();
         // 向h5同步状态
-        final params = {'code': 10001, 'token': token};
+        final dynamic params = "{'code': 10001, 'token': '$token'}";
         options.controller
-            .evaluateJavascript("app.getSyncAppState(${json.encode(params)}")
+            .evaluateJavascript("app.getSyncAppState($params")
             .then((result) {
           print('h5接受的token信息 $result');
         });
@@ -98,7 +98,7 @@ final Function responseAction = (ResponseActionOptions options) async {
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {
-                Navigator.of(context).pop(); //退出弹出框
+                router.back(context); //退出弹出框
               },
               child: LoadingDialog(
                 //调用对话框
@@ -114,7 +114,7 @@ final Function responseAction = (ResponseActionOptions options) async {
           builder: (BuildContext context) {
             return GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pop(); //退出弹出框
+                  router.back(context); //退出弹出框
                 },
                 child: PhotoView(
                   imageProvider: NetworkImage(reslut.params[0]),
@@ -137,9 +137,9 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
   }
   // 释放promise
-  // final dynamic r = {'code': 0};
-  // options.controller.evaluateJavascript(
-  //     "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
+  final dynamic r = {'code': 0};
+  options.controller.evaluateJavascript(
+      "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
 };
 
 // 向h5同步token等信息标准数据结构

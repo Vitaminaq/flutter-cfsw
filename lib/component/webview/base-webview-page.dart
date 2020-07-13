@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './base-webview.dart';
 
 // webview页面
-class BaseWebviewPageState<S> extends State<BaseWebviewPage> {
+class BaseWebviewPageState extends State<BaseWebviewPage> {
   String pageTitle = '';
 
   @override
@@ -20,11 +20,9 @@ class BaseWebviewPageState<S> extends State<BaseWebviewPage> {
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
             top: true,
-            child: BaseWebview<S>(
+            child: BaseWebview(
                 initialUrl: widget.initialUrl,
                 prefetchData: widget.prefetchData,
-                storeModule: widget.storeModule,
-                fatherContext: widget.fatherContext,
                 finishedCallback: (String title) {
                   setState(() {
                     pageTitle = title;
@@ -36,19 +34,15 @@ class BaseWebviewPageState<S> extends State<BaseWebviewPage> {
 }
 
 class BaseWebviewPage<S> extends StatefulWidget {
-  BaseWebviewPage(
-      {Key key,
-      @required this.initialUrl,
-      this.prefetchData,
-      this.storeModule,
-      this.fatherContext})
-      : super(key: key);
+  BaseWebviewPage({
+    Key key,
+    @required this.initialUrl,
+    this.prefetchData,
+  }) : super(key: key);
 
   final String initialUrl; // webview地址
   final dynamic prefetchData; // 预请求的数据
-  final S storeModule; // 绑定的store
-  final dynamic fatherContext; // 父组件
 
   @override
-  BaseWebviewPageState createState() => BaseWebviewPageState<S>();
+  BaseWebviewPageState createState() => BaseWebviewPageState();
 }

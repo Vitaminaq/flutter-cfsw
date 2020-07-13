@@ -1,7 +1,8 @@
 import './storage.dart';
 
 final Function getToken = () async {
-  return await Storage.getStringItem('TOKEN');
+  final String token = await Storage.getStringItem('TOKEN');
+  return token == null ? '' : token;
 };
 
 final Function isLogin = () async {

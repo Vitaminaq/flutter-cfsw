@@ -3,6 +3,9 @@ import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
 import 'package:flutterdemo/config.dart';
 import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/router/index.dart';
+import 'package:flutterdemo/api/chatroom.dart';
+import 'package:flutterdemo/store/chatroom.dart';
+import 'package:provider/provider.dart';
 
 class ChatroomArticListItem extends StatelessWidget {
   ChatroomArticListItem({Key key, this.item})
@@ -96,28 +99,38 @@ class ChatroomArticListItem extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Expanded(
-                        child: FlatButton(
-                      child: Flex(
-                        direction: Axis.horizontal,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.thumb_up,
-                            color: item.isClick
-                                ? Color(0xFF00dcFF)
-                                : Color(0xFFbcbcbc),
-                            size: 20.0,
-                          ),
-                          Text(item.clicknum.toString(),
-                              style: TextStyle(
-                                  fontSize: 12, color: Color(0xFFbcbcbc))),
-                        ],
-                      ),
-                      onPressed: () {
-                        print('点赞');
-                      },
-                    )),
+                        child: Consumer<ChatRoomStore>(
+                            builder: (context, chatRoomStore, child) =>
+                                FlatButton(
+                                  child: Flex(
+                                    direction: Axis.horizontal,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.thumb_up,
+                                        color: item.isClick
+                                            ? Color(0xFF00dcFF)
+                                            : Color(0xFFbcbcbc),
+                                        size: 20.0,
+                                      ),
+                                      Text(item.clicknum.toString(),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFFbcbcbc))),
+                                    ],
+                                  ),
+                                  onPressed: () async {
+                                    print('点赞');
+                                    final r =
+                                        await api.clickIt({'id': item.articId});
+                                    if (r.code == 0) {
+                                      chatRoomStore
+                                          .updateClickStatus(item.articId);
+                                    }
+                                  },
+                                ))),
                     Expanded(
                         child: Flex(
                       direction: Axis.horizontal,

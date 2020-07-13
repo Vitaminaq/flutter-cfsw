@@ -163,5 +163,31 @@ class ListElement {
       };
 }
 
-// 点赞model
+// Response responseFromJson(String str) {
+//   final jsonData = json.decode(str);
+//   return Response.fromJson(jsonData);
+// }
 
+// String responseToJson(Response data) {
+//   final dyn = data.toJson();
+//   return json.encode(dyn);
+// }
+
+class ClickResponse {
+  int code;
+  String data;
+  String error;
+
+  ClickResponse({this.code, this.data, this.error});
+
+  factory ClickResponse.fromJson(Map json) => ClickResponse(
+      code: json["code"] == null ? null : json["code"],
+      data: json["data"] == null ? null : json["data"],
+      error: json["error"] == null ? null : json["error"]);
+
+  Map<String, dynamic> toJson() => {
+        "code": code == null ? null : code,
+        "data": data == null ? null : data,
+        "error": code == null ? null : error,
+      };
+}
