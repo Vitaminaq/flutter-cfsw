@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import './base-webview-loading.dart';
 import './base-webview.dart';
+import './base-webview-fail.dart';
 
 // webview页面
 class BaseWebviewPageState extends State<BaseWebviewPage> {
   String pageTitle = '';
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext content) {
@@ -20,14 +23,21 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
             top: true,
-            child: BaseWebview(
-                initialUrl: widget.initialUrl,
-                prefetchData: widget.prefetchData,
-                finishedCallback: (String title) {
-                  setState(() {
-                    pageTitle = title;
-                  });
-                }));
+            child: IndexedStack(
+              index: currentIndex,
+              children: <Widget>[
+                BaseWebviewLoading(),
+                BaseWebview(
+                    initialUrl: widget.initialUrl,
+                    prefetchData: widget.prefetchData,
+                    finishedCallback: (int index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    }),
+                BaseWebviewFail()
+              ],
+            ));
       }),
     );
   }

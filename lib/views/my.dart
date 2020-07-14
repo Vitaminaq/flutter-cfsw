@@ -13,6 +13,11 @@ class _NavItem {
 }
 
 class MyState extends State<My> {
+  final navList = [
+    _NavItem(key: 'my-info', view: MyInfo()),
+    _NavItem(key: 'my-login', view: MyLogin()),
+  ];
+
   @override
   initState() {
     super.initState();
@@ -20,11 +25,8 @@ class MyState extends State<My> {
 
   @override
   Widget build(BuildContext context) {
-    final navList = [
-      _NavItem(key: 'my-info', view: MyInfo()),
-      _NavItem(key: 'my-login', view: MyLogin()),
-    ];
     return Consumer<PublicsStore>(builder: (context, publicsStore, child) {
+      publicsStore.getToken();
       int _selectedIndex = publicsStore.isLogin ? 0 : 1;
       return Stack(
         children: navList.map((_NavItem item) {

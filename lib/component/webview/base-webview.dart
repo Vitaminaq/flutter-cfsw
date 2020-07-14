@@ -48,6 +48,7 @@ class BaseWebviewState extends State<BaseWebview> {
         },
         onPageStarted: (String url) {},
         onPageFinished: (String url) async {
+          widget.finishedCallback(1);
           final String token = await getToken();
           // 向h5同步登陆态信息
           final dynamic params = "{'code': 10000, 'token': '$token'}";
@@ -62,6 +63,9 @@ class BaseWebviewState extends State<BaseWebview> {
         javascriptChannels: <JavascriptChannel>[
           _jsBridge(context) // 与h5 通信
         ].toSet(),
+        onWebResourceError: (error) {
+          widget.finishedCallback(2);
+        },
       ),
       onWillPop: () async {
         return _goBack(context);
