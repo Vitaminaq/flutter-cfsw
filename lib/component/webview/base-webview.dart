@@ -1,12 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/router/index.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../utils/publics.dart';
 import './service.dart';
 
 class BaseWebviewState extends State<BaseWebview> {
+  WebViewController _controller;
+
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
@@ -14,11 +14,16 @@ class BaseWebviewState extends State<BaseWebview> {
   //   return;
   // }
 
+  Future<bool> _goBack(BuildContext context) async {
+    if (_controller != null && await _controller.canGoBack()) {
+      _controller.goBack();
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext content) {
-    int pageStartTime;
-    WebViewController _controller;
-
     JavascriptChannel _jsBridge(BuildContext context) {
       return JavascriptChannel(
           name: 'cfsw', // 与h5 端的一致 不然收不到消息
@@ -43,10 +48,6 @@ class BaseWebviewState extends State<BaseWebview> {
         },
         onPageStarted: (String url) {},
         onPageFinished: (String url) async {
-          // 设置页面标题
-          // _controller.evaluateJavascript("document.title").then((result) {
-          //   widget.finishedCallback(result);
-          // });
           final String token = await getToken();
           // 向h5同步登陆态信息
           final dynamic params = "{'code': 10000, 'token': '$token'}";
@@ -63,13 +64,7 @@ class BaseWebviewState extends State<BaseWebview> {
         ].toSet(),
       ),
       onWillPop: () async {
-        // 不能执行任何异步操作，采用try catch
-        try {
-          _controller.goBack();
-        } catch (e) {
-          router.back(context);
-        }
-        return false;
+        return _goBack(context);
       },
     );
   }
