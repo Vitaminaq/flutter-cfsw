@@ -1,79 +1,86 @@
 import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
-class LoadingDialog extends Dialog {
+class CommentDialog extends Dialog {
   String text;
+  String currentValue = '';
+  dynamic callback;
 
-  LoadingDialog({Key key, @required this.text}) : super(key: key);
+  CommentDialog({Key key, this.text, this.callback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return new Material(
+    return Material(
       //创建透明层
       type: MaterialType.transparency, //透明类型
-      child: new Align(
-        alignment: Alignment.bottomCenter,
-        child: new Row(
-          children: <Widget>[Container(child: Text('哈哈哈哈'))],
-        ),
-      ),
+      child: GestureDetector(
+          onTap: () {
+            return false;
+          },
+          child: Stack(children: <Widget>[
+            Positioned(
+                left: 0,
+                right: 0,
+                bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                    ? MediaQuery.of(context).viewInsets.bottom
+                    : 0,
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                              hintText: "说点什么", border: InputBorder.none),
+                          autofocus: true,
+                          cursorColor: Color(0xFF00dcFF),
+                          onChanged: (v) {
+                            this.currentValue = v;
+                          },
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                                height: 30.0,
+                                width: 32.0,
+                                child: FlatButton.icon(
+                                    onPressed: () {},
+                                    padding: EdgeInsets.all(0.0),
+                                    focusColor: Colors.white,
+                                    hoverColor: Colors.white,
+                                    highlightColor: Colors.white,
+                                    splashColor: Colors.white,
+                                    icon: Icon(
+                                      Icons.image,
+                                      color: Colors.grey,
+                                    ),
+                                    label: Text(''))),
+                            Expanded(child: Text('')),
+                            Container(
+                                height: 30.0,
+                                width: 40.0,
+                                child: FlatButton(
+                                  padding: EdgeInsets.all(0.0),
+                                  focusColor: Colors.white,
+                                  hoverColor: Colors.white,
+                                  highlightColor: Colors.white,
+                                  splashColor: Colors.white,
+                                  child: Text(
+                                    '发布',
+                                    style: TextStyle(color: Color(0xFF00dcFF)),
+                                  ),
+                                  onPressed: () {
+                                    if (currentValue == '') return;
+                                    callback(currentValue);
+                                  },
+                                ))
+                          ],
+                        )
+                      ],
+                    )))
+          ])),
     );
   }
 }
-
-// showModalBottomSheet(
-//   context: options.context,
-//   isScrollControlled: true,
-//   builder: (BuildContext context) {
-//     GlobalKey _formKey = new GlobalKey<FormState>();
-//     TextEditingController _inputController = new TextEditingController();
-//     String inputText = '';
-
-//     return SingleChildScrollView(
-//       child: Container(
-//         padding: EdgeInsets.only(
-//             bottom: MediaQuery.of(context).viewInsets.bottom),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           mainAxisSize: MainAxisSize.min,
-//           children: <Widget>[
-//             Form(
-//                 key: _formKey,
-//                 autovalidate: false,
-//                 child: Column(
-//                   children: <Widget>[
-//                     Padding(
-//                       padding: EdgeInsets.all(10),
-//                       child: TextFormField(
-//                         controller: _inputController,
-//                         decoration: InputDecoration(hintText: '说点什么...'),
-//                         autofocus: true,
-//                         onSaved: (val) {
-//                           inputText = val;
-//                         },
-//                       ),
-//                     ),
-//                     FlatButton(
-//                       child: Text('发表'),
-//                       onPressed: () {
-//                         FormState _form = _formKey.currentState;
-//                         _form.save();
-//                         final len = inputText.trim().length;
-//                         if (len < 1) return;
-//                         // final params = H5Response(data: inputText)
-//                         //     .toJson()
-//                         //     .toString();
-//                         final params = "{'code': 0,'data': '$inputText'}";
-//                         options.controller.evaluateJavascript(
-//                             '__app_native_callback__["${reslut.resolveName}"]($params)');
-//                         router.back(context);
-//                       },
-//                     )
-//                   ],
-//                 )),
-//           ],
-//         ),
-//       ),
-//     );
-//   },
-// );

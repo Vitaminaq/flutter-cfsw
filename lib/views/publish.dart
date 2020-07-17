@@ -3,12 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../store/test.dart';
 
-class PublishState extends State<Publish> {
-  @override
-  initState() {
-    super.initState();
-  }
-
+class Publish extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Counter1>(
@@ -19,16 +14,17 @@ class PublishState extends State<Publish> {
             child: Text('增加'),
             onPressed: () {
               counter1.increment();
-              // Provider.of<Counter1>(context, listen: false).increment();
             },
-          )
+          ),
+          Center(
+              child: Text(
+            '暂不开放，敬请期待，期待喜欢开发的你加入',
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ))
         ],
       ),
     );
   }
-}
-
-class Publish extends StatefulWidget {
-  @override
-  PublishState createState() => PublishState();
 }

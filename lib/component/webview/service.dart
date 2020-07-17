@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
-
 import './keyboard-popup.dart';
+
 import '../../router/index.dart';
 import '../../utils/publics.dart';
 import '../../store/chatroom.dart';
@@ -68,6 +68,7 @@ class H5Response {
 final Function responseAction = (ResponseActionOptions options) async {
   final JsonStr reslut =
       JsonStr.fromJson(json.decode(options.jsonStr.toString()));
+  bool autoCallback = true;
   switch (reslut.code) {
     // 路由后退
     case 10000:
@@ -75,6 +76,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     // 跳转登录，同步状态
     case 10001:
+      autoCallback = false;
       final r = await router.push(options.context, '/login');
       if (r != null) {
         final String token = await getToken();
@@ -93,6 +95,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     // 评论
     case 10003:
+      autoCallback = false;
       showDialog<Null>(
           context: options.context, //BuildContext对象
           builder: (BuildContext context) {
@@ -100,9 +103,14 @@ final Function responseAction = (ResponseActionOptions options) async {
               onTap: () {
                 router.back(context); //退出弹出框
               },
-              child: LoadingDialog(
-                //调用对话框
-                text: '正在加载...',
+              child: CommentDialog(
+                callback: (value) {
+                  // 释放promise
+                  final dynamic r = {'code': 0, 'data': '$value'};
+                  options.controller.evaluateJavascript(
+                      "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
+                  router.back(context);
+                },
               ),
             );
           });
@@ -123,6 +131,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     // 预请求数据
     case 10005:
+      autoCallback = false;
       final dynamic r = {'code': 0, 'data': options.prefetchData};
       options.controller.evaluateJavascript(
           "__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
@@ -136,6 +145,7 @@ final Function responseAction = (ResponseActionOptions options) async {
     default:
       break;
   }
+  if (autoCallback == false) return;
   // 释放promise
   final dynamic r = {'code': 0};
   options.controller.evaluateJavascript(

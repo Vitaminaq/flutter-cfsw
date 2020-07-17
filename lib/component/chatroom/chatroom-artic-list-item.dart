@@ -6,6 +6,7 @@ import 'package:flutterdemo/router/index.dart';
 import 'package:flutterdemo/api/chatroom.dart';
 import 'package:flutterdemo/store/chatroom.dart';
 import 'package:provider/provider.dart';
+import './list-image.dart';
 
 class ChatroomArticListItem extends StatelessWidget {
   ChatroomArticListItem({Key key, this.item})
@@ -16,6 +17,7 @@ class ChatroomArticListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext content) {
+    print('${item.imgList}wwwwwwwwwwwwwwwwwwwww');
     return FlatButton(
         padding: EdgeInsets.all(0),
         child: Container(
@@ -42,7 +44,7 @@ class ChatroomArticListItem extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            '${baseUrl.toString()}${item.headimg}',
+                            '${baseUrl.toString()}:3005${item.headimg}',
                           ),
                         ),
                         color: Color(0xFFF3F3F3),
@@ -82,10 +84,11 @@ class ChatroomArticListItem extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  width: 340,
-                  padding: EdgeInsets.only(top: 5.0, bottom: 20.0),
+                  width: MediaQuery.of(content).size.width,
+                  padding: EdgeInsets.only(
+                      top: 10.0, bottom: 16.0, left: 26.0, right: 20.0),
                   child: Text(
-                    item.msg,
+                    item.msgText,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                     style: TextStyle(
@@ -96,6 +99,7 @@ class ChatroomArticListItem extends StatelessWidget {
                         color: Color(0xFF444444)),
                   ),
                 ),
+                ListImage(item.imgList),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -122,7 +126,6 @@ class ChatroomArticListItem extends StatelessWidget {
                                     ],
                                   ),
                                   onPressed: () async {
-                                    print('点赞');
                                     final r =
                                         await api.clickIt({'id': item.articId});
                                     if (r.code == 0) {
