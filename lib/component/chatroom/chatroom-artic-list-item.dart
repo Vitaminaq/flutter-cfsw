@@ -17,7 +17,6 @@ class ChatroomArticListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext content) {
-    print('${item.imgList}wwwwwwwwwwwwwwwwwwwww');
     return FlatButton(
         padding: EdgeInsets.all(0),
         child: Container(
@@ -54,7 +53,7 @@ class ChatroomArticListItem extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.only(left: 10.0),
+                            padding: EdgeInsets.only(left: 10.0, top: 8.0),
                             width: 280,
                             child: Text(
                               item.title,
@@ -71,7 +70,7 @@ class ChatroomArticListItem extends StatelessWidget {
                             width: 256,
                             padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                             child: Text(
-                              '大飞哥 ${time(item.creatAt)}',
+                              '${item.nickname} ${time(item.creatAt)}',
                               style: TextStyle(
                                 color: Color(0xFF999999),
                                 fontSize: 12.0,
