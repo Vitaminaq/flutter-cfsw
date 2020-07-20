@@ -61,12 +61,12 @@ class BaseWebviewState extends State<BaseWebview> {
               });
             },
             gestureNavigationEnabled: true,
-            debuggingEnabled: true,
+            debuggingEnabled: false,
             javascriptChannels: <JavascriptChannel>[
               _jsBridge(context) // 与h5 通信
             ].toSet(),
             onWebResourceError: (error) {
-              widget.finishedCallback(2);
+              // widget.finishedCallback(2);
             },
           )),
       onWillPop: () async {

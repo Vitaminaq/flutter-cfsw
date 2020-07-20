@@ -4,7 +4,8 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 class ImageView extends StatelessWidget {
   final List<String> imgList;
-  ImageView(this.imgList);
+  final int currentIndex;
+  ImageView(this.imgList, this.currentIndex) : assert(imgList != null);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class ImageView extends StatelessWidget {
         );
       },
       itemCount: imgList.length,
+      pageController: PageController(initialPage: currentIndex),
     ));
   }
 }

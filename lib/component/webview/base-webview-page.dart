@@ -35,7 +35,7 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
                         currentIndex = index;
                       });
                     }),
-                BaseWebviewFail()
+                // BaseWebviewFail()
               ],
             ));
       }),

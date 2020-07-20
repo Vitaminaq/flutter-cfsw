@@ -7,7 +7,7 @@ class Axios {
   Dio dio;
   Axios() {
     dio = new Dio(new BaseOptions(
-      baseUrl: config.baseUrl + ':3005',
+      baseUrl: config.baseUrl,
       connectTimeout: 5000,
       receiveTimeout: 100000,
       // 5s

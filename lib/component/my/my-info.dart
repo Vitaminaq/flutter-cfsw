@@ -1,5 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import '../button/button-max.dart';
+import '../../store/publics.dart';
+import 'package:provider/provider.dart';
+import 'package:flutterdemo/router/index.dart';
 
 class MyInfo extends StatelessWidget {
   @override
@@ -138,9 +142,25 @@ class MyInfo extends StatelessWidget {
             padding: EdgeInsets.only(top: 4.0),
           ),
           Container(
+            width: MediaQuery.of(context).size.width,
             height: 0.2,
             color: Color(0xFFA9A9A9),
           ),
+          Container(
+              padding: EdgeInsets.only(top: 20.0, bottom: 60.0),
+              child: Text(
+                '广告位招租，欢迎热爱代码的你',
+                style: TextStyle(fontSize: 20.0),
+              )),
+          Container(
+              width: 120.0,
+              child: Consumer<PublicsStore>(
+                  builder: (context, publicsStore, child) => ButtonMax(
+                        btnText: '退出',
+                        callback: () {
+                          publicsStore.setToken('');
+                        },
+                      )))
         ],
       ),
     );

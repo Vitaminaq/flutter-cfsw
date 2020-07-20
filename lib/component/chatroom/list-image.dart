@@ -20,23 +20,29 @@ class ListImage extends StatelessWidget {
                     child: Container(
                         padding: EdgeInsets.only(right: 8.0),
                         child: GestureDetector(
-                          onTap: () {
-                            showDialog<Null>(
-                                context: context, //BuildContext对象
-                                builder: (BuildContext context) {
-                                  return GestureDetector(
-                                      onTap: () {
-                                        return router.back(context); //退出弹出框
-                                      },
-                                      child: ImageView(imgList));
-                                });
-                          },
-                          child: Image.network(
-                            e,
-                            fit: BoxFit.cover,
-                            height: len == 1 ? 140.0 : len == 2 ? 120.0 : 100.0,
-                          ),
-                        ))))
+                            onTap: () {
+                              showDialog<Null>(
+                                  context: context, //BuildContext对象
+                                  builder: (BuildContext context) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          return router.back(context); //退出弹出框
+                                        },
+                                        child: ImageView(
+                                            imgList, imgList.indexOf(e)));
+                                  });
+                            },
+                            child: Container(
+                                height:
+                                    len == 1 ? 140.0 : len == 2 ? 120.0 : 100.0,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4.0)),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(e),
+                                  ),
+                                ))))))
                 .toList()));
   }
 }

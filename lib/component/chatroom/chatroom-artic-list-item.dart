@@ -5,6 +5,7 @@ import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/router/index.dart';
 import 'package:flutterdemo/api/chatroom.dart';
 import 'package:flutterdemo/store/chatroom.dart';
+import 'package:flutterdemo/store/publics.dart';
 import 'package:provider/provider.dart';
 import './list-image.dart';
 
@@ -43,7 +44,7 @@ class ChatroomArticListItem extends StatelessWidget {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            '${baseUrl.toString()}:3005${item.headimg}',
+                            '${baseUrl.toString()}${item.headimg}',
                           ),
                         ),
                         color: Color(0xFFF3F3F3),
@@ -125,11 +126,18 @@ class ChatroomArticListItem extends StatelessWidget {
                                     ],
                                   ),
                                   onPressed: () async {
+                                    final String token =
+                                        await PublicsStore.getCurrentToken();
+                                    if (token == '')
+                                      return router.push(content, '/login');
                                     final r =
                                         await api.clickIt({'id': item.articId});
                                     if (r.code == 0) {
                                       chatRoomStore
                                           .updateClickStatus(item.articId);
+                                    } else if (r.code == 20001 ||
+                                        r.code == 20000) {
+                                      return router.push(content, '/login');
                                     }
                                   },
                                 ))),

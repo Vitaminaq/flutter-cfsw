@@ -15,6 +15,11 @@ class PublicsStore with ChangeNotifier {
     notifyListeners();
   }
 
+  static dynamic getCurrentToken() async {
+    final String r = await Storage.getStringItem(tokenKey);
+    return r;
+  }
+
   dynamic setToken(String key) async {
     Storage.setStringItem(tokenKey, key);
     token = key;

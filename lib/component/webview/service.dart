@@ -80,12 +80,12 @@ final Function responseAction = (ResponseActionOptions options) async {
       final r = await router.push(options.context, '/login');
       if (r != null) {
         final String token = await getToken();
-        // 向h5同步状态
+        // 向h5同步登陆态信息
         final dynamic params = "{'code': 10001, 'token': '$token'}";
         options.controller
-            .evaluateJavascript("app.getSyncAppState($params")
+            .evaluateJavascript("app.getSyncAppState($params)")
             .then((result) {
-          print('h5接受的token信息 $result');
+          print('h5接受到的信息 $params');
         });
       }
       break;
