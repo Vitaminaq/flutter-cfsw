@@ -40,7 +40,6 @@ class WebviewStore {
   }
 
   static setWebView(Widget wv) {
-    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     currentWebview = wv;
   }
 

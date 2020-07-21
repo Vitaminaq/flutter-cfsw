@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './base-webview-loading.dart';
 import './base-webview.dart';
-import './base-webview-fail.dart';
 
 // webview页面
 class BaseWebviewPageState extends State<BaseWebviewPage> {

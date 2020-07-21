@@ -43,6 +43,7 @@ class BaseWebviewState extends State<BaseWebview> {
       child: Container(
           height: MediaQuery.of(context).size.height,
           child: WebView(
+            key: Key(widget.initialUrl),
             initialUrl: widget.initialUrl,
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
