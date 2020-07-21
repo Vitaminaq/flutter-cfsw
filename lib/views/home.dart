@@ -4,6 +4,10 @@ import './publish.dart';
 import './my.dart';
 import '../model/chatroom.dart' as ChatRoomModel;
 
+import 'package:provider/provider.dart';
+import '../component/webview/base-webview.dart';
+import '../store/publics.dart';
+
 class _NavItem {
   String title;
   String key;
@@ -33,6 +37,9 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    WebviewStore.setWebView(BaseWebview(
+      initialUrl: '',
+    ));
   }
 
   @override

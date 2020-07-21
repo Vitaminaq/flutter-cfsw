@@ -31,6 +31,8 @@ class PublicsStore with ChangeNotifier {
 class WebviewStore {
   static WebViewController controller;
 
+  static dynamic prefetchData;
+
   static Widget currentWebview;
 
   static String initialUrl;
@@ -41,6 +43,10 @@ class WebviewStore {
 
   static setWebView(Widget wv) {
     currentWebview = wv;
+  }
+
+  static setPrefetchData(Widget wv) {
+    prefetchData = wv;
   }
 
   static setInitialUrl(String url) {

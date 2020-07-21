@@ -3,9 +3,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../utils/publics.dart';
 import './service.dart';
+import '../../store/publics.dart';
+import 'package:provider/provider.dart';
 
 class BaseWebviewState extends State<BaseWebview> {
   WebViewController _controller;
+  String currentUrl = '';
 
   // @override
   // void didChangeDependencies() {
@@ -34,8 +37,8 @@ class BaseWebviewState extends State<BaseWebview> {
                 jsonStr: jsonStr,
                 context: context,
                 controller: _controller,
-                url: widget.initialUrl,
-                prefetchData: widget.prefetchData));
+                url: currentUrl,
+                prefetchData: WebviewStore.prefetchData));
           });
     }
 
@@ -43,15 +46,24 @@ class BaseWebviewState extends State<BaseWebview> {
       child: Container(
           height: MediaQuery.of(context).size.height,
           child: WebView(
-            key: Key(widget.initialUrl),
-            initialUrl: widget.initialUrl,
+            key: Key(currentUrl),
+            initialUrl: currentUrl,
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
-              _controller = webViewController;
+              if (WebviewStore.controller == null) {
+                WebviewStore.setWebViewController(webViewController);
+              }
+              setState(() {
+                currentUrl = WebviewStore.initialUrl;
+              });
+              _controller = WebviewStore.controller;
+              _controller.loadUrl(WebviewStore.initialUrl);
             },
-            onPageStarted: (String url) {},
+            onPageStarted: (String url) {
+              print(url);
+            },
             onPageFinished: (String url) async {
-              widget.finishedCallback(1);
+              // widget.finishedCallback(1);
               final String token = await getToken();
               // 向h5同步登陆态信息
               final dynamic params = "{'code': 10000, 'token': '$token'}";

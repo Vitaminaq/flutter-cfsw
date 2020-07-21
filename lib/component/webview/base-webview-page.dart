@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './base-webview-loading.dart';
 import './base-webview.dart';
+import '../../store/publics.dart';
 
 // webview页面
 class BaseWebviewPageState extends State<BaseWebviewPage> {
@@ -9,6 +10,8 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
 
   @override
   Widget build(BuildContext content) {
+    WebviewStore.setInitialUrl(widget.initialUrl);
+    WebviewStore.setPrefetchData(widget.prefetchData);
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Color(0xFFffffff),
@@ -25,15 +28,8 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
             child: IndexedStack(
               index: currentIndex,
               children: <Widget>[
-                BaseWebviewLoading(),
-                BaseWebview(
-                    initialUrl: widget.initialUrl,
-                    prefetchData: widget.prefetchData,
-                    finishedCallback: (int index) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    }),
+                // BaseWebviewLoading(),
+                WebviewStore.currentWebview,
                 // BaseWebviewFail()
               ],
             ));
