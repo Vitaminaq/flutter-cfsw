@@ -1,65 +1,159 @@
 import 'package:flutter/foundation.dart';
-import '../model/chatroom.dart';
+import '../model/api.dart';
 
 class BaseParams {
-  int limit = 9;
+  int page_size = 9;
   int page = 0;
 
   Map<String, dynamic> toJson() => {
-        "limit": limit == null ? null : limit,
+        "page_size": page_size == null ? null : page_size,
         "page": page == null ? null : page,
       };
 }
 
-class BaseState<I> {
+abstract class LoaderList<R extends BaseListResponse, I> with ChangeNotifier {
   BaseParams params = BaseParams();
-  List<ListElement> list = [];
-  String requestStatus = 'unrequest';
-}
+  List<I> list = [];
+  String pullDownStatus = 'unrequest';
+  String pullUpStatus = 'unrequest';
+  int total = 0;
+  R res;
 
-abstract class LoaderList<I> with ChangeNotifier {
-  BaseState state = BaseState<I>();
+  Future<R> baseAjaxMethod();
 
-  dynamic getListData();
-
-  // 下拉刷新
-  pullDown() async {
-    state.params.page = 0;
-    state.requestStatus = 'requesting';
-    notifyListeners();
-    Response r = await getListData();
-    if (r.code == 0 && r.data.list != null) {
-      if (r.data.list.length < state.params.limit) {
-        state.requestStatus = 'done';
-      } else {
-        state.requestStatus = 'success';
-        state.params.page++;
-      }
-      state.list = r.data.list;
-      notifyListeners();
-    } else {
-      state.requestStatus = 'error';
-      notifyListeners();
-    }
+  // 合并请求参数
+  $assignParams(params) {
+    this.params = params;
+    return this;
   }
 
-  // 上拉加载
-  pullUp() async {
-    state.requestStatus = 'requesting';
+  /// 下拉逻辑
+  $pullDownStart() {
+    params.page = 1;
+    total = 0;
+    pullDownStatus = 'pending';
+    pullUpStatus = 'pending';
     notifyListeners();
-    final r = await getListData();
-    if (r.code == 0 && r.data.list != null) {
-      if (r.data.list.length < state.params.limit) {
-        state.requestStatus = 'done';
-      } else {
-        state.requestStatus = 'success';
-        state.params.page++;
-      }
-      state.list.addAll(r.data.list);
+    return;
+  }
+
+  $pullDownSuccess(R res) {
+    res = res;
+    if (res == null || res.code != 1 || res.data == null) {
+      pullUpStatus = 'error';
+      pullDownStatus = 'success';
       notifyListeners();
-    } else {
-      state.requestStatus = 'error';
-      notifyListeners();
+      return;
     }
+    final data = res.data;
+    final meta = res.meta;
+    if (meta) {
+      final int current_page = meta.pagination.current_page;
+      final int total_pages = meta.pagination.total_pages;
+      this.total = total;
+      if (total == 0) {
+        pullUpStatus = 'empty';
+      } else if (current_page >= total_pages) {
+        pullUpStatus = 'done';
+      } else {
+        pullUpStatus = 'success';
+        params.page++;
+      }
+    } else {
+      final int len = data.length;
+      final int page_size = params.page_size;
+      if (len == page_size) {
+        pullUpStatus = 'success';
+        params.page++;
+      } else {
+        if (len == 0) {
+          pullUpStatus = 'empty';
+        } else {
+          pullUpStatus = 'done';
+        }
+      }
+    }
+    pullDownStatus = 'success';
+    list = [...data];
+    notifyListeners();
+    return;
+  }
+
+  Future<R> pullDown() async {
+    $pullDownStart();
+    final R res = await baseAjaxMethod();
+    $pullDownSuccess(res);
+    return res;
+  }
+
+  /// 上拉逻辑
+  $pullUpStart() {
+    pullUpStatus = 'pending';
+    notifyListeners();
+    return;
+  }
+
+  $pullUpSuccess(R res) {
+    res = res;
+    if (res == null || res.code != 1 || res.data == null) {
+      pullUpStatus = 'error';
+      notifyListeners();
+      return;
+    }
+    final List<I> data = res.data;
+    final meta = res.meta;
+    if (meta) {
+      final int current_page = meta.pagination.current_page;
+      final int total_pages = meta.pagination.total_pages;
+      total = total;
+      if (total == 0) {
+        pullUpStatus = 'empty';
+      } else if (current_page >= total_pages) {
+        pullUpStatus = 'done';
+      } else {
+        pullUpStatus = 'success';
+        params.page++;
+      }
+    } else {
+      final int len = data.length;
+      final int page = params.page;
+      final int page_size = params.page_size;
+      if (len == page_size) {
+        pullUpStatus = 'success';
+        params.page++;
+      } else {
+        if (page == 1 && len == 0) {
+          pullUpStatus = 'empty';
+        } else {
+          pullUpStatus = 'done';
+        }
+      }
+    }
+    list.addAll(data);
+    notifyListeners();
+    return;
+  }
+
+  /// 上拉请求
+  pullUp(params) async {
+    if (pullUpStatus == 'empty' ||
+        pullUpStatus == 'done' ||
+        pullUpStatus == 'pending') return;
+    params && $assignParams(params);
+    $pullUpStart();
+    final R res = await baseAjaxMethod();
+    $pullUpSuccess(res);
+    return this;
+  }
+
+  /// 清空数据
+  $clearData() {
+    list = [];
+    params.page = 1;
+    total = 0;
+    pullDownStatus = 'noStart';
+    pullUpStatus = 'noStart';
+    notifyListeners();
+    return;
   }
 }
