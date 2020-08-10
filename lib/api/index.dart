@@ -40,20 +40,16 @@ class Axios {
 
   // 统一返回格式
   dynamic allResponse(String res) {
-    final r = JsonToObj.fromJson(json.decode(res.toString()));
-    if (r == null || r.data == null)
-      return {'code': -10001, 'data': null, 'error': '返回数据格式错误'};
+    // final r = JsonToObj.fromJson(json.decode(res.toString()));
+    // if (r == null || r.data == null)
+    //   return {'code': -10001, 'data': null, 'error': '返回数据格式错误'};
     return json.decode(res.toString());
   }
 
   // 错误处理函数, 捕获在dio的错误拦截器之后,所以其实都不用捕获了
   dynamic _error(dynamic e) {
     print("请求失败，错误为:" + e.toString());
-    final Map<String, dynamic> res = {
-      'code': -10000,
-      'data': null,
-      'error': e.toString()
-    };
+    final Map<String, dynamic> res = {'code': -10000, 'data': null};
     return res;
   }
 
@@ -61,7 +57,7 @@ class Axios {
   dynamic get(String url, Map<String, dynamic> params) async {
     try {
       Response response = await dio.get(url, queryParameters: params);
-      return allResponse(response.data);
+      return response.data;
     } catch (e) {
       return _error(e);
     }

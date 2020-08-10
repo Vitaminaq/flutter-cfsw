@@ -9,7 +9,6 @@ class ScrollerState<I> extends State<Scroller> {
     Future.delayed(Duration(milliseconds: 10), () {
       widget.pullDown();
     });
-    // widget.pullDown();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -88,7 +87,7 @@ class Scroller<I> extends StatefulWidget {
   final Function pullUp;
   final Function createlistItem;
   final String pullUpStatus;
-  final dynamic list;
+  final List<I> list;
   final Function pullDown;
   final Widget scrollerHeader;
   final Widget scrollerFooter;

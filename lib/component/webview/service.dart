@@ -139,8 +139,8 @@ final Function responseAction = (ResponseActionOptions options) async {
     // 更新点赞状态
     case 10006:
       // 不更新当前视图
-      Provider.of<ChatRoomStore>(options.context, listen: false)
-          .updateClickStatus(reslut.params['id']);
+      // Provider.of<ChatRoomStore>(options.context, listen: false)
+      //     .updateClickStatus(reslut.params['id']);
       break;
     default:
       break;

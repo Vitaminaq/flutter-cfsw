@@ -12,6 +12,18 @@ String responseToJson(FamousResponse data) {
   return json.encode(dyn);
 }
 
+class FamousParams extends BaseListParams {
+  int type = 6;
+  int page = 1;
+  int page_size = 15;
+
+  Map<String, dynamic> toJson() => {
+        "page_size": page_size == null ? null : page_size,
+        "page": page == null ? null : page,
+        "type": type == null ? null : type,
+      };
+}
+
 class FamousResponse extends BaseListResponse<Datum, Meta> {
   List<Datum> data;
   Meta meta;
@@ -25,7 +37,7 @@ class FamousResponse extends BaseListResponse<Datum, Meta> {
     this.message,
   });
 
-  factory FamousResponse.fromJson(Map json) => FamousResponse(
+  factory FamousResponse.fromJson(Map<String, dynamic> json) => FamousResponse(
       code: json["code"] == null ? null : json["code"],
       data: json["data"] == null
           ? null
@@ -35,100 +47,98 @@ class FamousResponse extends BaseListResponse<Datum, Meta> {
 
   Map<String, dynamic> toJson() => {
         "code": code == null ? null : code,
-        "data":
-            data == null ? null : List<Datum>.from(data.map((x) => x.toJson())),
+        "data": data == null ? null : [],
         "meta": meta == null ? null : meta.toJson(),
         "message": code == null ? null : message,
       };
 }
 
 class Datum {
-  Content content;
-  List<SortedContent> sortedContent;
+  // Content content;
+  // List<SortedContent> sorted_content;
   String type;
-  String typeText;
+  String type_text;
   User user;
-  int createdAt;
+  int created_at;
   int id;
   int pv;
-  int topicId;
-  String topicText;
-  int likeCount;
+  int topic_id;
+  String topic_text;
+  int like_count;
   bool liked;
-  int commentTotalCount;
+  int comment_total_count;
   String title;
-  String srcFrom;
-  List<Listen> listen;
+  String src_from;
+  // List<Listen> listen;
 
   Datum({
-    this.content,
-    this.sortedContent,
+    // this.content,
+    // this.sorted_content,
     this.type,
-    this.typeText,
+    this.type_text,
     this.user,
-    this.createdAt,
+    this.created_at,
     this.id,
     this.pv,
-    this.topicId,
-    this.topicText,
-    this.likeCount,
+    this.topic_id,
+    this.topic_text,
+    this.like_count,
     this.liked,
-    this.commentTotalCount,
+    this.comment_total_count,
     this.title,
-    this.srcFrom,
-    this.listen,
+    this.src_from,
+    // this.listen,
   });
 
   factory Datum.fromJson(Map json) => Datum(
-        content:
-            json["content"] == null ? null : Content.fromJson(json['content']),
-        sortedContent: json["sortedContent"] == null
-            ? null
-            : List<SortedContent>.from(
-                json["sortedContent"].map((x) => SortedContent.fromJson(x))),
+        // content:
+        //     json["content"] == null ? null : Content.fromJson(json['content']),
+        // sorted_content: json["sorted_content"] == null
+        //     ? null
+        //     : List<SortedContent>.from(
+        //         json["sorted_content"].map((x) => SortedContent.fromJson(x))),
         type: json["type"] == null ? null : json["type"],
-        typeText: json["typeText"] == null ? null : json["typeText"],
+        type_text: json["type_text"] == null ? null : json["type_text"],
         user: json["user"] == null ? null : User.fromJson(json['user']),
-        createdAt: json["createdAt"] == null ? null : json["createdAt"],
+        created_at: json["created_at"] == null ? null : json["created_at"],
         id: json["id"] == null ? null : json["id"],
         pv: json["pv"] == null ? null : json["pv"],
-        topicId: json["topicId"] == null ? null : json["topicId"],
-        topicText: json["topicText"] == null ? null : json["topicText"],
-        likeCount: json["likeCount"] == null ? null : json["likeCount"],
+        topic_id: json["topic_id"] == null ? null : json["topic_id"],
+        topic_text: json["topic_text"] == null ? null : json["topic_text"],
+        like_count: json["like_count"] == null ? null : json["like_count"],
         liked: json["liked"] == null ? null : json["liked"],
-        commentTotalCount: json["commentTotalCount"] == null
+        comment_total_count: json["comment_total_count"] == null
             ? null
-            : json["commentTotalCount"],
+            : json["comment_total_count"],
         title: json["title"] == null ? null : json["title"],
-        srcFrom: json["srcFrom"] == null ? null : json["srcFrom"],
-        listen: json["listen"] == null
-            ? null
-            : List<Listen>.from(
-                json["sortedContent"].map((x) => Listen.fromJson(x))),
+        src_from: json["src_from"] == null ? null : json["src_from"],
+        // listen: json["listen"] == null
+        //     ? null
+        //     : List<Listen>.from(json["listen"].map((x) => Listen.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "content": content == null ? null : content.toJson(),
-        "sortedContent": sortedContent == null
-            ? null
-            : List<SortedContent>.from(sortedContent.map((x) => x.toJson())),
+        // "content": content == null ? null : content.toJson(),
+        // "sorted_content": sorted_content == null
+        //     ? null
+        //     : List<SortedContent>.from(sorted_content.map((x) => x.toJson())),
         "type": type == null ? null : type,
-        "typeText": typeText == null ? null : typeText,
+        "type_text": type_text == null ? null : type_text,
         "user": user == null ? null : user.toJson(),
-        "createdAt": createdAt == null ? null : createdAt,
+        "created_at": created_at == null ? null : created_at,
         "id": id == null ? null : id,
         "pv": pv == null ? null : pv,
-        "topicId": topicId == null ? null : topicId,
-        "topicText": topicText == null ? null : topicText,
-        "likeCount": likeCount == null ? null : likeCount,
+        "topic_id": topic_id == null ? null : topic_id,
+        "topic_text": topic_text == null ? null : topic_text,
+        "like_count": like_count == null ? null : like_count,
         "liked": liked == null ? null : liked,
-        "commentTotalCount":
-            commentTotalCount == null ? null : commentTotalCount,
+        "comment_total_count":
+            comment_total_count == null ? null : comment_total_count,
         "title": title == null ? null : title,
-        "srcFrom": title == null ? null : srcFrom,
-        "listen": listen == null
-            ? null
-            : List<Listen>.from(listen.map((x) => x.toJson())),
+        "src_from": src_from == null ? null : src_from,
+        // "listen": listen == null
+        //     ? null
+        //     : List<Listen>.from(listen.map((x) => x.toJson())),
       };
 }
 
@@ -281,18 +291,18 @@ class User {
   String name;
   String gender;
   String avatar;
-  String gradeText;
+  String grade_text;
   String region;
-  bool isExpert;
+  bool is_expert;
 
   User({
     this.id,
     this.name,
     this.gender,
     this.avatar,
-    this.gradeText,
+    this.grade_text,
     this.region,
-    this.isExpert,
+    this.is_expert,
   });
 
   factory User.fromJson(Map json) => User(
@@ -300,18 +310,18 @@ class User {
       name: json["name"] == null ? null : json["name"],
       gender: json["gender"] == null ? null : json["gender"],
       avatar: json["avatar"] == null ? null : json["avatar"],
-      gradeText: json["gradeText"] == null ? null : json["gradeText"],
+      grade_text: json["grade_text"] == null ? null : json["grade_text"],
       region: json["region"] == null ? null : json["region"],
-      isExpert: json["isExpert"] == null ? null : json["isExpert"]);
+      is_expert: json["is_expert"] == null ? null : json["is_expert"]);
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "name": name == null ? null : name,
         "gender": gender == null ? null : gender,
         "avatar": avatar == null ? null : avatar,
-        "gradeText": gradeText == null ? null : gradeText,
+        "grade_text": grade_text == null ? null : grade_text,
         "region": region == null ? null : region,
-        "isExpert": isExpert == null ? null : isExpert
+        "is_expert": is_expert == null ? null : is_expert
       };
 }
 
@@ -334,34 +344,34 @@ class Meta {
 class Pagination {
   int total;
   int count;
-  int perPage;
-  int currentPage;
-  int totalPages;
+  int per_page;
+  int current_page;
+  int total_pages;
   Links links;
 
   Pagination({
     this.total,
     this.count,
-    this.perPage,
-    this.currentPage,
-    this.totalPages,
+    this.per_page,
+    this.current_page,
+    this.total_pages,
     this.links,
   });
 
   factory Pagination.fromJson(Map json) => Pagination(
       total: json["total"] == null ? null : json["total"],
       count: json["count"] == null ? null : json["count"],
-      perPage: json["perPage"] == null ? null : json["perPage"],
-      currentPage: json["currentPage"] == null ? null : json["currentPage"],
-      totalPages: json["totalPages"] == null ? null : json["totalPages"],
+      per_page: json["per_page"] == null ? null : json["per_page"],
+      current_page: json["current_page"] == null ? null : json["current_page"],
+      total_pages: json["total_pages"] == null ? null : json["total_pages"],
       links: json["links"] == null ? null : Links.fromJson(json["links"]));
 
   Map<String, dynamic> toJson() => {
         "total": total == null ? null : total,
         "count": count == null ? null : count,
-        "perPage": perPage == null ? null : perPage,
-        "currentPage": currentPage == null ? null : currentPage,
-        "totalPages": totalPages == null ? null : totalPages,
+        "per_page": per_page == null ? null : per_page,
+        "current_page": current_page == null ? null : current_page,
+        "total_pages": total_pages == null ? null : total_pages,
         "links": links == null ? null : links.toJson()
       };
 }

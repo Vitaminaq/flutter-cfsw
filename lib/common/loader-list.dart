@@ -1,18 +1,9 @@
 import 'package:flutter/foundation.dart';
 import '../model/api.dart';
 
-class BaseParams {
-  int page_size = 9;
-  int page = 0;
-
-  Map<String, dynamic> toJson() => {
-        "page_size": page_size == null ? null : page_size,
-        "page": page == null ? null : page,
-      };
-}
-
-abstract class LoaderList<R extends BaseListResponse, I> with ChangeNotifier {
-  BaseParams params = BaseParams();
+abstract class LoaderList<R extends BaseListResponse, I,
+    P extends BaseListParams> with ChangeNotifier {
+  P params;
   List<I> list = [];
   String pullDownStatus = 'unrequest';
   String pullUpStatus = 'unrequest';
@@ -45,9 +36,9 @@ abstract class LoaderList<R extends BaseListResponse, I> with ChangeNotifier {
       notifyListeners();
       return;
     }
-    final data = res.data;
+    final List<I> data = res.data;
     final meta = res.meta;
-    if (meta) {
+    if (meta != null) {
       final int current_page = meta.pagination.current_page;
       final int total_pages = meta.pagination.total_pages;
       this.total = total;
@@ -74,7 +65,7 @@ abstract class LoaderList<R extends BaseListResponse, I> with ChangeNotifier {
       }
     }
     pullDownStatus = 'success';
-    list = [...data];
+    list = data;
     notifyListeners();
     return;
   }
@@ -102,7 +93,7 @@ abstract class LoaderList<R extends BaseListResponse, I> with ChangeNotifier {
     }
     final List<I> data = res.data;
     final meta = res.meta;
-    if (meta) {
+    if (meta != null) {
       final int current_page = meta.pagination.current_page;
       final int total_pages = meta.pagination.total_pages;
       total = total;
@@ -139,6 +130,7 @@ abstract class LoaderList<R extends BaseListResponse, I> with ChangeNotifier {
     if (pullUpStatus == 'empty' ||
         pullUpStatus == 'done' ||
         pullUpStatus == 'pending') return;
+    print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
     params && $assignParams(params);
     $pullUpStart();
     final R res = await baseAjaxMethod();

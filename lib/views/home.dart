@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import './chatroom.dart';
-import './publish.dart';
 import './my.dart';
-import '../model/chatroom.dart' as ChatRoomModel;
 
 class _NavItem {
   String title;
@@ -20,15 +18,8 @@ class HomeState extends State<Home> {
   int _selectedIndex = 0;
   final navList = [
     _NavItem(key: 'chatroom', title: '首页', icon: Icons.home, view: ChatRoom()),
-    _NavItem(
-        key: 'publush',
-        title: '发表',
-        icon: Icons.control_point,
-        view: Publish()),
     _NavItem(key: 'my', title: '我的', icon: Icons.person_outline, view: My()),
   ];
-
-  ChatRoomModel.Response res;
 
   @override
   void initState() {
