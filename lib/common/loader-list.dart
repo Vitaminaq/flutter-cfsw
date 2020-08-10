@@ -14,8 +14,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
 
   // 合并请求参数
   $assignParams(params) {
-    this.params = params;
-    return this;
+    params = params;
+    return;
   }
 
   /// 下拉逻辑
@@ -41,7 +41,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
     if (meta != null) {
       final int current_page = meta.pagination.current_page;
       final int total_pages = meta.pagination.total_pages;
-      this.total = total;
+      final int totals = meta.pagination.total;
+      total = totals;
       if (total == 0) {
         pullUpStatus = 'empty';
       } else if (current_page >= total_pages) {
@@ -96,7 +97,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
     if (meta != null) {
       final int current_page = meta.pagination.current_page;
       final int total_pages = meta.pagination.total_pages;
-      total = total;
+      final int totals = meta.pagination.total;
+      total = totals;
       if (total == 0) {
         pullUpStatus = 'empty';
       } else if (current_page >= total_pages) {
@@ -126,16 +128,14 @@ abstract class LoaderList<R extends BaseListResponse, I,
   }
 
   /// 上拉请求
-  pullUp(params) async {
+  pullUp() async {
     if (pullUpStatus == 'empty' ||
         pullUpStatus == 'done' ||
         pullUpStatus == 'pending') return;
-    print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
-    params && $assignParams(params);
     $pullUpStart();
     final R res = await baseAjaxMethod();
     $pullUpSuccess(res);
-    return this;
+    return;
   }
 
   /// 清空数据

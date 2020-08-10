@@ -13,7 +13,7 @@ String responseToJson(FamousResponse data) {
 }
 
 class FamousParams extends BaseListParams {
-  int type = 6;
+  int type = 7;
   int page = 1;
   int page_size = 15;
 
@@ -47,15 +47,15 @@ class FamousResponse extends BaseListResponse<Datum, Meta> {
 
   Map<String, dynamic> toJson() => {
         "code": code == null ? null : code,
-        "data": data == null ? null : [],
+        "data": data == null ? null : List.from(data.map((x) => x.toJson())),
         "meta": meta == null ? null : meta.toJson(),
         "message": code == null ? null : message,
       };
 }
 
 class Datum {
-  // Content content;
-  // List<SortedContent> sorted_content;
+  Content content;
+  List<SortedContent> sorted_content;
   String type;
   String type_text;
   User user;
@@ -69,11 +69,11 @@ class Datum {
   int comment_total_count;
   String title;
   String src_from;
-  // List<Listen> listen;
+  List<Listen> listen;
 
   Datum({
-    // this.content,
-    // this.sorted_content,
+    this.content,
+    this.sorted_content,
     this.type,
     this.type_text,
     this.user,
@@ -87,16 +87,16 @@ class Datum {
     this.comment_total_count,
     this.title,
     this.src_from,
-    // this.listen,
+    this.listen,
   });
 
   factory Datum.fromJson(Map json) => Datum(
-        // content:
-        //     json["content"] == null ? null : Content.fromJson(json['content']),
-        // sorted_content: json["sorted_content"] == null
-        //     ? null
-        //     : List<SortedContent>.from(
-        //         json["sorted_content"].map((x) => SortedContent.fromJson(x))),
+        content:
+            json["content"] == null ? null : Content.fromJson(json['content']),
+        sorted_content: json["sorted_content"] == null
+            ? null
+            : List<SortedContent>.from(
+                json["sorted_content"].map((x) => SortedContent.fromJson(x))),
         type: json["type"] == null ? null : json["type"],
         type_text: json["type_text"] == null ? null : json["type_text"],
         user: json["user"] == null ? null : User.fromJson(json['user']),
@@ -112,16 +112,16 @@ class Datum {
             : json["comment_total_count"],
         title: json["title"] == null ? null : json["title"],
         src_from: json["src_from"] == null ? null : json["src_from"],
-        // listen: json["listen"] == null
-        //     ? null
-        //     : List<Listen>.from(json["listen"].map((x) => Listen.fromJson(x))),
+        listen: json["listen"] == null
+            ? null
+            : List<Listen>.from(json["listen"].map((x) => Listen.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        // "content": content == null ? null : content.toJson(),
-        // "sorted_content": sorted_content == null
-        //     ? null
-        //     : List<SortedContent>.from(sorted_content.map((x) => x.toJson())),
+        "content": content == null ? null : content.toJson(),
+        "sorted_content": sorted_content == null
+            ? null
+            : List.from(sorted_content.map((x) => x.toJson())),
         "type": type == null ? null : type,
         "type_text": type_text == null ? null : type_text,
         "user": user == null ? null : user.toJson(),
@@ -136,9 +136,8 @@ class Datum {
             comment_total_count == null ? null : comment_total_count,
         "title": title == null ? null : title,
         "src_from": src_from == null ? null : src_from,
-        // "listen": listen == null
-        //     ? null
-        //     : List<Listen>.from(listen.map((x) => x.toJson())),
+        "listen":
+            listen == null ? null : List.from(listen.map((x) => x.toJson())),
       };
 }
 
@@ -150,22 +149,24 @@ class Content {
   });
 
   factory Content.fromJson(Map json) => Content(
-      cover: json["data"] == null
+      cover: json["cover"] == null
           ? null
-          : List<Cover>.from(json["data"].map((x) => Cover.fromJson(x))));
+          : List<Cover>.from(json["cover"].map((x) => Cover.fromJson(x))));
 
-  Map<String, dynamic> toJson() => {
-        "cover": cover == null
-            ? null
-            : List<Cover>.from(cover.map((x) => x.toJson()))
-      };
+  Map<String, dynamic> toJson() {
+    final Iterable<Map<String, dynamic>> cs = cover.map((x) => x.toJson());
+    final Map<String, dynamic> res = {
+      "cover": cover == null ? null : List.from(cs)
+    };
+    return res;
+  }
 }
 
 class Cover {
   String type;
   String url;
   String from;
-  int sort;
+  String sort;
   String viewUrl;
 
   Cover({

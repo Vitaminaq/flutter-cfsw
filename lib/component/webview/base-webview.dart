@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutterdemo/utils/filter.dart';
 
 import '../../utils/publics.dart';
 import './service.dart';
 
 class BaseWebviewState extends State<BaseWebview> {
   WebViewController _controller;
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   print('我就不更新视图，哈哈哈');
-  //   return;
-  // }
 
   Future<bool> _goBack(BuildContext context) async {
     if (_controller != null && await _controller.canGoBack()) {
@@ -26,7 +20,7 @@ class BaseWebviewState extends State<BaseWebview> {
   Widget build(BuildContext content) {
     JavascriptChannel _jsBridge(BuildContext context) {
       return JavascriptChannel(
-          name: 'cfsw', // 与h5 端的一致 不然收不到消息
+          name: 'app_flutter', // 与h5 端的一致 不然收不到消息
           onMessageReceived: (JavascriptMessage msg) {
             String jsonStr = msg.message;
             print('从h5接受到的信息 $jsonStr');
@@ -56,7 +50,7 @@ class BaseWebviewState extends State<BaseWebview> {
               // 向h5同步登陆态信息
               final dynamic params = "{'code': 10000, 'token': '$token'}";
               _controller
-                  .evaluateJavascript("app.getSyncAppState($params)")
+                  .evaluateJavascript("$h5App.getSyncAppState($params)")
                   .then((result) {
                 print('h5接受到的信息 $params');
               });
@@ -87,7 +81,6 @@ class BaseWebview extends StatefulWidget {
 
   final String initialUrl;
   final dynamic prefetchData;
-  final int startTime = DateTime.now().millisecondsSinceEpoch;
   final finishedCallback;
 
   @override

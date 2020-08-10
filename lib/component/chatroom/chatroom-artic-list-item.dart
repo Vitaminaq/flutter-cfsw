@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
 import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/router/index.dart';
-import 'package:flutterdemo/api/chatroom.dart';
 import 'package:flutterdemo/store/chatroom.dart';
-import 'package:flutterdemo/store/publics.dart';
 import 'package:provider/provider.dart';
 import './list-image.dart';
 
@@ -17,14 +15,16 @@ class ChatroomArticListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext content) {
-    // List<String> images = [];
-    // final cover = item.content.cover;
-    // print(
-    //     'ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${item.toJson().toString()}');
-    // final int len = cover.length;
-    // for (int i = 0; i < len; i++) {
-    //   images.add(cover[i].url);
-    // }
+    List<String> images = [];
+    final cover = item.content.cover;
+    if (cover != null) {
+      final int len = cover.length;
+      for (int i = 0; i < len; i++) {
+        images.add(cover[i].url);
+      }
+    }
+
+    final ArticReg articContent = formatContent(item.sorted_content[0].text);
 
     return FlatButton(
         padding: EdgeInsets.all(0),
@@ -79,7 +79,7 @@ class ChatroomArticListItem extends StatelessWidget {
                             width: 256,
                             padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                             child: Text(
-                              '${item.user} ${time(item.created_at.toString())}',
+                              '${item.user.name} ${time(item.created_at.toString())}',
                               style: TextStyle(
                                 color: Color(0xFF999999),
                                 fontSize: 12.0,
@@ -91,23 +91,23 @@ class ChatroomArticListItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Container(
-                //   width: MediaQuery.of(content).size.width,
-                //   padding: EdgeInsets.only(
-                //       top: 10.0, bottom: 16.0, left: 26.0, right: 20.0),
-                //   child: Text(
-                //     item.msgText,
-                //     overflow: TextOverflow.ellipsis,
-                //     maxLines: 3,
-                //     style: TextStyle(
-                //         letterSpacing: 1.0, // 每字空隙
-                //         fontSize: 15.0,
-                //         wordSpacing: 1.0, // 每句空隙
-                //         height: 1.2,
-                //         color: Color(0xFF444444)),
-                //   ),
-                // ),
-                // ListImage(images),
+                Container(
+                  width: MediaQuery.of(content).size.width,
+                  padding: EdgeInsets.only(
+                      top: 10.0, bottom: 16.0, left: 26.0, right: 20.0),
+                  child: Text(
+                    articContent.text,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: TextStyle(
+                        letterSpacing: 1.0, // 每字空隙
+                        fontSize: 15.0,
+                        wordSpacing: 1.0, // 每句空隙
+                        height: 1.2,
+                        color: Color(0xFF444444)),
+                  ),
+                ),
+                ListImage(articContent.images),
                 Row(
                   children: <Widget>[
                     Expanded(

@@ -4,12 +4,13 @@ import 'package:flutterdemo/router/index.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:flutterdemo/utils/filter.dart';
+import 'package:flutterdemo/api/webview.dart';
 import 'package:provider/provider.dart';
 import './keyboard-popup.dart';
 
 import '../../router/index.dart';
 import '../../utils/publics.dart';
-import '../../store/chatroom.dart';
 
 class ResponseActionOptions<S> {
   String jsonStr;
@@ -34,7 +35,7 @@ class ResponseActionOptions<S> {
 }
 
 class JsonStr {
-  int code;
+  String code;
   String resolveName;
   String rejectName;
   String fnName;
@@ -52,10 +53,10 @@ class JsonStr {
 }
 
 class H5Response {
-  int code;
+  String code;
   dynamic data;
 
-  H5Response({this.code = 0, this.data});
+  H5Response({this.code = '0', this.data});
 
   Map toJson() {
     Map map = Map();
@@ -68,14 +69,24 @@ class H5Response {
 final Function responseAction = (ResponseActionOptions options) async {
   final JsonStr reslut =
       JsonStr.fromJson(json.decode(options.jsonStr.toString()));
+  final dynamic h5Params = reslut.params;
   bool autoCallback = true;
   switch (reslut.code) {
     // 路由后退
-    case 10000:
+    case '10000':
+      router.back(options.context);
+      break;
+    case '10001':
+      break;
+    case '10002':
+      Share.share('【不仅仅是测试分享】\n ${options.url}');
+      break;
+    // 关闭webview
+    case '10003':
       router.back(options.context);
       break;
     // 跳转登录，同步状态
-    case 10001:
+    case '10004':
       autoCallback = false;
       final r = await router.push(options.context, '/login');
       if (r != null) {
@@ -83,18 +94,38 @@ final Function responseAction = (ResponseActionOptions options) async {
         // 向h5同步登陆态信息
         final dynamic params = "{'code': 10001, 'token': '$token'}";
         options.controller
-            .evaluateJavascript("app.getSyncAppState($params)")
+            .evaluateJavascript("$h5App.getSyncAppState($params)")
             .then((result) {
           print('h5接受到的信息 $params');
         });
       }
       break;
-    // 分享详情页
-    case 10002:
+    // 去个人主页-普通
+    case '10005':
+      break;
+    // 去个人主页-名家
+    case '10006':
+      break;
+    // 图片预览
+    case '10007':
+      showDialog<Null>(
+          context: options.context, //BuildContext对象
+          builder: (BuildContext context) {
+            return GestureDetector(
+                onTap: () {
+                  router.back(context); //退出弹出框
+                },
+                child: PhotoView(
+                  imageProvider: NetworkImage(reslut.params['imgList'][0]),
+                ));
+          });
+      break;
+    // 分享微博
+    case '10008':
       Share.share('【不仅仅是测试分享】\n ${options.url}');
       break;
-    // 评论
-    case 10003:
+    // 评论或者回复
+    case '10009':
       autoCallback = false;
       showDialog<Null>(
           context: options.context, //BuildContext对象
@@ -105,51 +136,40 @@ final Function responseAction = (ResponseActionOptions options) async {
               },
               child: CommentDialog(
                 callback: (value) {
-                  // 释放promise
-                  final dynamic r = {'code': 0, 'data': '$value'};
-                  options.controller.evaluateJavascript(
-                      "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
+                  h5Params['content'] = value;
+                  api.commentOrReply(h5Params);
+                  h5DefalutCallback(options, reslut);
+                  // 回复
                   router.back(context);
                 },
               ),
             );
           });
       break;
-    // 预览图片
-    case 10004:
-      showDialog<Null>(
-          context: options.context, //BuildContext对象
-          builder: (BuildContext context) {
-            return GestureDetector(
-                onTap: () {
-                  router.back(context); //退出弹出框
-                },
-                child: PhotoView(
-                  imageProvider: NetworkImage(reslut.params[0]),
-                ));
-          });
+    // 视频播放
+    case '10010':
+      print('视频播放');
       break;
-    // 预请求数据
-    case 10005:
+    // 预期可用数据
+    case '10011':
       autoCallback = false;
-      final dynamic r = {'code': 0, 'data': options.prefetchData};
+      final dynamic r = {'code': 1, 'data': options.prefetchData};
       options.controller.evaluateJavascript(
-          "__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
-      break;
-    // 更新点赞状态
-    case 10006:
-      // 不更新当前视图
-      // Provider.of<ChatRoomStore>(options.context, listen: false)
-      //     .updateClickStatus(reslut.params['id']);
+          "$h5Callback && $h5Callback['${reslut.resolveName}'](${json.encode(r)})");
       break;
     default:
       break;
   }
   if (autoCallback == false) return;
   // 释放promise
-  final dynamic r = {'code': 0};
+  h5DefalutCallback(options, reslut);
+};
+
+final Function h5DefalutCallback = (options, reslut) {
+  // 释放promise
+  final dynamic r = {'code': 1};
   options.controller.evaluateJavascript(
-      "__app_native_callback__['${reslut.resolveName}']&&__app_native_callback__['${reslut.resolveName}'](${json.encode(r)})");
+      "$h5Callback['${reslut.resolveName}']&&$h5Callback['${reslut.resolveName}'](${json.encode(r)})");
 };
 
 // 向h5同步token等信息标准数据结构

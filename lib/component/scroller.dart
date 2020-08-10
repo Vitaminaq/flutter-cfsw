@@ -7,13 +7,14 @@ class ScrollerState<I> extends State<Scroller> {
   initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 10), () {
-      widget.pullDown();
+      widget.store.pullDown();
     });
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        if (widget.pullUpStatus == 'done') return '';
-        return widget.pullUp();
+        if (widget.store.pullUpStatus == 'done') return '';
+        print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+        return widget.store.pullUp();
       }
     });
   }
@@ -30,13 +31,13 @@ class ScrollerState<I> extends State<Scroller> {
           return widget.createlistItem(widget.list[index]);
         }
         if (index == len - 1) {
-          if (widget.pullUpStatus == 'done') {
+          if (widget.store.pullUpStatus == 'done') {
             return Container(
                 padding: EdgeInsets.only(top: 20.0),
                 height: 60,
                 child: Text('无更多数据', textAlign: TextAlign.center));
           }
-          if (widget.pullUpStatus == 'error') {
+          if (widget.store.pullUpStatus == 'error') {
             return Container(
               padding: EdgeInsets.only(top: 20.0),
               height: 60,
@@ -62,33 +63,28 @@ class ScrollerState<I> extends State<Scroller> {
     return RefreshIndicator(
       child: box,
       onRefresh: () {
-        return widget.pullDown();
+        return widget.store.pullDown();
       },
     );
   }
 }
 
-class Scroller<I> extends StatefulWidget {
+class Scroller<S, I> extends StatefulWidget {
   Scroller(
       {Key key,
-      @required this.pullUp,
+      @required this.store,
       @required this.createlistItem,
-      @required this.pullUpStatus,
       @required this.list,
-      this.pullDown,
       this.scrollerHeader,
       this.scrollerFooter})
-      : assert(pullUp != null),
+      : assert(store != null),
         assert(createlistItem != null),
-        assert(pullUpStatus != null),
         assert(list != null),
         super(key: key);
 
-  final Function pullUp;
+  final S store;
   final Function createlistItem;
-  final String pullUpStatus;
   final List<I> list;
-  final Function pullDown;
   final Widget scrollerHeader;
   final Widget scrollerFooter;
 

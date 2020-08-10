@@ -32,3 +32,24 @@ final Function time = (String str) {
   }
   return time;
 };
+
+class ArticReg {
+  List<String> images = [];
+  String text = '';
+
+  ArticReg({this.images, this.text});
+}
+
+ArticReg Function(String) formatContent = (String str) {
+  final RegExp imgReg = RegExp(r"(https|http).*?(?:jpg|png|jpeg|gif)");
+  final List<String> images = [];
+  final Iterable<RegExpMatch> matches = imgReg.allMatches(str);
+  for (Match m in matches) {
+    images.add(m.group(0));
+  }
+  final String relS = str.replaceAll(RegExp(r"<[^>]+>"), '');
+  return ArticReg(images: images, text: relS);
+};
+
+final String h5App = '__app_vue__';
+final String h5Callback = '__app_wismo_callback__';

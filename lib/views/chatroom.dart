@@ -15,12 +15,10 @@ class ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext content) {
     return Consumer<ChatRoomStore>(builder: (context, chatRoomStore, child) {
-      return Scroller<ChatRoomModel.Datum>(
-        pullUp: chatRoomStore.pullUp,
-        pullUpStatus: chatRoomStore.pullUpStatus,
+      return Scroller<ChatRoomStore, ChatRoomModel.Datum>(
+        store: chatRoomStore,
         list: chatRoomStore.list,
         createlistItem: (item) => ChatroomArticListItem(item: item),
-        pullDown: chatRoomStore.pullDown,
       );
     });
   }

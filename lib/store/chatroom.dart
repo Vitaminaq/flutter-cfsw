@@ -12,7 +12,6 @@ class ChatRoomStore extends LoaderList<ChatRoomModel.FamousResponse,
   @override
   baseAjaxMethod() async {
     ChatRoomModel.FamousResponse r = await api.getNoteFamous(params.toJson());
-    print('wwwwwwwwwwwwwwwwwwwwwwwwwwww ${r.toJson().toString()}');
     return r;
   }
 }

@@ -26,7 +26,8 @@ class Axios {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       final String token = await getToken();
-      options.headers['authorization'] = token;
+      options.headers['Authorization'] =
+          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90ZXN0LmJsdWV1cC5jblwvYXBpXC9sb2dpbiIsImlhdCI6MTU5NzA0NTA2MiwiZXhwIjoxNTk3NjQ5ODYyLCJuYmYiOjE1OTcwNDUwNjIsImp0aSI6IlpIY1htc05XTm9qVmthNUciLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEiLCJpbXBlcnNvbmF0ZWRfYnkiOm51bGx9.dmSNsSFzJv6jYyrmCuBEZsaUmnebsrQGpeiwA8be158';
       print('请求拦截器生效');
     }, onResponse: (Response response) {
       print('响应拦截器生效');
@@ -67,7 +68,7 @@ class Axios {
   dynamic post(String url, Map<String, dynamic> params) async {
     try {
       Response response = await dio.post(url, data: params);
-      return allResponse(response.data);
+      return response.data;
     } catch (e) {
       return _error(e);
     }
