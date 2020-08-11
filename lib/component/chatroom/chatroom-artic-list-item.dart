@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
 import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/router/index.dart';
-import 'package:flutterdemo/store/chatroom.dart';
 import 'package:provider/provider.dart';
 import './list-image.dart';
 
-class ChatroomArticListItem extends StatelessWidget {
+class ChatroomArticListItem<ProviderStore> extends StatelessWidget {
   ChatroomArticListItem({Key key, this.item})
       : assert(item != null),
         super(key: key);
@@ -15,16 +14,7 @@ class ChatroomArticListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext content) {
-    List<String> images = [];
-    final cover = item.content.cover;
-    if (cover != null) {
-      final int len = cover.length;
-      for (int i = 0; i < len; i++) {
-        images.add(cover[i].url);
-      }
-    }
-
-    final ArticReg articContent = formatContent(item.sorted_content[0].text);
+    final ArticReg articContent = formatContent(item.sorted_content);
 
     return FlatButton(
         padding: EdgeInsets.all(0),
@@ -111,8 +101,8 @@ class ChatroomArticListItem extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Expanded(
-                        child: Consumer<ChatRoomStore>(
-                            builder: (context, chatRoomStore, child) =>
+                        child: Consumer<ProviderStore>(
+                            builder: (context, providerStore, child) =>
                                 FlatButton(
                                   child: Flex(
                                     direction: Axis.horizontal,

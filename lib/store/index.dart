@@ -1,13 +1,11 @@
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 import './chatroom.dart';
-import './test.dart';
 import './publics.dart';
 
-final List<SingleChildCloneableWidget> providerList = [
-  ChangeNotifierProvider<ChatRoomStore>(create: (context) => ChatRoomStore()),
+final List<SingleChildWidget> providerList = [
+  ChangeNotifierProvider<MustStore>(create: (context) => MustStore()),
+  ChangeNotifierProvider<HotStore>(create: (context) => HotStore()),
   ChangeNotifierProvider<PublicsStore>(create: (context) => PublicsStore()),
-  // ChangeNotifierProvider<WebviewStore>(create: (context) => WebviewStore()),
-  ChangeNotifierProvider<Counter>(create: (context) => Counter()),
-  ChangeNotifierProvider<Counter1>(create: (context) => Counter1())
 ];

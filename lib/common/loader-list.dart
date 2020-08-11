@@ -5,8 +5,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
     P extends BaseListParams> with ChangeNotifier {
   P params;
   List<I> list = [];
-  String pullDownStatus = 'unrequest';
-  String pullUpStatus = 'unrequest';
+  BaseListLoadStatus pullDownStatus = BaseListLoadStatus.noStart;
+  BaseListLoadStatus pullUpStatus = BaseListLoadStatus.noStart;
   int total = 0;
   R res;
 
@@ -22,8 +22,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
   $pullDownStart() {
     params.page = 1;
     total = 0;
-    pullDownStatus = 'pending';
-    pullUpStatus = 'pending';
+    pullDownStatus = BaseListLoadStatus.pending;
+    pullUpStatus = BaseListLoadStatus.pending;
     notifyListeners();
     return;
   }
@@ -31,8 +31,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
   $pullDownSuccess(R res) {
     res = res;
     if (res == null || res.code != 1 || res.data == null) {
-      pullUpStatus = 'error';
-      pullDownStatus = 'success';
+      pullUpStatus = BaseListLoadStatus.error;
+      pullDownStatus = BaseListLoadStatus.success;
       notifyListeners();
       return;
     }
@@ -44,28 +44,28 @@ abstract class LoaderList<R extends BaseListResponse, I,
       final int totals = meta.pagination.total;
       total = totals;
       if (total == 0) {
-        pullUpStatus = 'empty';
+        pullUpStatus = BaseListLoadStatus.empty;
       } else if (current_page >= total_pages) {
-        pullUpStatus = 'done';
+        pullUpStatus = BaseListLoadStatus.done;
       } else {
-        pullUpStatus = 'success';
+        pullUpStatus = BaseListLoadStatus.success;
         params.page++;
       }
     } else {
       final int len = data.length;
       final int page_size = params.page_size;
       if (len == page_size) {
-        pullUpStatus = 'success';
+        pullUpStatus = BaseListLoadStatus.success;
         params.page++;
       } else {
         if (len == 0) {
-          pullUpStatus = 'empty';
+          pullUpStatus = BaseListLoadStatus.empty;
         } else {
-          pullUpStatus = 'done';
+          pullUpStatus = BaseListLoadStatus.done;
         }
       }
     }
-    pullDownStatus = 'success';
+    pullDownStatus = BaseListLoadStatus.success;
     list = data;
     notifyListeners();
     return;
@@ -80,7 +80,7 @@ abstract class LoaderList<R extends BaseListResponse, I,
 
   /// 上拉逻辑
   $pullUpStart() {
-    pullUpStatus = 'pending';
+    pullUpStatus = BaseListLoadStatus.pending;
     notifyListeners();
     return;
   }
@@ -88,7 +88,7 @@ abstract class LoaderList<R extends BaseListResponse, I,
   $pullUpSuccess(R res) {
     res = res;
     if (res == null || res.code != 1 || res.data == null) {
-      pullUpStatus = 'error';
+      pullUpStatus = BaseListLoadStatus.error;
       notifyListeners();
       return;
     }
@@ -100,11 +100,11 @@ abstract class LoaderList<R extends BaseListResponse, I,
       final int totals = meta.pagination.total;
       total = totals;
       if (total == 0) {
-        pullUpStatus = 'empty';
+        pullUpStatus = BaseListLoadStatus.empty;
       } else if (current_page >= total_pages) {
-        pullUpStatus = 'done';
+        pullUpStatus = BaseListLoadStatus.done;
       } else {
-        pullUpStatus = 'success';
+        pullUpStatus = BaseListLoadStatus.success;
         params.page++;
       }
     } else {
@@ -112,13 +112,13 @@ abstract class LoaderList<R extends BaseListResponse, I,
       final int page = params.page;
       final int page_size = params.page_size;
       if (len == page_size) {
-        pullUpStatus = 'success';
+        pullUpStatus = BaseListLoadStatus.success;
         params.page++;
       } else {
         if (page == 1 && len == 0) {
-          pullUpStatus = 'empty';
+          pullUpStatus = BaseListLoadStatus.empty;
         } else {
-          pullUpStatus = 'done';
+          pullUpStatus = BaseListLoadStatus.done;
         }
       }
     }
@@ -129,9 +129,9 @@ abstract class LoaderList<R extends BaseListResponse, I,
 
   /// 上拉请求
   pullUp() async {
-    if (pullUpStatus == 'empty' ||
-        pullUpStatus == 'done' ||
-        pullUpStatus == 'pending') return;
+    if (pullUpStatus == BaseListLoadStatus.empty ||
+        pullUpStatus == BaseListLoadStatus.done ||
+        pullUpStatus == BaseListLoadStatus.pending) return;
     $pullUpStart();
     final R res = await baseAjaxMethod();
     $pullUpSuccess(res);
@@ -143,8 +143,8 @@ abstract class LoaderList<R extends BaseListResponse, I,
     list = [];
     params.page = 1;
     total = 0;
-    pullDownStatus = 'noStart';
-    pullUpStatus = 'noStart';
+    pullDownStatus = BaseListLoadStatus.noStart;
+    pullUpStatus = BaseListLoadStatus.noStart;
     notifyListeners();
     return;
   }

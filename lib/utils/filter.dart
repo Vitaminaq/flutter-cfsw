@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:flutterdemo/model/chatroom.dart';
 
 // 转化为离现在多久
 final Function time = (String str) {
@@ -40,7 +41,11 @@ class ArticReg {
   ArticReg({this.images, this.text});
 }
 
-ArticReg Function(String) formatContent = (String str) {
+ArticReg Function(List<SortedContent>) formatContent =
+    (List<SortedContent> sorted_content) {
+  if (sorted_content == null || sorted_content.length == 0)
+    return ArticReg(images: [], text: '');
+  final String str = sorted_content[0].text;
   final RegExp imgReg = RegExp(r"(https|http).*?(?:jpg|png|jpeg|gif)");
   final List<String> images = [];
   final Iterable<RegExpMatch> matches = imgReg.allMatches(str);

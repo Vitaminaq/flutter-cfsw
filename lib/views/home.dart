@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import './chatroom.dart';
 import './my.dart';
 
@@ -28,39 +30,29 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Widget bar;
-    _selectedIndex == 0
-        ? bar = AppBar(
-            backgroundColor: Color(0xFF00dcFF),
-            centerTitle: true,
-            title: Text('Confenssion Wall',
-                style: TextStyle(color: Colors.white.withOpacity(1.0))),
-          )
-        : null;
-
-    return Scaffold(
-      // header
-      appBar: bar,
-      body: SafeArea(
-        child: Stack(
-            children: navList.map((_NavItem item) {
-          return Offstage(
-            offstage: navList[_selectedIndex].key != item.key,
-            child: item.view,
-          );
-        }).toList()),
-      ),
-      // 底部导航栏
-      bottomNavigationBar: BottomNavigationBar(
-        items: navList.map((_NavItem item) {
-          return BottomNavigationBarItem(
-              icon: Icon(item.icon), title: Text(item.title));
-        }).toList(),
-        currentIndex: _selectedIndex,
-        fixedColor: Color(0xFF00dcFF),
-        onTap: _onItemTapped,
-      ),
-    );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
+          body: SafeArea(
+            child: Stack(
+                children: navList.map((_NavItem item) {
+              return Offstage(
+                offstage: navList[_selectedIndex].key != item.key,
+                child: item.view,
+              );
+            }).toList()),
+          ),
+          // 底部导航栏
+          bottomNavigationBar: BottomNavigationBar(
+            items: navList.map((_NavItem item) {
+              return BottomNavigationBarItem(
+                  icon: Icon(item.icon), title: Text(item.title));
+            }).toList(),
+            currentIndex: _selectedIndex,
+            fixedColor: Color(0xFF00c295),
+            onTap: _onItemTapped,
+          ),
+        ));
   }
 
   void _onItemTapped(int index) async {

@@ -135,9 +135,9 @@ final Function responseAction = (ResponseActionOptions options) async {
                 router.back(context); //退出弹出框
               },
               child: CommentDialog(
-                callback: (value) {
+                callback: (value) async {
                   h5Params['content'] = value;
-                  api.commentOrReply(h5Params);
+                  await api.commentOrReply(h5Params);
                   h5DefalutCallback(options, reslut);
                   // 回复
                   router.back(context);
@@ -150,7 +150,7 @@ final Function responseAction = (ResponseActionOptions options) async {
     case '10010':
       print('视频播放');
       break;
-    // 预期可用数据
+    // 预取可用数据
     case '10011':
       autoCallback = false;
       final dynamic r = {'code': 1, 'data': options.prefetchData};

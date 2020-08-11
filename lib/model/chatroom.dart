@@ -17,6 +17,8 @@ class FamousParams extends BaseListParams {
   int page = 1;
   int page_size = 15;
 
+  FamousParams({this.type = 7, this.page = 1, this.page_size = 15});
+
   Map<String, dynamic> toJson() => {
         "page_size": page_size == null ? null : page_size,
         "page": page == null ? null : page,
