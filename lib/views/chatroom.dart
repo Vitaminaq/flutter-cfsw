@@ -87,6 +87,12 @@ class ChatRoomState extends State<ChatRoom>
       ],
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mController.dispose();
+  }
 }
 
 class ChatRoom extends StatefulWidget {

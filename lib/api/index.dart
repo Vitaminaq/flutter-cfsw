@@ -26,10 +26,10 @@ class Axios {
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       final String token = await getToken();
-      options.headers['Authorization'] =
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90ZXN0LmJsdWV1cC5jblwvYXBpXC9sb2dpbiIsImlhdCI6MTU5NzA0NTA2MiwiZXhwIjoxNTk3NjQ5ODYyLCJuYmYiOjE1OTcwNDUwNjIsImp0aSI6IlpIY1htc05XTm9qVmthNUciLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEiLCJpbXBlcnNvbmF0ZWRfYnkiOm51bGx9.dmSNsSFzJv6jYyrmCuBEZsaUmnebsrQGpeiwA8be158';
+      options.headers['Authorization'] = 'Bearer $token';
       print('请求拦截器生效');
     }, onResponse: (Response response) {
+      print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee$response');
       print('响应拦截器生效');
       return response;
     }, onError: (DioError e) {
@@ -55,7 +55,7 @@ class Axios {
   }
 
   // get  url: 请求地址 queryParameters： 请求参数
-  dynamic get(String url, Map<String, dynamic> params) async {
+  dynamic get(String url, [Map<String, dynamic> params]) async {
     try {
       Response response = await dio.get(url, queryParameters: params);
       return response.data;
@@ -80,11 +80,13 @@ class Axios {
   }
 }
 
+final baseAxios = Axios();
+
 // 请求基类
 class BaseAxios {
   Axios axios;
   BaseAxios() {
-    axios = Axios();
+    axios = baseAxios;
   }
 }
 

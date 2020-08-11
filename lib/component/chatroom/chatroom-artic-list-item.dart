@@ -113,7 +113,7 @@ class ChatroomArticListItem<ProviderStore> extends StatelessWidget {
                                       Icon(
                                         Icons.thumb_up,
                                         color: item.liked
-                                            ? Color(0xFF00dcFF)
+                                            ? Color(0xff00c295)
                                             : Color(0xFFbcbcbc),
                                         size: 20.0,
                                       ),

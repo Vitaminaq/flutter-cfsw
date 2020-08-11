@@ -1,11 +1,16 @@
 import './index.dart';
 import '../model/login.dart';
+import '../model/api.dart';
 
 class Login extends BaseAxios {
-  dynamic onekeyLogin(params) async {
-    final Map<dynamic, dynamic> res =
-        await axios.post('/api/user/login/onekey', params);
-    return Response.fromJson(res);
+  // 发送验证码
+  Future<BaseResponse> getcode(params) async {
+    return BaseResponse.fromJson(await axios.post('/api/code/send', params));
+  }
+
+  // 用户注册
+  Future<RegisterResponse> register(params) async {
+    return RegisterResponse.fromJson(await axios.post('/api/register', params));
   }
 }
 

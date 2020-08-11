@@ -41,6 +41,9 @@ class ArticReg {
   ArticReg({this.images, this.text});
 }
 
+///
+/// 解析富文本内容，得到纯文本，和图片
+///
 ArticReg Function(List<SortedContent>) formatContent =
     (List<SortedContent> sorted_content) {
   if (sorted_content == null || sorted_content.length == 0)
@@ -56,5 +59,13 @@ ArticReg Function(List<SortedContent>) formatContent =
   return ArticReg(images: images, text: relS);
 };
 
+// 与h5交互的一些常量
 final String h5App = '__app_vue__';
 final String h5Callback = '__app_wismo_callback__';
+
+// 校验手机号
+bool Function(String) isPhone = (String str) {
+  return new RegExp(
+          '^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$')
+      .hasMatch(str);
+};

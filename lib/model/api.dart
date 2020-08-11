@@ -30,3 +30,18 @@ class BaseListResponse<D, M> {
 
   BaseListResponse({this.code, this.data, this.meta});
 }
+
+class BaseResponse {
+  int code;
+  String data;
+
+  BaseResponse({this.code, this.data});
+
+  factory BaseResponse.fromJson(Map json) => BaseResponse(
+        code: json["code"] == null ? null : json["code"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code == null ? null : code,
+      };
+}

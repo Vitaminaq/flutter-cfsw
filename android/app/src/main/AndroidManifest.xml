@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutterdemo"
+        android:label="小獴阅读-精品解析"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
