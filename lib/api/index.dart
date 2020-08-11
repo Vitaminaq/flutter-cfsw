@@ -27,9 +27,9 @@ class Axios {
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       final String token = await getToken();
       options.headers['Authorization'] = 'Bearer $token';
+      print('qqqqqqqqqqqqqqqqqwwwwwwwwwwwwwwwwwwwww${options.headers}');
       print('请求拦截器生效');
     }, onResponse: (Response response) {
-      print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee$response');
       print('响应拦截器生效');
       return response;
     }, onError: (DioError e) {
@@ -65,7 +65,7 @@ class Axios {
   }
 
   // post
-  dynamic post(String url, Map<String, dynamic> params) async {
+  dynamic post(String url, [Map<String, dynamic> params]) async {
     try {
       Response response = await dio.post(url, data: params);
       return response.data;

@@ -10,6 +10,23 @@ class ChatRoomStore extends LoaderList<ChatRoomModel.FamousResponse,
     ChatRoomModel.FamousResponse r = await api.getNoteFamous(params.toJson());
     return r;
   }
+
+  // 更新点赞状态
+  updateClickStatus(int id) {
+    final len = list.length;
+    for (int i = 0; i < len; i++) {
+      if (list[i].id == id) {
+        final bool liked = list[i].liked == null ? false : list[i].liked;
+        if (liked) {
+          list[i].like_count--;
+        } else {
+          list[i].like_count++;
+        }
+        list[i].liked = !list[i].liked;
+      }
+    }
+    notifyListeners();
+  }
 }
 
 class MustStore extends ChatRoomStore {}

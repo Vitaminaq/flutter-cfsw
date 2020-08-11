@@ -3,9 +3,14 @@ import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
 import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/router/index.dart';
 import 'package:provider/provider.dart';
+import 'package:flutterdemo/store/chatroom.dart';
+import 'package:flutterdemo/store/publics.dart';
+import 'package:flutterdemo/api/chatroom.dart';
+
 import './list-image.dart';
 
-class ChatroomArticListItem<ProviderStore> extends StatelessWidget {
+class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
+    extends StatelessWidget {
   ChatroomArticListItem({Key key, this.item})
       : assert(item != null),
         super(key: key);
@@ -69,7 +74,7 @@ class ChatroomArticListItem<ProviderStore> extends StatelessWidget {
                             width: 256,
                             padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                             child: Text(
-                              '${item.user.name} ${time(item.created_at.toString())}',
+                              '${item.user.name} ${time((item.created_at * 1000).toString())}',
                               style: TextStyle(
                                 color: Color(0xFF999999),
                                 fontSize: 12.0,
@@ -124,19 +129,14 @@ class ChatroomArticListItem<ProviderStore> extends StatelessWidget {
                                     ],
                                   ),
                                   onPressed: () async {
-                                    // final String token =
-                                    //     await PublicsStore.getCurrentToken();
-                                    // if (token == '')
-                                    //   return router.push(content, '/login');
-                                    // final r =
-                                    //     await api.clickIt({'id': item.id});
-                                    // if (r.code == 0) {
-                                    //   // chatRoomStore
-                                    //   //     .updateClickStatus(item.articId);
-                                    // } else if (r.code == 20001 ||
-                                    //     r.code == 20000) {
-                                    //   return router.push(content, '/login');
-                                    // }
+                                    final String token =
+                                        await PublicsStore.getCurrentToken();
+                                    if (token == null || token == '')
+                                      return router.push(content, '/login');
+                                    final r =
+                                        await api.likeNote({'id': item.id});
+                                    if (r.code != 1) return;
+                                    providerStore.updateClickStatus(item.id);
                                   },
                                 ))),
                     Expanded(

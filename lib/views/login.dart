@@ -180,6 +180,7 @@ class LoginState extends State<Login> {
   @override
   void dispose() {
     super.dispose();
+    if (timer == null) return;
     timer.cancel();
   }
 }
