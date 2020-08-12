@@ -8,7 +8,7 @@ class BaseWebviewLoading extends StatelessWidget {
       child: Center(
           child: Text(
         '精彩内容马上呈现...',
-        style: TextStyle(color: Color(0xFF00dcFF), fontSize: 24.0),
+        style: TextStyle(color: Color(0xff00c295), fontSize: 24.0),
       )),
     );
   }

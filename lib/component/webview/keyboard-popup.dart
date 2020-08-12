@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/component/popup/toast.dart';
 // import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
@@ -46,7 +47,9 @@ class CommentDialog extends Dialog {
                                 height: 30.0,
                                 width: 32.0,
                                 child: FlatButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      toast(context, '体验更多功能，请下载小獴阅读app');
+                                    },
                                     padding: EdgeInsets.all(0.0),
                                     focusColor: Colors.white,
                                     hoverColor: Colors.white,
@@ -69,7 +72,7 @@ class CommentDialog extends Dialog {
                                   splashColor: Colors.white,
                                   child: Text(
                                     '发布',
-                                    style: TextStyle(color: Color(0xFF00dcFF)),
+                                    style: TextStyle(color: Color(0xff00c295)),
                                   ),
                                   onPressed: () {
                                     if (currentValue == '') return;
