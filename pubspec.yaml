@@ -51,6 +51,8 @@ flutter:
   assets:
     - lib/images/loading.gif
     - lib/images/welcome.png
+    - lib/images/download.png
+    - lib/images/loginout.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

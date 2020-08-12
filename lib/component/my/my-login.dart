@@ -7,7 +7,8 @@ class MyLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(32.0),
+      padding:
+          EdgeInsets.only(top: 80.0, left: 32.0, right: 32.0, bottom: 50.0),
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
@@ -20,16 +21,15 @@ class MyLogin extends StatelessWidget {
             width: 240.0,
           ))),
           Container(
-              padding: EdgeInsets.only(bottom: 32.0),
               child: Row(children: [
-                Expanded(
-                    child: ButtonMax(
-                  btnText: '登录 | 注册',
-                  callback: () {
-                    router.push(context, '/login');
-                  },
-                )),
-              ]))
+            Expanded(
+                child: ButtonLogin(
+              btnText: '登录 | 注册',
+              callback: () {
+                router.push(context, '/login');
+              },
+            )),
+          ]))
         ],
       ),
     );

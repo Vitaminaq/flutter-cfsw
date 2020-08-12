@@ -9,7 +9,7 @@ import '../model/publics.dart';
 class PublicsStore with ChangeNotifier {
   String token = '';
 
-  bool get isLogin => token == '' ? false : true;
+  bool get isLogin => token == '' || user == null ? false : true;
 
   dynamic getToken() async {
     final String r = await Storage.getStringItem(tokenKey);
@@ -17,7 +17,7 @@ class PublicsStore with ChangeNotifier {
     notifyListeners();
   }
 
-  static dynamic getCurrentToken() async {
+  static Future<String> getCurrentToken() async {
     final String r = await Storage.getStringItem(tokenKey);
     return r;
   }
@@ -32,7 +32,13 @@ class PublicsStore with ChangeNotifier {
   ///
   /// 用户信息
   ///
-  dynamic userInfo;
+  UserInfoData userInfo;
+
+  User get user =>
+      userInfo == null || userInfo.user == null ? null : userInfo.user;
+  String get className => userInfo == null ? '' : userInfo.className;
+  String get schoolName => userInfo == null ? '' : userInfo.schoolName;
+  String get schoolInfo => '$schoolName$className';
 
   Future<UserInfoResponse> getUserInfo() async {
     final UserInfoResponse r = await api.getUserInfo();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:provider/provider.dart';
+import 'package:flutterdemo/store/publics.dart';
 import './chatroom.dart';
 import './my.dart';
 
@@ -26,6 +27,16 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
+    getUserInfo();
+  }
+
+  getUserInfo() {
+    PublicsStore.getCurrentToken().then((token) => {
+          if (token != null)
+            {Provider.of<PublicsStore>(context, listen: false).getUserInfo()}
+        });
+    return;
   }
 
   @override

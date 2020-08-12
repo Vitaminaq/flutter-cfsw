@@ -152,7 +152,7 @@ class LoginState extends State<Login> {
                       child: Consumer<PublicsStore>(
                           builder: (context, publicsStore, child) => Builder(
                                 builder: (context) {
-                                  return ButtonMax(
+                                  return ButtonLogin(
                                     disable: submitBtnDisable,
                                     btnText: '登录',
                                     callback: () async {

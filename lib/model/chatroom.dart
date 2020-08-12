@@ -13,13 +13,12 @@ String responseToJson(FamousResponse data) {
 }
 
 class FamousParams extends BaseListParams {
-  int type = 7;
+  int type = 6;
   int page = 1;
   int page_size = 15;
 
-  FamousParams({this.type = 7, this.page = 1, this.page_size = 15});
+  FamousParams({this.type = 6, this.page = 1, this.page_size = 15});
 
-  
   Map<String, dynamic> toJson() => {
         "page_size": page_size == null ? null : page_size,
         "page": page == null ? null : page,
