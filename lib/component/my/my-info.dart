@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+
 import '../button/button-max.dart';
 import './my-info-top.dart';
 import './my-menu-item.dart';
@@ -41,6 +44,15 @@ class MyInfo extends StatelessWidget {
                           btnText: '请下载小獴阅读App',
                           radius: 20.0,
                           fontSize: 13.0,
+                          callback: () async {
+                            final String apkUrl =
+                                'http://fir.blueup.cn/MyAndroid';
+                            if (await canLaunch(apkUrl)) {
+                              await launch(apkUrl);
+                            } else {
+                              throw 'Could not launch $apkUrl';
+                            }
+                          },
                         ),
                       ),
                       Text(
