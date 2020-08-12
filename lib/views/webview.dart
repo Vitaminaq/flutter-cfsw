@@ -9,7 +9,7 @@ class ArticDetail extends StatelessWidget {
     final dynamic params = ModalRoute.of(content).settings.arguments;
     final int id = params['item'] == null ? 1 : params['item'].id;
     return BaseWebviewPage(
-        initialUrl: '$baseH5/blog/detail?v=1.0.0#id=$id',
+        initialUrl: '$baseH5/blog/detail?v=1.0.1#id=$id',
         prefetchData: params['item']);
   }
 }
@@ -19,7 +19,7 @@ class MyPoint extends StatelessWidget {
   @override
   Widget build(BuildContext content) {
     return BaseWebviewPage(
-        initialUrl: '$baseH5/integral/centre?v=1.0.0&h5Title=true');
+        initialUrl: '$baseH5/integral/centre?v=1.0.1&h5Title=true');
   }
 }
 
@@ -29,6 +29,6 @@ class MyPointRule extends StatelessWidget {
   Widget build(BuildContext content) {
     return BaseWebviewPage(
         initialUrl:
-            '$baseH5/integral/detail?v=1.0.0&tabType=rule&h5Title=true');
+            '$baseH5/integral/detail?v=1.0.1&tabType=rule&h5Title=true');
   }
 }

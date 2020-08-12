@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutterdemo/store/publics.dart';
+import 'package:flutterdemo/component/popup/toast.dart';
 import './chatroom.dart';
 import './my.dart';
 
@@ -75,6 +76,7 @@ class HomeState extends State<Home> {
           if (lastPopTime == null ||
               DateTime.now().difference(lastPopTime) > Duration(seconds: 1)) {
             lastPopTime = DateTime.now();
+            toast(context, '再次点击退出应用');
             return Future.value(false);
           }
           return Future.value(true);

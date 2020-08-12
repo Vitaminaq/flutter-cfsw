@@ -19,7 +19,7 @@ class ToastWidget extends StatelessWidget {
       child: Align(
           alignment: Alignment.center,
           child: Opacity(
-            opacity: 0.6,
+            opacity: 0.8,
             child: Container(
               padding: EdgeInsets.only(
                   top: 4.0, bottom: 4.0, left: 12.0, right: 12.0),
