@@ -7,6 +7,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/api/webview.dart';
 import './keyboard-popup.dart';
+import 'package:flutterdemo/component/popup/toast.dart';
 
 import '../../router/index.dart';
 import '../../utils/publics.dart';
@@ -71,14 +72,12 @@ final Function responseAction = (ResponseActionOptions options) async {
   final dynamic h5Params = reslut.params;
   bool autoCallback = true;
   switch (reslut.code) {
-    // 路由后退
-    case '10000':
-      router.back(options.context);
-      break;
-    case '10001':
-      break;
-    case '10002':
-      break;
+    // case '10000':
+    //   break;
+    // case '10001':
+    //   break;
+    // case '10002':
+    //   break;
     // 关闭webview
     case '10003':
       router.back(options.context);
@@ -98,12 +97,12 @@ final Function responseAction = (ResponseActionOptions options) async {
         });
       }
       break;
-    // 去个人主页-普通
-    case '10005':
-      break;
-    // 去个人主页-名家
-    case '10006':
-      break;
+    // // 去个人主页-普通
+    // case '10005':
+    //   break;
+    // // 去个人主页-名家
+    // case '10006':
+    //   break;
     // 图片预览
     case '10007':
       showDialog<Null>(
@@ -135,7 +134,10 @@ final Function responseAction = (ResponseActionOptions options) async {
               child: CommentDialog(
                 callback: (value) async {
                   h5Params['content'] = value;
-                  await api.commentOrReply(h5Params);
+                  final r = await api.commentOrReply(h5Params);
+                  if (r.code == 1) {
+                    toast(options.context, '评论成功');
+                  }
                   h5DefalutCallback(options, reslut);
                   // 回复
                   router.back(context);
@@ -156,6 +158,7 @@ final Function responseAction = (ResponseActionOptions options) async {
           "$h5Callback && $h5Callback['${reslut.resolveName}'](${json.encode(r)})");
       break;
     default:
+      toast(options.context, '体验更多功能，请下载小獴阅读app');
       break;
   }
   if (autoCallback == false) return;

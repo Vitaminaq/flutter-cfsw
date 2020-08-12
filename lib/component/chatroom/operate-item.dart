@@ -11,7 +11,7 @@ class OperateItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext content) {
-    return FlatButton(
+    return GestureDetector(
       child: Flex(
         direction: Axis.horizontal,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -19,16 +19,16 @@ class OperateItem extends StatelessWidget {
         children: <Widget>[
           Image.asset(
             icon,
-            height: 20.0,
-            width: 20.0,
+            height: 23.0,
+            width: 23.0,
           ),
           count == null
               ? Padding(padding: EdgeInsets.all(0.0))
               : Text(count.toString(),
-                  style: TextStyle(fontSize: 12, color: Color(0xFF303133))),
+                  style: TextStyle(fontSize: 13, color: Color(0xFF303133))),
         ],
       ),
-      onPressed: () async {
+      onTap: () async {
         if (callback == null) return;
         callback();
       },

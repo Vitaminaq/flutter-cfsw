@@ -28,8 +28,7 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
   Widget build(BuildContext content) {
     final ArticReg articContent = formatContent(item.sorted_content);
 
-    return FlatButton(
-        padding: EdgeInsets.all(0),
+    return GestureDetector(
         child: Container(
             padding: EdgeInsets.only(
               bottom: 10.0,
@@ -97,8 +96,8 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                     ? Padding(padding: EdgeInsets.all(0.0))
                     : Container(
                         width: MediaQuery.of(content).size.width,
-                        padding: EdgeInsets.only(
-                            top: 10.0, bottom: 16.0, left: 26.0, right: 20.0),
+                        padding:
+                            EdgeInsets.only(top: 10.0, left: 26.0, right: 20.0),
                         child: Text(
                           articContent.text,
                           overflow: TextOverflow.ellipsis,
@@ -113,43 +112,49 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                       ),
                 articContent.images.length == 0
                     ? Padding(padding: EdgeInsets.all(0.0))
-                    : ListImage(articContent.images),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Consumer<ProviderStore>(
-                            builder: (context, providerStore, child) =>
-                                OperateItem(
-                                  icon:
-                                      'lib/images/parse${item.liked == true ? 'd' : ''}.png',
-                                  count: item.like_count,
-                                  callback: () async {
-                                    final String token =
-                                        await PublicsStore.getCurrentToken();
-                                    if (token == null || token == '')
-                                      return router.push(content, '/login');
-                                    final r =
-                                        await api.likeNote({'id': item.id});
-                                    if (r.code != 1) return;
-                                    providerStore.updateClickStatus(item.id);
-                                  },
-                                ))),
-                    Expanded(
-                        child: OperateItem(
-                      icon: 'lib/images/comment.png',
-                      count: item.comment_total_count,
-                      callback: () => toDetail(content),
-                    )),
-                    Expanded(
-                        child: OperateItem(
-                      icon: 'lib/images/share.png',
-                      callback: () => Share.share(
-                          '【${item.title}】\n $baseH5/blog/detail?v=1.0.0#id=${item.id}'),
-                    )),
-                  ],
+                    : Container(
+                        padding: EdgeInsets.only(top: 16.0),
+                        child: ListImage(articContent.images),
+                      ),
+                Container(
+                  padding: EdgeInsets.only(top: 16.0, bottom: 5.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: Consumer<ProviderStore>(
+                              builder: (context, providerStore, child) =>
+                                  OperateItem(
+                                    icon:
+                                        'lib/images/parse${item.liked == true ? 'd' : ''}.png',
+                                    count: item.like_count,
+                                    callback: () async {
+                                      final String token =
+                                          await PublicsStore.getCurrentToken();
+                                      if (token == null || token == '')
+                                        return router.push(content, '/login');
+                                      final r =
+                                          await api.likeNote({'id': item.id});
+                                      if (r.code != 1) return;
+                                      providerStore.updateClickStatus(item.id);
+                                    },
+                                  ))),
+                      Expanded(
+                          child: OperateItem(
+                        icon: 'lib/images/comment.png',
+                        count: item.comment_total_count,
+                        callback: () => toDetail(content),
+                      )),
+                      Expanded(
+                          child: OperateItem(
+                        icon: 'lib/images/share.png',
+                        callback: () => Share.share(
+                            '【${item.title}】\n $baseH5/blog/detail?v=1.0.0#id=${item.id}'),
+                      )),
+                    ],
+                  ),
                 )
               ],
             )),
-        onPressed: () => toDetail(content));
+        onTap: () => toDetail(content));
   }
 }
