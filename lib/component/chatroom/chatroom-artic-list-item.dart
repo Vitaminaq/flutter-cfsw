@@ -86,23 +86,27 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                     ),
                   ],
                 ),
-                Container(
-                  width: MediaQuery.of(content).size.width,
-                  padding: EdgeInsets.only(
-                      top: 10.0, bottom: 16.0, left: 26.0, right: 20.0),
-                  child: Text(
-                    articContent.text,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: TextStyle(
-                        letterSpacing: 1.0, // 每字空隙
-                        fontSize: 15.0,
-                        wordSpacing: 1.0, // 每句空隙
-                        height: 1.2,
-                        color: Color(0xFF444444)),
-                  ),
-                ),
-                ListImage(articContent.images),
+                articContent.text == null
+                    ? Padding(padding: EdgeInsets.all(0.0))
+                    : Container(
+                        width: MediaQuery.of(content).size.width,
+                        padding: EdgeInsets.only(
+                            top: 10.0, bottom: 16.0, left: 26.0, right: 20.0),
+                        child: Text(
+                          articContent.text,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: TextStyle(
+                              letterSpacing: 1.0, // 每字空隙
+                              fontSize: 15.0,
+                              wordSpacing: 1.0, // 每句空隙
+                              height: 1.2,
+                              color: Color(0xFF444444)),
+                        ),
+                      ),
+                articContent.images.length == 0
+                    ? Padding(padding: EdgeInsets.all(0.0))
+                    : ListImage(articContent.images),
                 Row(
                   children: <Widget>[
                     Expanded(

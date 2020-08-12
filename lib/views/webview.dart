@@ -14,3 +14,22 @@ class ArticDetail extends StatelessWidget {
         prefetchData: params['item']);
   }
 }
+
+// 学点中心
+class MyPoint extends StatelessWidget {
+  @override
+  Widget build(BuildContext content) {
+    return BaseWebviewPage(
+        initialUrl: '$baseH5/integral/centre?v=1.0.0&h5Title=true');
+  }
+}
+
+// 学点规则
+class MyPointRule extends StatelessWidget {
+  @override
+  Widget build(BuildContext content) {
+    return BaseWebviewPage(
+        initialUrl:
+            '$baseH5/integral/detail?v=1.0.0&tabType=rule&h5Title=true');
+  }
+}

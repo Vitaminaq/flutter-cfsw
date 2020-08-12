@@ -51,7 +51,7 @@ class MyInfoTop extends StatelessWidget {
                 )),
                 GestureDetector(
                   child: Container(
-                      padding: EdgeInsets.only(right: 16.0),
+                      padding: EdgeInsets.only(right: 16.0, bottom: 46.0),
                       child: Image.asset(
                         'lib/images/loginout.png',
                         height: 20.0,

@@ -55,9 +55,14 @@ class HomeState extends State<Home> {
           ),
           // 底部导航栏
           bottomNavigationBar: BottomNavigationBar(
+            iconSize: 20.0,
             items: navList.map((_NavItem item) {
               return BottomNavigationBarItem(
-                  icon: Icon(item.icon), title: Text(item.title));
+                  icon: Icon(item.icon),
+                  title: Text(
+                    item.title,
+                    style: TextStyle(fontSize: 12.0),
+                  ));
             }).toList(),
             currentIndex: _selectedIndex,
             fixedColor: Color(0xFF00c295),

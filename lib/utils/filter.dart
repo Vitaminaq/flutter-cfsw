@@ -46,8 +46,10 @@ class ArticReg {
 ///
 ArticReg Function(List<SortedContent>) formatContent =
     (List<SortedContent> sorted_content) {
-  if (sorted_content == null || sorted_content.length == 0)
-    return ArticReg(images: [], text: '');
+  if (sorted_content == null ||
+      sorted_content.length == 0 ||
+      sorted_content[0].text == null ||
+      sorted_content[0].text == '') return ArticReg(images: [], text: null);
   final String str = sorted_content[0].text;
   final RegExp imgReg = RegExp(r"(https|http).*?(?:jpg|png|jpeg|gif)");
   final List<String> images = [];
@@ -56,7 +58,8 @@ ArticReg Function(List<SortedContent>) formatContent =
     images.add(m.group(0));
   }
   final String relS = str.replaceAll(RegExp(r"<[^>]+>"), '');
-  return ArticReg(images: images, text: relS);
+  return ArticReg(
+      images: images, text: relS == '' || relS == null ? null : relS);
 };
 
 // 与h5交互的一些常量
