@@ -23,6 +23,7 @@ class HomeState extends State<Home> {
     _NavItem(key: 'chatroom', title: '首页', icon: Icons.home, view: ChatRoom()),
     _NavItem(key: 'my', title: '我的', icon: Icons.person_outline, view: My()),
   ];
+  DateTime lastPopTime;
 
   @override
   void initState() {
@@ -42,7 +43,8 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.dark,
+      child: WillPopScope(
         child: Scaffold(
           body: SafeArea(
             child: Stack(
@@ -68,7 +70,17 @@ class HomeState extends State<Home> {
             fixedColor: Color(0xFF00c295),
             onTap: _onItemTapped,
           ),
-        ));
+        ),
+        onWillPop: () async {
+          if (lastPopTime == null ||
+              DateTime.now().difference(lastPopTime) > Duration(seconds: 1)) {
+            lastPopTime = DateTime.now();
+            return Future.value(false);
+          }
+          return Future.value(true);
+        },
+      ),
+    );
   }
 
   void _onItemTapped(int index) async {

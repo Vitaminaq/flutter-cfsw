@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:flutterdemo/store/chatroom.dart';
 import 'package:flutterdemo/store/publics.dart';
 import 'package:flutterdemo/api/chatroom.dart';
+import 'package:share/share.dart';
+import 'package:flutterdemo/config.dart';
 
+import './operate-item.dart';
 import './list-image.dart';
 
 class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
@@ -16,6 +19,10 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
         super(key: key);
 
   final ChatRoomModel.Datum item;
+
+  toDetail(BuildContext content) {
+    router.push(content, '/artic/detail', params: {'item': item});
+  }
 
   @override
   Widget build(BuildContext content) {
@@ -112,27 +119,11 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                     Expanded(
                         child: Consumer<ProviderStore>(
                             builder: (context, providerStore, child) =>
-                                FlatButton(
-                                  child: Flex(
-                                    direction: Axis.horizontal,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.thumb_up,
-                                        color: item.liked
-                                            ? Color(0xff00c295)
-                                            : Color(0xFFbcbcbc),
-                                        size: 20.0,
-                                      ),
-                                      Text(item.like_count.toString(),
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFFbcbcbc))),
-                                    ],
-                                  ),
-                                  onPressed: () async {
+                                OperateItem(
+                                  icon:
+                                      'lib/images/parse${item.liked == true ? 'd' : ''}.png',
+                                  count: item.like_count,
+                                  callback: () async {
                                     final String token =
                                         await PublicsStore.getCurrentToken();
                                     if (token == null || token == '')
@@ -144,42 +135,21 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                                   },
                                 ))),
                     Expanded(
-                        child: Flex(
-                      direction: Axis.horizontal,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.comment,
-                          color: Color(0xFFbcbcbc),
-                          size: 20.0,
-                        ),
-                        Text(item.comment_total_count.toString(),
-                            style: TextStyle(
-                                fontSize: 12, color: Color(0xFFbcbcbc)))
-                      ],
+                        child: OperateItem(
+                      icon: 'lib/images/comment.png',
+                      count: item.comment_total_count,
+                      callback: () => toDetail(content),
                     )),
                     Expanded(
-                        child: Flex(
-                      direction: Axis.horizontal,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.view_agenda,
-                          color: Color(0xFFbcbcbc),
-                          size: 20.0,
-                        ),
-                        Text(item.pv.toString(),
-                            style: TextStyle(
-                                fontSize: 12, color: Color(0xFFbcbcbc)))
-                      ],
-                    ))
+                        child: OperateItem(
+                      icon: 'lib/images/share.png',
+                      callback: () => Share.share(
+                          '【${item.title}】\n $baseH5/blog/detail?v=1.0.0#id=${item.id}'),
+                    )),
                   ],
                 )
               ],
             )),
-        onPressed: () =>
-            router.push(content, '/artic/detail', params: {'item': item}));
+        onPressed: () => toDetail(content));
   }
 }

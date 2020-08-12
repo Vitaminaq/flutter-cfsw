@@ -56,6 +56,10 @@ flutter:
     - lib/images/point.png
     - lib/images/point-rule.png
     - lib/images/to.png
+    - lib/images/parse.png
+    - lib/images/parsed.png
+    - lib/images/comment.png
+    - lib/images/share.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

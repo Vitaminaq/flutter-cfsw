@@ -6,7 +6,6 @@ import 'package:share/share.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:flutterdemo/utils/filter.dart';
 import 'package:flutterdemo/api/webview.dart';
-import 'package:provider/provider.dart';
 import './keyboard-popup.dart';
 
 import '../../router/index.dart';
@@ -79,7 +78,6 @@ final Function responseAction = (ResponseActionOptions options) async {
     case '10001':
       break;
     case '10002':
-      Share.share('【不仅仅是测试分享】\n ${options.url}');
       break;
     // 关闭webview
     case '10003':
