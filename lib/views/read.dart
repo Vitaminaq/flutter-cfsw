@@ -13,13 +13,13 @@ class Read extends StatelessWidget {
       return Column(
         children: [
           Container(
-              padding: EdgeInsets.only(left: 16.0),
+              padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
               alignment: Alignment.topLeft,
               child: Text(
                 '阅读',
                 style: TextStyle(
                     color: Color(0xff303133),
-                    fontSize: 20.0,
+                    fontSize: 22.0,
                     fontWeight: FontWeight.w700),
               )),
           Expanded(

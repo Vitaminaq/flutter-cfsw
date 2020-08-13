@@ -80,12 +80,15 @@ class ReadBookItem extends StatelessWidget {
                           .take(2)
                           .map((i) => ReadBookLabel(i.name))
                           .toList()),
+                  Padding(padding: EdgeInsets.only(top: 15.0)),
                   Row(children: [
-                    Text(
-                      item.readCount.toString(),
-                      style:
-                          TextStyle(color: Color(0xff12dba5), fontSize: 12.0),
-                    ),
+                    Container(
+                        margin: EdgeInsets.only(top: 1.0),
+                        child: Text(
+                          item.readCount.toString(),
+                          style: TextStyle(
+                              color: Color(0xff12dba5), fontSize: 12.0),
+                        )),
                     Text(
                       '人正在阅读',
                       style:
