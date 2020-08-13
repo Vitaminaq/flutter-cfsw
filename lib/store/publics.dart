@@ -36,9 +36,14 @@ class PublicsStore with ChangeNotifier {
 
   User get user =>
       userInfo == null || userInfo.user == null ? null : userInfo.user;
-  String get className => userInfo == null ? '' : userInfo.className;
-  String get schoolName => userInfo == null ? '' : userInfo.schoolName;
-  String get schoolInfo => '$schoolName$className';
+  String get className => userInfo == null ? null : userInfo.className;
+  String get schoolName => userInfo == null ? null : userInfo.schoolName;
+  String get schoolInfo => (schoolName == null || schoolName == '') &&
+          (className == null || className == '')
+      ? '快去下载小獴阅读app加入班级吧'
+      : '$schoolName$className';
+  int get studentPoint =>
+      user == null || user.studentPoint == null ? 0 : user.studentPoint;
 
   Future<UserInfoResponse> getUserInfo() async {
     final UserInfoResponse r = await api.getUserInfo();

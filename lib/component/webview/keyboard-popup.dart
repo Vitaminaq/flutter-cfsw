@@ -38,7 +38,7 @@ class CommentDialog extends Dialog {
                           autofocus: true,
                           cursorColor: Color(0xFF00dcFF),
                           onChanged: (v) {
-                            this.currentValue = v;
+                            currentValue = v;
                           },
                         ),
                         Row(

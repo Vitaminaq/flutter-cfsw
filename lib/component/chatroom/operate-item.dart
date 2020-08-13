@@ -12,6 +12,7 @@ class OperateItem extends StatelessWidget {
   @override
   Widget build(BuildContext content) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       child: Flex(
         direction: Axis.horizontal,
         crossAxisAlignment: CrossAxisAlignment.center,

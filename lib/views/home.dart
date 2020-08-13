@@ -3,33 +3,33 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutterdemo/store/publics.dart';
 import 'package:flutterdemo/component/popup/toast.dart';
+import 'package:flutterdemo/component/tab-bar.dart';
 import './chatroom.dart';
+import './read.dart';
 import './my.dart';
 
-class _NavItem {
-  String title;
-  String key;
-  IconData icon;
-  Widget view;
-  _NavItem(
-      {@required this.title,
-      @required this.key,
-      @required this.icon,
-      @required this.view});
-}
-
 class HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  NavItemKey _currentKey = NavItemKey.chatroom;
   final navList = [
-    _NavItem(key: 'chatroom', title: '首页', icon: Icons.home, view: ChatRoom()),
-    _NavItem(key: 'my', title: '我的', icon: Icons.person_outline, view: My()),
+    NavItem(
+        key: NavItemKey.chatroom,
+        title: '首页',
+        icon: Icons.home,
+        view: ChatRoom(),
+        isInit: true),
+    NavItem(key: NavItemKey.read, title: '阅读', icon: Icons.book, view: Read()),
+    NavItem(
+        key: NavItemKey.my,
+        title: '我',
+        icon: Icons.person_outline,
+        view: My(),
+        isInit: true),
   ];
   DateTime lastPopTime;
 
   @override
   void initState() {
     super.initState();
-
     getUserInfo();
   }
 
@@ -47,31 +47,21 @@ class HomeState extends State<Home> {
       value: SystemUiOverlayStyle.dark,
       child: WillPopScope(
         child: Scaffold(
-          body: SafeArea(
-            child: Stack(
-                children: navList.map((_NavItem item) {
-              return Offstage(
-                offstage: navList[_selectedIndex].key != item.key,
-                child: item.view,
-              );
-            }).toList()),
-          ),
-          // 底部导航栏
-          bottomNavigationBar: BottomNavigationBar(
-            iconSize: 20.0,
-            items: navList.map((_NavItem item) {
-              return BottomNavigationBarItem(
-                  icon: Icon(item.icon),
-                  title: Text(
-                    item.title,
-                    style: TextStyle(fontSize: 12.0),
-                  ));
-            }).toList(),
-            currentIndex: _selectedIndex,
-            fixedColor: Color(0xFF00c295),
-            onTap: _onItemTapped,
-          ),
-        ),
+            body: SafeArea(
+              child: Stack(
+                  children: navList.map((NavItem item) {
+                return Offstage(
+                  offstage: _currentKey != item.key,
+                  child: item.isInit ? item.view : Text(''),
+                );
+              }).toList()),
+            ),
+            // 底部导航栏
+            bottomNavigationBar: MyTabBar(
+              navList: navList,
+              onTap: _onItemTapped,
+              currentKey: _currentKey,
+            )),
         onWillPop: () async {
           if (lastPopTime == null ||
               DateTime.now().difference(lastPopTime) > Duration(seconds: 1)) {
@@ -85,10 +75,9 @@ class HomeState extends State<Home> {
     );
   }
 
-  void _onItemTapped(int index) async {
-    setState(() {
-      _selectedIndex = index;
-    });
+  void _onItemTapped(NavItemKey key) async {
+    _currentKey = key;
+    setState(() {});
   }
 }
 

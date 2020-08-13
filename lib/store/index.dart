@@ -7,5 +7,6 @@ import './publics.dart';
 final List<SingleChildWidget> providerList = [
   ChangeNotifierProvider<MustStore>(create: (context) => MustStore()),
   ChangeNotifierProvider<HotStore>(create: (context) => HotStore()),
+  ChangeNotifierProvider<ReadStore>(create: (context) => ReadStore()),
   ChangeNotifierProvider<PublicsStore>(create: (context) => PublicsStore()),
 ];

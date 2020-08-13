@@ -34,3 +34,5 @@ class MustStore extends ChatRoomStore {}
 class HotStore extends ChatRoomStore {
   ChatRoomModel.FamousParams params = ChatRoomModel.FamousParams(type: 7);
 }
+
+class ReadStore extends ChatRoomStore {}

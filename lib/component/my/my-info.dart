@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:flutterdemo/store/publics.dart';
 import '../button/button-max.dart';
 import './my-info-top.dart';
 import './my-menu-item.dart';
@@ -81,7 +82,9 @@ class MyInfo extends StatelessWidget {
           MyMenuItem(
               icon: 'lib/images/point.png',
               title: '我的学点',
-              extralText: '100',
+              extralText: Provider.of<PublicsStore>(context, listen: true)
+                  .studentPoint
+                  .toString(),
               toPath: '/integral/centre'),
           MyMenuItem(
             icon: 'lib/images/point-rule.png',
