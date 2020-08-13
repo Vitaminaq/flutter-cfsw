@@ -27,7 +27,6 @@ class Axios {
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
       final String token = await getToken();
       options.headers['Authorization'] = 'Bearer $token';
-      print('qqqqqqqqqqqqqqqqqwwwwwwwwwwwwwwwwwwwww${options.headers}');
       print('请求拦截器生效');
     }, onResponse: (Response response) {
       print('响应拦截器生效');

@@ -47,7 +47,11 @@ class ScrollerState<I> extends State<Scroller> {
             return Container(
                 padding: EdgeInsets.only(top: 20.0),
                 height: 60,
-                child: Text('无更多数据', textAlign: TextAlign.center));
+                child: Text(
+                  '无更多数据',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xffadadad), fontSize: 12.0),
+                ));
           }
           if (pullUpStatus == BaseListLoadStatus.error) {
             return Container(
