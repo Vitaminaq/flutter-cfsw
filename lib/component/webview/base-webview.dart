@@ -2,19 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutterdemo/utils/filter.dart';
 
-import '../../utils/publics.dart';
-import './service.dart';
+import 'package:flutterdemo/utils/publics.dart';
+import 'service.dart';
 
 class BaseWebviewState extends State<BaseWebview> {
   WebViewController _controller;
-
-  Future<bool> _goBack(BuildContext context) async {
-    if (_controller != null && await _controller.canGoBack()) {
-      _controller.goBack();
-      return false;
-    }
-    return true;
-  }
 
   @override
   Widget build(BuildContext content) {
@@ -65,9 +57,14 @@ class BaseWebviewState extends State<BaseWebview> {
             },
           )),
       onWillPop: () async {
-        return _goBack(context);
+        return goBack(context, _controller);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
 
