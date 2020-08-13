@@ -11,7 +11,7 @@ class ListImage extends StatelessWidget {
     final List<String> realList =
         imgList.length > 3 ? imgList.take(3).toList() : imgList;
     final int len = realList.length;
-    if (len == 0) return Text('');
+    if (len == 0) return Padding(padding: EdgeInsets.all(0.0));
     return Container(
         padding: EdgeInsets.only(left: 26.0, right: 14.0),
         child: Row(
