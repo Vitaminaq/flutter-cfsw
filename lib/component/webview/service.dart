@@ -178,3 +178,12 @@ final Function setStateToH5 = (int code) async {
   final String token = await getToken();
   return json.encode({'code': code, 'token': token});
 };
+
+Future<bool> Function(BuildContext, WebViewController) goBack =
+    (BuildContext context, WebViewController controller) async {
+  if (controller != null && await controller.canGoBack()) {
+    controller.goBack();
+    return false;
+  }
+  return true;
+};

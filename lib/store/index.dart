@@ -3,6 +3,7 @@ import 'package:provider/single_child_widget.dart';
 
 import './chatroom.dart';
 import './publics.dart';
+import './read.dart';
 
 final List<SingleChildWidget> providerList = [
   ChangeNotifierProvider<MustStore>(create: (context) => MustStore()),

@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
-import '../store/chatroom.dart';
+import 'package:flutterdemo/model/read.dart' as ReadModel;
+import 'package:flutterdemo/store/read.dart';
 import 'package:flutterdemo/component/scroller.dart';
-import 'package:flutterdemo/component/chatroom/chatroom-artic-list-item.dart';
+import 'package:flutterdemo/component/read/read-book-item.dart';
 
 class Read extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ReadStore>(builder: (context, readStore, child) {
-      return Scroller<ReadStore, ChatRoomModel.Datum>(
-        store: readStore,
-        createlistItem: (item) => ChatroomArticListItem<ReadStore>(item: item),
+      return Column(
+        children: [
+          Container(
+              padding: EdgeInsets.only(left: 16.0),
+              alignment: Alignment.topLeft,
+              child: Text(
+                '阅读',
+                style: TextStyle(
+                    color: Color(0xff303133),
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700),
+              )),
+          Expanded(
+              child: Scroller<ReadStore, ReadModel.Datum>(
+            store: readStore,
+            createlistItem: (item) => ReadBookItem(
+              item: item,
+            ),
+          ))
+        ],
       );
     });
   }

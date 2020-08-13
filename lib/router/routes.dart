@@ -19,6 +19,10 @@ final Map<String, WidgetBuilder> routes = {
     BuildContext context,
   ) =>
       MyPointRule(),
+  '/chuangguan': (
+    BuildContext context,
+  ) =>
+      ChuangGuan(),
   '/login': (
     BuildContext context,
   ) =>
