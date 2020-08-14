@@ -46,12 +46,11 @@ class CommentContentState extends State<CommentContent> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   addImage() {
-    pickImageFromCameraOrAlbum(context, (List<File> imgs) {
+    pickImageFromCameraOrAlbum(context, 3 - imgList.length, (List<File> imgs) {
       imgList.addAll(imgs);
       setState(() {});
     });
