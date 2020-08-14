@@ -27,7 +27,7 @@ class BaseWebviewState extends State<BaseWebview> {
 
     return WillPopScope(
       child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(content).size.height,
           child: WebView(
             key: Key(widget.initialUrl),
             initialUrl: widget.initialUrl,
@@ -50,14 +50,14 @@ class BaseWebviewState extends State<BaseWebview> {
             gestureNavigationEnabled: true,
             debuggingEnabled: false,
             javascriptChannels: <JavascriptChannel>[
-              _jsBridge(context) // 与h5 通信
+              _jsBridge(content) // 与h5 通信
             ].toSet(),
             onWebResourceError: (error) {
               // widget.finishedCallback(2);
             },
           )),
       onWillPop: () async {
-        return goBack(context, _controller);
+        return goBack(content, _controller);
       },
     );
   }

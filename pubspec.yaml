@@ -27,7 +27,8 @@ dependencies:
   share: ^0.6.1+1
   photo_view: ^0.4.2
   url_launcher: ^5.2.7
-  # image_picker: ^0.6.7+4
+  image_picker: 0.6.7+4
+  photo: ^0.4.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -63,6 +64,7 @@ flutter:
     - lib/images/share.png
     - lib/images/close.png
     - lib/images/login.png
+    - lib/images/add-image.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

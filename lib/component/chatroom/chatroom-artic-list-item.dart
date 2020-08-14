@@ -121,6 +121,18 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                   child: Row(
                     children: <Widget>[
                       Expanded(
+                          child: OperateItem(
+                        icon: 'lib/images/share.png',
+                        callback: () => Share.share(
+                            '【${item.title}】\n $baseH5/blog/detail?v=1.0.0#id=${item.id}'),
+                      )),
+                      Expanded(
+                          child: OperateItem(
+                        icon: 'lib/images/comment.png',
+                        count: item.comment_total_count,
+                        callback: () => toDetail(content),
+                      )),
+                      Expanded(
                           child: Consumer<ProviderStore>(
                               builder: (context, providerStore, child) =>
                                   OperateItem(
@@ -138,18 +150,6 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                                       providerStore.updateClickStatus(item.id);
                                     },
                                   ))),
-                      Expanded(
-                          child: OperateItem(
-                        icon: 'lib/images/comment.png',
-                        count: item.comment_total_count,
-                        callback: () => toDetail(content),
-                      )),
-                      Expanded(
-                          child: OperateItem(
-                        icon: 'lib/images/share.png',
-                        callback: () => Share.share(
-                            '【${item.title}】\n $baseH5/blog/detail?v=1.0.0#id=${item.id}'),
-                      )),
                     ],
                   ),
                 )

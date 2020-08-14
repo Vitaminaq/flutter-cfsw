@@ -14,6 +14,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="小獴阅读-精品解析"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
