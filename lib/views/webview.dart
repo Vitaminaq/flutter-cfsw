@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../component/webview/base-webview-page.dart';
+import 'package:flutterdemo/component/webview/base-webview-page.dart';
 import '../config.dart';
 
 // 文章详情
@@ -19,6 +19,7 @@ class MyPoint extends StatelessWidget {
   @override
   Widget build(BuildContext content) {
     return BaseWebviewPage(
+        statusBarColor: 0xff07C89A,
         initialUrl: '$baseH5/integral/centre?v=1.0.2&h5Title=true');
   }
 }
@@ -28,6 +29,7 @@ class MyPointRule extends StatelessWidget {
   @override
   Widget build(BuildContext content) {
     return BaseWebviewPage(
+        statusBarColor: 0xff07C89A,
         initialUrl:
             '$baseH5/integral/detail?v=1.0.2&tabType=rule&h5Title=true');
   }

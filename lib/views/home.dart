@@ -47,6 +47,7 @@ class HomeState extends State<Home> {
       value: SystemUiOverlayStyle.dark,
       child: WillPopScope(
         child: Scaffold(
+            backgroundColor: Colors.white,
             body: SafeArea(
               child: Stack(
                   children: navList.map((NavItem item) {

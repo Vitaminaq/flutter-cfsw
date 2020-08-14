@@ -43,7 +43,10 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
             }),
           )
         : Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+            ),
             resizeToAvoidBottomPadding: false,
             body: Builder(builder: (BuildContext context) {
               return SafeArea(
@@ -75,6 +78,11 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
             }),
           );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }
 
 class BaseWebviewPage<S> extends StatefulWidget {
@@ -83,13 +91,15 @@ class BaseWebviewPage<S> extends StatefulWidget {
       @required this.initialUrl,
       this.prefetchData,
       this.pure = false,
-      this.hasAppBar = false})
+      this.hasAppBar = false,
+      this.statusBarColor})
       : super(key: key);
 
   final String initialUrl; // webview地址
   final dynamic prefetchData; // 预请求的数据
   final bool pure;
   final bool hasAppBar;
+  final int statusBarColor;
 
   @override
   BaseWebviewPageState createState() => BaseWebviewPageState();

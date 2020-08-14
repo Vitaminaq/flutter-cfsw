@@ -4,6 +4,7 @@ import 'service.dart';
 
 ///
 /// 纯净版webview
+/// 问题：加载游戏相关页面，退出会出现黑色蒙层
 ///
 class BaseWebviewPure extends StatelessWidget {
   BaseWebviewPure({

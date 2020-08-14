@@ -80,6 +80,7 @@ final Function responseAction = (ResponseActionOptions options) async {
     //   break;
     // 关闭webview
     case '10003':
+      setStatusBarColor(0xffffffff);
       router.back(options.context);
       break;
     // 跳转登录，同步状态
@@ -113,7 +114,7 @@ final Function responseAction = (ResponseActionOptions options) async {
                   router.back(context); //退出弹出框
                 },
                 child: PhotoView(
-                  imageProvider: NetworkImage(reslut.params['imgList'][0]),
+                  imageProvider: NetworkImage(h5Params['imgList'][0]),
                 ));
           });
       break;
@@ -157,6 +158,9 @@ final Function responseAction = (ResponseActionOptions options) async {
       options.controller.evaluateJavascript(
           "$h5Callback && $h5Callback['${reslut.resolveName}'](${json.encode(r)})");
       break;
+    case '10013':
+      setStatusBarColor(h5Params);
+      break;
     default:
       toast(options.context, '体验更多功能，请下载小獴阅读app');
       break;
@@ -185,5 +189,6 @@ Future<bool> Function(BuildContext, WebViewController) goBack =
     controller.goBack();
     return false;
   }
+  setStatusBarColor(0xffffffff);
   return true;
 };

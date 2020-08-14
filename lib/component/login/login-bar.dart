@@ -10,6 +10,7 @@ class LoginBar extends StatelessWidget {
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 6.0),
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         child: Container(
             height: 40.0,
             width: 40.0,
