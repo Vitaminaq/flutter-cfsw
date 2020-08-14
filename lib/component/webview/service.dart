@@ -69,7 +69,9 @@ class H5Response {
 final Function responseAction = (ResponseActionOptions options) async {
   final JsonStr reslut =
       JsonStr.fromJson(json.decode(options.jsonStr.toString()));
+  // h5传递过来的参数
   final dynamic h5Params = reslut.params;
+  final BuildContext wbContext = options.context;
   bool autoCallback = true;
   switch (reslut.code) {
     // case '10000':
@@ -81,12 +83,12 @@ final Function responseAction = (ResponseActionOptions options) async {
     // 关闭webview
     case '10003':
       setStatusBarColor(0xffffffff);
-      router.back(options.context);
+      router.back(wbContext);
       break;
     // 跳转登录，同步状态
     case '10004':
       autoCallback = false;
-      final r = await router.push(options.context, '/login');
+      final r = await router.push(wbContext, '/login');
       if (r != null) {
         final String token = await getToken();
         // 向h5同步登陆态信息
@@ -107,7 +109,7 @@ final Function responseAction = (ResponseActionOptions options) async {
     // 图片预览
     case '10007':
       showDialog<Null>(
-          context: options.context, //BuildContext对象
+          context: wbContext, //BuildContext对象
           builder: (BuildContext context) {
             return GestureDetector(
                 onTap: () {
@@ -126,7 +128,7 @@ final Function responseAction = (ResponseActionOptions options) async {
     case '10009':
       autoCallback = false;
       showDialog<Null>(
-          context: options.context, //BuildContext对象
+          context: wbContext, //BuildContext对象
           builder: (BuildContext context) {
             return GestureDetector(
               onTap: () {
@@ -137,7 +139,7 @@ final Function responseAction = (ResponseActionOptions options) async {
                   h5Params['content'] = value;
                   final r = await api.commentOrReply(h5Params);
                   if (r.code == 1) {
-                    toast(options.context, '评论成功');
+                    toast(wbContext, '评论成功');
                   }
                   h5DefalutCallback(options, reslut);
                   // 回复
@@ -160,6 +162,9 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     case '10013':
       setStatusBarColor(h5Params);
+      break;
+    case '10014':
+      router.push(wbContext, '/pure/webview', params: {'url': h5Params});
       break;
     default:
       toast(options.context, '体验更多功能，请下载小獴阅读app');

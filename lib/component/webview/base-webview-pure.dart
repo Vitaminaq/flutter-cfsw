@@ -9,13 +9,16 @@ import 'service.dart';
 class BaseWebviewPure extends StatelessWidget {
   BaseWebviewPure({
     Key key,
-    this.initialUrl,
-    this.finishedCallback,
+    @required this.initialUrl,
+    @required this.finishedCallback,
+    this.setTitle,
   })  : assert(initialUrl != null),
+        assert(finishedCallback != null),
         super(key: key);
 
   final String initialUrl;
   final finishedCallback;
+  final setTitle;
 
   @override
   Widget build(BuildContext content) {
@@ -33,6 +36,10 @@ class BaseWebviewPure extends StatelessWidget {
             onPageStarted: (String url) {},
             onPageFinished: (String url) async {
               finishedCallback(1);
+              controller.evaluateJavascript("document.title").then((result) {
+                if (setTitle == null) return;
+                setTitle(result);
+              });
             },
             gestureNavigationEnabled: true,
             debuggingEnabled: false,

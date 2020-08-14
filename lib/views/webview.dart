@@ -51,3 +51,19 @@ class ChuangGuan extends StatelessWidget {
             '$baseUrl/game/chuangguan/index.html?bookid=$bookId&token=$token&gender=1&from=wx-min&env=test&platform=APP_DEVTOOLS&random=${DateTime.now().millisecondsSinceEpoch}');
   }
 }
+
+// 空webview，用于打开外链
+class PureWebview extends StatelessWidget {
+  @override
+  Widget build(BuildContext content) {
+    final dynamic params = ModalRoute.of(content).settings.arguments;
+    final String url =
+        params == null || params['url'] == null ? '' : params['url'];
+    return BaseWebviewPage(
+        statusBarColor: 0xffffffff,
+        beforeBarColor: 0xff07C89A,
+        pure: true,
+        hasAppBar: true,
+        initialUrl: url);
+  }
+}

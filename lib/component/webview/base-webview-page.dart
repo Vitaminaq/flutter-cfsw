@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'base-webview-loading.dart';
 import 'base-webview.dart';
 import 'base-webview-pure.dart';
+import 'package:flutterdemo/utils/publics.dart';
 
 // webview页面
 class BaseWebviewPageState extends State<BaseWebviewPage> {
@@ -10,6 +11,9 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
 
   @override
   Widget build(BuildContext content) {
+    if (widget.statusBarColor != null) {
+      setStatusBarColor(widget.statusBarColor);
+    }
     return widget.hasAppBar == false
         ? Scaffold(
             resizeToAvoidBottomPadding: false,
@@ -46,6 +50,7 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0.0,
+              title: Text(pageTitle),
             ),
             resizeToAvoidBottomPadding: false,
             body: Builder(builder: (BuildContext context) {
@@ -61,6 +66,11 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
                               finishedCallback: (int index) {
                                 setState(() {
                                   currentIndex = index;
+                                });
+                              },
+                              setTitle: (String title) {
+                                setState(() {
+                                  pageTitle = title;
                                 });
                               },
                             )
@@ -82,6 +92,8 @@ class BaseWebviewPageState extends State<BaseWebviewPage> {
   @override
   void dispose() {
     super.dispose();
+    if (widget.beforeBarColor == null) return;
+    setStatusBarColor(widget.beforeBarColor);
   }
 }
 
@@ -92,7 +104,8 @@ class BaseWebviewPage<S> extends StatefulWidget {
       this.prefetchData,
       this.pure = false,
       this.hasAppBar = false,
-      this.statusBarColor})
+      this.statusBarColor,
+      this.beforeBarColor})
       : super(key: key);
 
   final String initialUrl; // webview地址
@@ -100,6 +113,7 @@ class BaseWebviewPage<S> extends StatefulWidget {
   final bool pure;
   final bool hasAppBar;
   final int statusBarColor;
+  final int beforeBarColor;
 
   @override
   BaseWebviewPageState createState() => BaseWebviewPageState();

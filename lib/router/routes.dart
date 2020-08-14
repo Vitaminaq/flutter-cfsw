@@ -23,6 +23,10 @@ final Map<String, WidgetBuilder> routes = {
     BuildContext context,
   ) =>
       ChuangGuan(),
+  '/pure/webview': (
+    BuildContext context,
+  ) =>
+      PureWebview(),
   '/login': (
     BuildContext context,
   ) =>
