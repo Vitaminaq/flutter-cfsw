@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../router/index.dart';
-import './image-view.dart';
+import 'package:flutterdemo/router/index.dart';
+import 'package:flutterdemo/component/tools/image-view.dart';
 
 class ListImage extends StatelessWidget {
   final List<String> imgList;

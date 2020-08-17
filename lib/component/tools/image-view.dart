@@ -3,7 +3,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class ImageView extends StatelessWidget {
-  final List<String> imgList;
+  final List<dynamic> imgList;
   final int currentIndex;
   ImageView(this.imgList, this.currentIndex) : assert(imgList != null);
 
@@ -11,7 +11,7 @@ class ImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: PhotoViewGallery.builder(
-      scrollPhysics: const BouncingScrollPhysics(),
+      scrollPhysics: BouncingScrollPhysics(),
       builder: (BuildContext context, int index) {
         return PhotoViewGalleryPageOptions(
           imageProvider: NetworkImage(imgList[index]),

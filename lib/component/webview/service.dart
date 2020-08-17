@@ -11,6 +11,7 @@ import 'package:flutterdemo/component/popup/toast.dart';
 
 import '../../router/index.dart';
 import 'package:flutterdemo/utils/publics.dart';
+import 'package:flutterdemo/component/tools/image-view.dart';
 
 class ResponseActionOptions<S> {
   String jsonStr;
@@ -115,9 +116,8 @@ final Function responseAction = (ResponseActionOptions options) async {
                 onTap: () {
                   router.back(context); //退出弹出框
                 },
-                child: PhotoView(
-                  imageProvider: NetworkImage(h5Params['imgList'][0]),
-                ));
+                child:
+                    ImageView(h5Params['imgList'], h5Params['currentIndex']));
           });
       break;
     // 分享微博
