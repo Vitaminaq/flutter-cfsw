@@ -12,6 +12,8 @@ import 'package:flutterdemo/config.dart';
 import './operate-item.dart';
 import './list-image.dart';
 
+import 'dart:math';
+
 class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
     extends StatelessWidget {
   ChatroomArticListItem({Key key, this.item})
@@ -128,10 +130,13 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                       )),
                       Expanded(
                           child: OperateItem(
-                        icon: 'lib/images/comment.png',
-                        count: item.comment_total_count,
-                        callback: () => toDetail(content),
-                      )),
+                              icon: 'lib/images/comment.png',
+                              count: item.comment_total_count,
+                              callback: () {
+                                print(Random().nextInt(10000));
+                              }
+                              // toDetail(content),
+                              )),
                       Expanded(
                           child: Consumer<ProviderStore>(
                               builder: (context, providerStore, child) =>

@@ -238,3 +238,83 @@ class User {
         "family_title_text": familyTitleText == null ? null : familyTitleText,
       };
 }
+
+class QiNiuTokenResponse {
+  int code;
+  QiNiuTokenData data;
+  String message;
+
+  QiNiuTokenResponse({
+    this.code,
+    this.data,
+    this.message,
+  });
+
+  factory QiNiuTokenResponse.fromJson(Map<String, dynamic> json) =>
+      QiNiuTokenResponse(
+          code: json["code"] == null ? null : json["code"],
+          data: json["data"] == null
+              ? null
+              : QiNiuTokenData.fromJson(json["data"]),
+          message: json["message"] == null ? null : json["message"]);
+
+  Map<String, dynamic> toJson() => {
+        "code": code == null ? null : code,
+        "data": data == null ? null : data.toJson(),
+        "message": message == null ? null : message,
+      };
+}
+
+class QiNiuTokenData {
+  String token;
+  String domain;
+  int expires;
+  String basePath;
+
+  QiNiuTokenData({
+    this.token,
+    this.domain,
+    this.expires,
+    this.basePath,
+  });
+
+  factory QiNiuTokenData.fromJson(Map<String, dynamic> json) => QiNiuTokenData(
+      token: json["token"] == null ? null : json["token"],
+      domain: json["domain"] == null ? null : json["domain"],
+      expires: json["expires"] == null ? null : json["expires"],
+      basePath: json["base_path"] == null ? null : json["base_path"]);
+
+  Map<String, dynamic> toJson() => {
+        "token": token == null ? null : token,
+        "domain": domain == null ? null : domain,
+        "expires": expires == null ? null : expires,
+        "base_path": basePath == null ? null : basePath,
+      };
+}
+
+// class QiNiuResponse {
+//   String token;
+//   String domain;
+//   int expires;
+//   String basePath;
+
+//   QiNiuResponse({
+//     this.token,
+//     this.domain,
+//     this.expires,
+//     this.basePath,
+//   });
+
+//   factory QiNiuResponse.fromJson(Map<String, dynamic> json) => QiNiuResponse(
+//       token: json["token"] == null ? null : json["token"],
+//       domain: json["domain"] == null ? null : json["domain"],
+//       expires: json["expires"] == null ? null : json["expires"],
+//       basePath: json["base_path"] == null ? null : json["base_path"]);
+
+//   Map<String, dynamic> toJson() => {
+//         "token": token == null ? null : token,
+//         "domain": domain == null ? null : domain,
+//         "expires": expires == null ? null : expires,
+//         "base_path": basePath == null ? null : basePath,
+//       };
+// }

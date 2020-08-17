@@ -33,7 +33,10 @@ void Function(BuildContext, CupertinoActionSheetOptions) bottomSheet =
               onPressed: () {
                 router.back(context);
               },
-              child: Text('取消')),
+              child: Text(
+                '取消',
+                style: TextStyle(color: Color(0xff303133)),
+              )),
           actions: options.items
               .map((item) => CupertinoActionSheetAction(
                   onPressed: () {

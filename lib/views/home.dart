@@ -43,6 +43,7 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    PublicsStore.setGlobalContext(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: WillPopScope(

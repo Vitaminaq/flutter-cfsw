@@ -29,6 +29,12 @@ class PublicsStore with ChangeNotifier {
     return;
   }
 
+  // toast context
+  static BuildContext globalContext;
+  static setGlobalContext(BuildContext context) {
+    globalContext = context;
+  }
+
   ///
   /// 用户信息
   ///

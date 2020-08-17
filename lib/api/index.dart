@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../config.dart' as config;
 import '../utils/publics.dart';
+import 'package:flutterdemo/component/popup/toast.dart';
+import 'package:flutterdemo/store/publics.dart';
 
+// 普通基本请求
 class Axios {
   Dio dio;
   Axios() {
-    dio = new Dio(new BaseOptions(
+    dio = Dio(BaseOptions(
       baseUrl: config.baseUrl,
       connectTimeout: 5000,
       receiveTimeout: 100000,
@@ -39,11 +42,13 @@ class Axios {
   }
 
   // 统一返回格式
-  dynamic allResponse(String res) {
-    // final r = JsonToObj.fromJson(json.decode(res.toString()));
-    // if (r == null || r.data == null)
-    //   return {'code': -10001, 'data': null, 'error': '返回数据格式错误'};
-    return json.decode(res.toString());
+  dynamic allResponse(dynamic res) {
+    final r = JsonToObj.fromJson(res);
+    if (r.code != 1 && PublicsStore.globalContext != null) {
+      final String message = r.message == null ? '请求失败' : r.message;
+      toast(PublicsStore.globalContext, message);
+    }
+    return r.toJson();
   }
 
   // 错误处理函数, 捕获在dio的错误拦截器之后,所以其实都不用捕获了
@@ -54,20 +59,20 @@ class Axios {
   }
 
   // get  url: 请求地址 queryParameters： 请求参数
-  dynamic get(String url, [Map<String, dynamic> params]) async {
+  Future<dynamic> get(String url, [Map<String, dynamic> params]) async {
     try {
       Response response = await dio.get(url, queryParameters: params);
-      return response.data;
+      return allResponse(response.data);
     } catch (e) {
       return _error(e);
     }
   }
 
   // post
-  dynamic post(String url, [Map<String, dynamic> params]) async {
+  Future<dynamic> post(String url, [Map<String, dynamic> params]) async {
     try {
       Response response = await dio.post(url, data: params);
-      return response.data;
+      return allResponse(response.data);
     } catch (e) {
       return _error(e);
     }
@@ -79,7 +84,7 @@ class Axios {
   }
 }
 
-final baseAxios = Axios();
+final Axios baseAxios = Axios();
 
 // 请求基类
 class BaseAxios {
@@ -92,19 +97,48 @@ class BaseAxios {
 // json映射 把响应数据第一层转化为对象,做错误
 // 的统一处理，后再还原
 class JsonToObj {
-  JsonToObj({this.code, this.data, this.error});
+  JsonToObj({this.code, this.data, this.message});
   int code;
   dynamic data;
-  String error;
+  String message;
 
   factory JsonToObj.fromJson(Map<String, dynamic> res) => JsonToObj(
       code: res["code"] == null ? null : res["code"],
       data: res["data"] == null ? null : res["data"],
-      error: res['error'] == null ? null : res['error']);
+      message: res['message'] == null ? null : res['message']);
 
   Map<String, dynamic> toJson() => {
         "code": code == null ? null : code,
         "data": data == null ? null : data,
-        "error": error == null ? null : error,
+        "message": message == null ? null : message,
       };
 }
+
+// 上传七牛云服务
+class UploadAxios {
+  Dio uploadDio;
+  UploadAxios() {
+    uploadDio = Dio(BaseOptions(
+      baseUrl: 'https://up-z2.qiniup.com',
+      connectTimeout: 5000000,
+      receiveTimeout: 10000000,
+    ));
+  }
+
+  // post
+  dynamic post(String url, [dynamic params]) async {
+    try {
+      Response response = await uploadDio.post(url, data: params);
+      return response.data;
+    } catch (e) {
+      return;
+    }
+  }
+
+  // 并发
+  Future<List<dynamic>> all(Iterable<Future> list) async {
+    return await Future.wait(list);
+  }
+}
+
+final UploadAxios uploadAxios = UploadAxios();

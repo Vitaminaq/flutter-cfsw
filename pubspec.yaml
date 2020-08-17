@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dio: 3.0.9 #latest version
+  dio: 3.0.10 #latest version
   intl: 0.15.8
   webview_flutter: ^0.3.22+1
   shared_preferences: 0.5.7+3
@@ -64,7 +64,7 @@ flutter:
     - lib/images/share.png
     - lib/images/close.png
     - lib/images/login.png
-    - lib/images/add-image.png
+    - lib/images/cancle-image.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

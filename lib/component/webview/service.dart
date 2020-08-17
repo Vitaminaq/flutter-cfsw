@@ -10,7 +10,7 @@ import './keyboard-popup.dart';
 import 'package:flutterdemo/component/popup/toast.dart';
 
 import '../../router/index.dart';
-import '../../utils/publics.dart';
+import 'package:flutterdemo/utils/publics.dart';
 
 class ResponseActionOptions<S> {
   String jsonStr;
@@ -135,8 +135,13 @@ final Function responseAction = (ResponseActionOptions options) async {
                 router.back(context); //退出弹出框
               },
               child: CommentDialog(
-                callback: (value) async {
+                callback: (value, [resoures]) async {
                   h5Params['content'] = value;
+                  if (resoures != null) {
+                    final rr = await uploadQiNiu(resoures);
+                    if (rr == null || rr.length == 0) return;
+                    h5Params['resource'] = json.encode(rr);
+                  }
                   final r = await api.commentOrReply(h5Params);
                   if (r.code == 1) {
                     toast(wbContext, '评论成功');

@@ -6,6 +6,12 @@ class Publics extends BaseAxios {
   Future<UserInfoResponse> getUserInfo() async {
     return UserInfoResponse.fromJson(await axios.get('/api/user/account/info'));
   }
+
+  // 获取上传七牛云token
+  Future<QiNiuTokenResponse> getQiNiuToken() async {
+    return QiNiuTokenResponse.fromJson(
+        await axios.get('/api/upload/session/token'));
+  }
 }
 
 Publics api = Publics();
