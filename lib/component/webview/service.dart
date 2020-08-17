@@ -156,8 +156,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     // 视频播放
     case '10010':
-      print('视频播放');
-      router.push(wbContext, '/video-play');
+      router.push(wbContext, '/video-play', params: {'url': h5Params['src']});
       break;
     // 预取可用数据
     case '10011':

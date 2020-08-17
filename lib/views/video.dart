@@ -1,7 +1,21 @@
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
+class LocalVideoPlayerPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final dynamic params = ModalRoute.of(context).settings.arguments;
+    final String url = params['url'] == null ? '' : params['url'];
+    return LocalVideoPlayer(
+      url: url,
+    );
+  }
+}
+
 class LocalVideoPlayer extends StatefulWidget {
+  final String url;
+  LocalVideoPlayer({@required this.url}) : assert(url != null);
+
   @override
   _LocalVideoPlayerState createState() => _LocalVideoPlayerState();
 }
@@ -12,10 +26,8 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://res-test-ssl.wismo.cn/uploads/user/20200813/216/69415469692097931597312845582.mp4')
+    _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
         _controller.play();
       });

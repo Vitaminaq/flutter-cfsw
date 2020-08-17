@@ -35,5 +35,5 @@ final Map<String, WidgetBuilder> routes = {
   '/video-play': (
     BuildContext context,
   ) =>
-      LocalVideoPlayer()
+      LocalVideoPlayerPage()
 };
