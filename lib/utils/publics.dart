@@ -38,8 +38,11 @@ Future<dynamic> Function(String, publicsModal.QiNiuTokenResponse)
   String name = Random().nextInt(10000).toString() +
       DateTime.now().millisecondsSinceEpoch.toString() +
       path.substring(path.lastIndexOf("."));
-  FormData formData =
-      FormData.fromMap({"file": path, 'token': token, 'key': '$basePath$name'});
+  FormData formData = FormData.fromMap({
+    "file": await MultipartFile.fromFile(path, filename: name),
+    'token': token,
+    'key': '$basePath$name'
+  });
   return uploadAxios.post('', formData);
 };
 
