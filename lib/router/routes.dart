@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo/views/home.dart';
 import 'package:flutterdemo/views/webview.dart';
 import 'package:flutterdemo/views/login.dart';
+import 'package:flutterdemo/views/video.dart';
 
 // =============> 路由管理 <===============
 
@@ -30,5 +31,9 @@ final Map<String, WidgetBuilder> routes = {
   '/login': (
     BuildContext context,
   ) =>
-      Login()
+      Login(),
+  '/video-play': (
+    BuildContext context,
+  ) =>
+      LocalVideoPlayer()
 };

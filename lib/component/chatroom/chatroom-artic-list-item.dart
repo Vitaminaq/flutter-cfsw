@@ -130,13 +130,10 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                       )),
                       Expanded(
                           child: OperateItem(
-                              icon: 'lib/images/comment.png',
-                              count: item.comment_total_count,
-                              callback: () {
-                                print(Random().nextInt(10000));
-                              }
-                              // toDetail(content),
-                              )),
+                        icon: 'lib/images/comment.png',
+                        count: item.comment_total_count,
+                        callback: () => toDetail(content),
+                      )),
                       Expanded(
                           child: Consumer<ProviderStore>(
                               builder: (context, providerStore, child) =>
