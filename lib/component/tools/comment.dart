@@ -1,13 +1,33 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/router/index.dart';
+
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/rendering.dart';
 import 'package:flutterdemo/component/tools/pick-image.dart';
+import 'package:flutterdemo/utils/publics.dart';
+import 'package:flutterdemo/api/webview.dart';
+import 'package:flutterdemo/component/popup/toast.dart';
+
+void Function(BuildContext, Map<String, dynamic>, [dynamic]) comment =
+    (BuildContext context, Map<String, dynamic> params, [dynamic callback]) {
+  showDialog<Null>(
+      context: context, //BuildContext对象
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () {
+            router.back(context); //退出弹出框
+          },
+          child: CommentDialog(params: params, callback: callback),
+        );
+      });
+};
 
 class CommentDialog extends Dialog {
   final dynamic callback;
+  final Map<String, dynamic> params;
 
-  CommentDialog({Key key, @required this.callback})
+  CommentDialog({Key key, @required this.callback, this.params})
       : assert(callback != null),
         super(key: key);
 
@@ -33,6 +53,7 @@ class CommentDialog extends Dialog {
                         left: 16.0, right: 16.0, top: 10.0, bottom: 6.0),
                     decoration: BoxDecoration(color: Colors.white),
                     child: CommentContent(
+                      params: params,
                       callback: callback,
                     )))
           ])),
@@ -62,6 +83,25 @@ class CommentContentState extends State<CommentContent> {
       }
       setState(() {});
     });
+  }
+
+  comment() async {
+    final Map<String, dynamic> params = widget.params;
+    params['content'] = currentValue;
+    if (imgPaths != null && imgPaths.length != 0) {
+      final rr = await uploadQiNiu(imgPaths);
+      if (rr == null || rr.length == 0) return;
+      params['resource'] = json.encode(rr);
+    }
+    final r = await api.commentOrReply(params);
+    if (r.code == 1) {
+      toast(context, '评论成功');
+      if (widget.callback != null) {
+        widget.callback();
+      }
+    }
+    // 回复
+    router.back(context);
   }
 
   @override
@@ -183,7 +223,7 @@ class CommentContentState extends State<CommentContent> {
                   ),
                   onPressed: () {
                     if (currentValue == '') return;
-                    widget.callback(currentValue, imgPaths);
+                    comment();
                   },
                 ))
           ],
@@ -195,8 +235,9 @@ class CommentContentState extends State<CommentContent> {
 
 class CommentContent extends StatefulWidget {
   final dynamic callback;
+  final Map<String, dynamic> params;
 
-  CommentContent({Key key, @required this.callback})
+  CommentContent({Key key, @required this.callback, this.params})
       : assert(callback != null),
         super(key: key);
 

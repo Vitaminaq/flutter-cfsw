@@ -8,11 +8,10 @@ import 'package:flutterdemo/store/publics.dart';
 import 'package:flutterdemo/api/chatroom.dart';
 import 'package:share/share.dart';
 import 'package:flutterdemo/config.dart';
+import 'package:flutterdemo/component/tools/comment.dart';
 
 import './operate-item.dart';
 import './list-image.dart';
-
-import 'dart:math';
 
 class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
     extends StatelessWidget {
@@ -129,11 +128,23 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                             '【${item.title}】\n $baseH5/blog/detail?v=1.0.0#id=${item.id}'),
                       )),
                       Expanded(
-                          child: OperateItem(
-                        icon: 'lib/images/comment.png',
-                        count: item.comment_total_count,
-                        callback: () => toDetail(content),
-                      )),
+                          child: Consumer<ProviderStore>(
+                              builder: (context, providerStore, child) =>
+                                  OperateItem(
+                                    icon: 'lib/images/comment.png',
+                                    count: item.comment_total_count,
+                                    callback: () {
+                                      if (item.comment_total_count == 0) {
+                                        comment(content, {'note_id': item.id},
+                                            () {
+                                          providerStore
+                                              .updateCommentCount(item.id);
+                                        });
+                                      } else {
+                                        toDetail(content);
+                                      }
+                                    },
+                                  ))),
                       Expanded(
                           child: Consumer<ProviderStore>(
                               builder: (context, providerStore, child) =>

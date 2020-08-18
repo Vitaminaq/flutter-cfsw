@@ -27,6 +27,17 @@ class ChatRoomStore extends LoaderList<ChatRoomModel.FamousResponse,
     }
     notifyListeners();
   }
+
+  // 更新评论总数
+  updateCommentCount(int id) {
+    final len = list.length;
+    for (int i = 0; i < len; i++) {
+      if (list[i].id == id) {
+        list[i].comment_total_count = 1;
+      }
+    }
+    notifyListeners();
+  }
 }
 
 class MustStore extends ChatRoomStore {}

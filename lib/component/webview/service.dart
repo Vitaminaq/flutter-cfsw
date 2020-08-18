@@ -3,15 +3,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutterdemo/router/index.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:flutterdemo/utils/filter.dart';
-import 'package:flutterdemo/api/webview.dart';
-import './keyboard-popup.dart';
 import 'package:flutterdemo/component/popup/toast.dart';
 
-import '../../router/index.dart';
 import 'package:flutterdemo/utils/publics.dart';
 import 'package:flutterdemo/component/tools/image-view.dart';
+import 'package:flutterdemo/component/tools/comment.dart';
 
 class ResponseActionOptions<S> {
   String jsonStr;
@@ -127,32 +124,9 @@ final Function responseAction = (ResponseActionOptions options) async {
     // 评论或者回复
     case '10009':
       autoCallback = false;
-      showDialog<Null>(
-          context: wbContext, //BuildContext对象
-          builder: (BuildContext context) {
-            return GestureDetector(
-              onTap: () {
-                router.back(context); //退出弹出框
-              },
-              child: CommentDialog(
-                callback: (value, [resoures]) async {
-                  h5Params['content'] = value;
-                  if (resoures != null) {
-                    final rr = await uploadQiNiu(resoures);
-                    if (rr == null || rr.length == 0) return;
-                    h5Params['resource'] = json.encode(rr);
-                  }
-                  final r = await api.commentOrReply(h5Params);
-                  if (r.code == 1) {
-                    toast(wbContext, '评论成功');
-                  }
-                  h5DefalutCallback(options, reslut);
-                  // 回复
-                  router.back(context);
-                },
-              ),
-            );
-          });
+      comment(wbContext, h5Params, () {
+        h5DefalutCallback(options, reslut);
+      });
       break;
     // 视频播放
     case '10010':
