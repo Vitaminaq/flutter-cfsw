@@ -1,20 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/router/index.dart';
 
 class MyMenuItem extends StatelessWidget {
   final String icon;
   final String title;
   final String extralText;
-  final String toPath;
+  final dynamic to;
 
   MyMenuItem(
       {Key key,
       @required this.icon,
       this.title = '',
       this.extralText = '',
-      this.toPath})
-      : assert(icon != null),
+      this.to})
+      : assert(icon != null, to != null),
         super(key: key);
 
   @override
@@ -57,8 +56,8 @@ class MyMenuItem extends StatelessWidget {
           ),
         ),
         onTap: () {
-          if (toPath == null) return;
-          router.push(context, toPath);
+          if (to == null) return;
+          to(context);
         },
       ),
     );

@@ -86,7 +86,7 @@ final Function responseAction = (ResponseActionOptions options) async {
     // 跳转登录，同步状态
     case '10004':
       autoCallback = false;
-      final r = await router.push(wbContext, '/login');
+      final r = await $router.login(wbContext);
       if (r != null) {
         final String token = await getToken();
         // 向h5同步登陆态信息
@@ -130,7 +130,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       break;
     // 视频播放
     case '10010':
-      router.push(wbContext, '/video-play', params: {'url': h5Params['src']});
+      $router.videoPlay(wbContext, params: {'url': h5Params['src']});
       break;
     // 预取可用数据
     case '10011':
@@ -143,7 +143,7 @@ final Function responseAction = (ResponseActionOptions options) async {
       setStatusBarColor(h5Params);
       break;
     case '10014':
-      router.push(wbContext, '/pure/webview', params: {'url': h5Params});
+      $router.pureWebview(wbContext, params: {'url': h5Params});
       break;
     default:
       toast(options.context, '体验更多功能，请下载小獴阅读app');

@@ -35,7 +35,7 @@ void Function(BuildContext, CupertinoActionSheetOptions) bottomSheet =
               },
               child: Text(
                 '取消',
-                style: TextStyle(color: Color(0xff303133)),
+                style: TextStyle(color: Color(0xffcdcdcd)),
               )),
           actions: options.items
               .map((item) => CupertinoActionSheetAction(

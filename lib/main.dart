@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:flutterdemo/router/index.dart';
+// import 'package:flutterdemo/router/routes.dart';
 import 'package:flutterdemo/utils/publics.dart';
 import './store/index.dart';
+import 'package:flutterdemo/views/home.dart';
 
 void main() {
   runApp(MultiProvider(providers: providerList, child: MyApp()));
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.white,
       ),
-      routes: routers,
+      home: Home(),
     );
   }
 }

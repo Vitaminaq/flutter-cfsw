@@ -31,7 +31,7 @@ class Axios {
       options.headers['Authorization'] = 'Bearer $token';
       print('请求拦截器生效');
     }, onResponse: (Response response) {
-      print('响应拦截器生效');
+      print('响应拦截器生效$response');
       return response;
     }, onError: (DioError e) {
       print('错误拦截器生效');
@@ -42,8 +42,10 @@ class Axios {
 
   // 统一返回格式
   dynamic allResponse(dynamic res) {
-    final r = JsonToObj.fromJson(res);
-    if (r.code != 1 && PublicsStore.globalContext != null) {
+    JsonToObj r = JsonToObj.fromJson(res);
+    if (r.code == 401 || r.code == null) {
+      r = JsonToObj.fromJson({'code': 401, 'data': null, 'message': ''});
+    } else if (r.code != 1 && PublicsStore.globalContext != null) {
       final String message = r.message == null ? '请求失败' : r.message;
       toast(PublicsStore.globalContext, message);
     }
@@ -53,7 +55,11 @@ class Axios {
   // 错误处理函数, 捕获在dio的错误拦截器之后,所以其实都不用捕获了
   dynamic _error(dynamic e) {
     print("请求失败，错误为:" + e.toString());
-    final Map<String, dynamic> res = {'code': -10000, 'data': null};
+    final Map<String, dynamic> res = {
+      'code': -10000,
+      'data': null,
+      'message': ''
+    };
     return res;
   }
 

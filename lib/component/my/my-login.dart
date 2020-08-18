@@ -26,7 +26,7 @@ class MyLogin extends StatelessWidget {
                 child: ButtonLogin(
               btnText: '登录 | 注册',
               callback: () {
-                router.push(context, '/login');
+                $router.login(context);
               },
             )),
           ]))

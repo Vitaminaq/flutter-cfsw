@@ -22,7 +22,7 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
   final ChatRoomModel.Datum item;
 
   toDetail(BuildContext content) {
-    router.push(content, '/artic/detail', params: {'item': item});
+    $router.articDetail(content, params: {'item': item});
   }
 
   @override
@@ -156,10 +156,10 @@ class ChatroomArticListItem<ProviderStore extends ChatRoomStore>
                                       final String token =
                                           await PublicsStore.getCurrentToken();
                                       if (token == null || token == '')
-                                        return router.push(content, '/login');
+                                        return $router.login(context);
                                       final r =
                                           await api.likeNote({'id': item.id});
-                                      if (r.code != 1) return;
+                                      if (r.code != 1) return '';
                                       providerStore.updateClickStatus(item.id);
                                     },
                                   ))),

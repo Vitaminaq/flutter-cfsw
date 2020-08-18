@@ -103,9 +103,9 @@ class ReadBookItem extends StatelessWidget {
         if (item.hadTheater == false)
           return toast(context, '请下载小獴阅读app解锁更多书籍闯关');
         final String token = await PublicsStore.getCurrentToken();
-        if (token == null || token == '') return router.push(context, '/login');
-        router.push(context, '/chuangguan',
-            params: {'bookid': item.id, 'token': token});
+        if (token == null || token == '') return $router.login(context);
+        $router
+            .chuangGuan(context, params: {'bookid': item.id, 'token': token});
       },
     );
   }

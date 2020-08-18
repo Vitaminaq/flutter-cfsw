@@ -4,12 +4,16 @@ import '../config.dart';
 
 // 文章详情
 class ArticDetail extends StatelessWidget {
+  final dynamic params;
+
+  ArticDetail(this.params);
+
   @override
   Widget build(BuildContext content) {
-    final dynamic params = ModalRoute.of(content).settings.arguments;
+    // final dynamic params = ModalRoute.of(content).settings.arguments;
     final int id = params['item'] == null ? 1 : params['item'].id;
     return BaseWebviewPage(
-        initialUrl: '$baseH5/blog/detail?v=1.0.3#id=$id',
+        initialUrl: '$baseH5/blog/detail?v=1.0.4#id=$id',
         prefetchData: params['item']);
   }
 }
@@ -20,7 +24,7 @@ class MyPoint extends StatelessWidget {
   Widget build(BuildContext content) {
     return BaseWebviewPage(
         statusBarColor: 0xff07C89A,
-        initialUrl: '$baseH5/integral/centre?v=1.0.3&h5Title=true');
+        initialUrl: '$baseH5/integral/centre?v=1.0.4&h5Title=true');
   }
 }
 
@@ -31,15 +35,18 @@ class MyPointRule extends StatelessWidget {
     return BaseWebviewPage(
         statusBarColor: 0xff07C89A,
         initialUrl:
-            '$baseH5/integral/detail?v=1.0.3&tabType=rule&h5Title=true');
+            '$baseH5/integral/detail?v=1.0.4&tabType=rule&h5Title=true');
   }
 }
 
 // 答题闯关
 class ChuangGuan extends StatelessWidget {
+  final dynamic params;
+
+  ChuangGuan(this.params);
+
   @override
   Widget build(BuildContext content) {
-    final dynamic params = ModalRoute.of(content).settings.arguments;
     final int bookId =
         params == null || params['bookid'] == null ? 0 : params['bookid'];
     final String token =
@@ -54,9 +61,12 @@ class ChuangGuan extends StatelessWidget {
 
 // 空webview，用于打开外链
 class PureWebview extends StatelessWidget {
+  final dynamic params;
+
+  PureWebview(this.params);
+
   @override
   Widget build(BuildContext content) {
-    final dynamic params = ModalRoute.of(content).settings.arguments;
     final String url =
         params == null || params['url'] == null ? '' : params['url'];
     return BaseWebviewPage(

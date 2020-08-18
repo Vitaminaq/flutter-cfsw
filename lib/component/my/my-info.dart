@@ -7,6 +7,7 @@ import 'package:flutterdemo/store/publics.dart';
 import '../button/button-max.dart';
 import './my-info-top.dart';
 import './my-menu-item.dart';
+import 'package:flutterdemo/router/index.dart';
 
 class MyInfo extends StatelessWidget {
   @override
@@ -85,11 +86,11 @@ class MyInfo extends StatelessWidget {
               extralText: Provider.of<PublicsStore>(context, listen: true)
                   .studentPoint
                   .toString(),
-              toPath: '/integral/centre'),
+              to: $router.integralCentre),
           MyMenuItem(
             icon: 'lib/images/point-rule.png',
             title: '学点规则',
-            toPath: '/integral/detail',
+            to: $router.integralDetail,
           ),
         ],
       ),

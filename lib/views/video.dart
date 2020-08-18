@@ -2,9 +2,12 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
 class LocalVideoPlayerPage extends StatelessWidget {
+  final dynamic params;
+
+  LocalVideoPlayerPage(this.params);
+
   @override
   Widget build(BuildContext context) {
-    final dynamic params = ModalRoute.of(context).settings.arguments;
     final String url = params['url'] == null ? '' : params['url'];
     return LocalVideoPlayer(
       url: url,
