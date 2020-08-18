@@ -66,6 +66,7 @@ class CommentContentState extends State<CommentContent> {
   String currentValue = '';
   List<File> imgList = [];
   List<String> imgPaths = [];
+  bool pending = false;
 
   @override
   void initState() {
@@ -86,6 +87,8 @@ class CommentContentState extends State<CommentContent> {
   }
 
   comment() async {
+    if (pending == true) return;
+    pending = true;
     final Map<String, dynamic> params = widget.params;
     params['content'] = currentValue;
     if (imgPaths != null && imgPaths.length != 0) {
@@ -93,7 +96,9 @@ class CommentContentState extends State<CommentContent> {
       if (rr == null || rr.length == 0) return;
       params['resource'] = json.encode(rr);
     }
+    toast(context, '资源提交中，请勿重复点击或退出');
     final r = await api.commentOrReply(params);
+    pending = false;
     if (r.code == 1) {
       toast(context, '评论成功');
       if (widget.callback != null) {
