@@ -65,6 +65,7 @@ class BaseWebviewState extends State<BaseWebview> {
   @override
   void dispose() {
     super.dispose();
+    _controller = null;
   }
 }
 
