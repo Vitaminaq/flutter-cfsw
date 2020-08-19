@@ -10,7 +10,6 @@ class ArticDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext content) {
-    // final dynamic params = ModalRoute.of(content).settings.arguments;
     final int id = params['item'] == null ? 1 : params['item'].id;
     return BaseWebviewPage(
         initialUrl: '$baseH5/blog/detail?v=1.0.4#id=$id',

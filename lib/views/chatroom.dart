@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../store/chatroom.dart';
+import 'package:flutterdemo/store/chatroom.dart';
 import 'package:flutterdemo/model/chatroom.dart' as ChatRoomModel;
 import 'package:flutterdemo/component/scroller.dart';
 import 'package:flutterdemo/component/chatroom/chatroom-artic-list-item.dart';

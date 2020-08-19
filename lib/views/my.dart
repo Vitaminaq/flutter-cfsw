@@ -2,9 +2,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../store/publics.dart';
-import '../component/my/my-info.dart';
-import '../component/my/my-login.dart';
+import 'package:flutterdemo/store/publics.dart';
+import 'package:flutterdemo/component/my/my-info.dart';
+import 'package:flutterdemo/component/my/my-login.dart';
 
 class _NavItem {
   Widget view;

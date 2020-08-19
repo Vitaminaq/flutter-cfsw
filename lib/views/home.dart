@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:flutterdemo/store/publics.dart';
 import 'package:flutterdemo/component/popup/toast.dart';
 import 'package:flutterdemo/component/tab-bar.dart';
-import './chatroom.dart';
-import './read.dart';
-import './my.dart';
+import 'chatroom.dart';
+import 'read.dart';
+import 'my.dart';
 
 class HomeState extends State<Home> {
   NavItemKey _currentKey = NavItemKey.chatroom;
