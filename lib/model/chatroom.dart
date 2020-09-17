@@ -266,15 +266,16 @@ class SortedContent {
   });
 
   factory SortedContent.fromJson(Map json) => SortedContent(
-      type: json["type"] == null ? null : json["type"],
-      url: json["url"] == null ? null : json["url"],
-      attached: json["attached"] == null ? null : json["attached"],
-      text: json["text"] == null ? null : json["text"],
-      size: json["size"] == null ? null : json["size"],
-      duration: json["duration"] == null ? null : json["duration"],
-      sort: json["sort"] == null ? null : json["sort"],
-      width: json["width"] == null ? null : json["width"],
-      height: json["height"] == null ? null : json["height"]);
+        type: json["type"] == null ? null : json["type"],
+        url: json["url"] == null ? null : json["url"],
+        attached: json["attached"] == null ? null : json["attached"],
+        text: json["text"] == null ? null : json["text"],
+        size: json["size"] == null ? null : json["size"],
+        duration: json["duration"] == null ? null : json["duration"],
+        sort: json["sort"] == null ? null : json["sort"],
+        // width: json["width"] == null ? null : json["width"],
+        // height: json["height"] == null ? null : json["height"]
+      );
 
   Map<String, dynamic> toJson() => {
         "type": type == null ? null : type,
@@ -284,8 +285,8 @@ class SortedContent {
         "size": size == null ? null : size,
         "duration": duration == null ? null : duration,
         "sort": sort == null ? null : sort,
-        "width": width == null ? null : width,
-        "height": height == null ? null : height,
+        // "width": width == null ? null : width,
+        // "height": height == null ? null : height,
       };
 }
 
